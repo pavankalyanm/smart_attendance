@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:smart_attendance/pages/admin/adminview.dart';
 
 import 'package:smart_attendance/pages/student/home.dart';
 import 'package:smart_attendance/pages/teacher//home.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:smart_attendance/theme/style.dart';
+import '../admin.dart';
 import 'style.dart';
 import 'package:smart_attendance/components/TextFields/inputField.dart';
 import 'package:smart_attendance/components/Buttons/textButton.dart';
@@ -85,6 +87,12 @@ class _LoginState extends State<Login> {
     } else {
       if (snapshot.data['role'] == 'admin') {
 // Can be made after wards
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => admin()),
+        );
+
       } else if (snapshot.data['role'] == 'teacher') {
         globals.name = snapshot.data['name'];
         globals.post = snapshot.data['post'];

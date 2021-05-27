@@ -178,7 +178,7 @@ class _GenerationState extends State<Generation> {
           "attendance").add(map);
       debugPrint("The New Document created with Id : ${docRef.documentID} ");
       globals.studentDocumentId.insert(i, "${docRef.documentID}");
-//      Firestore.instance.collection("attendance").document("${globals.attendance_id}").collection("attendance").document("${docRef.documentID}").updateData({"document" : "${docRef.documentID}"});
+   //  Firestore.instance.collection("attendance").document("${globals.attendance_id}").collection("attendance").document("${docRef.documentID}").updateData({"document" : "${docRef.documentID}"});
 
 
     }

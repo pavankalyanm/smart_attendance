@@ -10,6 +10,8 @@ import 'package:xxtea/xxtea.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 
+import '../../../globals.dart';
+
 
 String docId;
 
@@ -107,6 +109,37 @@ class _ScanState extends State<ScanScreen> {
 //    super.initState();
 //  }
 
+
+  void _showDialogSuccess() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Attendance recorded succesfull"),
+
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Ok"),
+              onPressed: () {
+                _scaffoldKey.currentState.showSnackBar(
+                    new SnackBar(duration: new Duration(seconds: 4), content:
+                    new Row(
+                      children: <Widget>[
+                        new Text("Try Again!")
+                      ],
+                    ),
+                    ));
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future syncToPreviousAttendance() async {
     String collection1 = "users";
     String collection2 = "previous_attendance";
@@ -303,6 +336,7 @@ class _ScanState extends State<ScanScreen> {
     else {
       globals.courseName = snapshot.data['name'];
       globals.courseYear = snapshot.data['year'];
+
       getLecturerDetails();
     }
   }
@@ -315,10 +349,11 @@ class _ScanState extends State<ScanScreen> {
           .collection("attendance")
           .document("${globals.attendance_id}")
           .collection("attendance")
-          .where('id',
-          isEqualTo: "${globals.id}").getDocuments().then((string) {
-        string.documents.forEach((doc) async => globals.docId = doc.documentID);
-      });
+          .where(globals.docId='17001a0528',
+          //isEqualTo: "${globals.id}").getDocuments().then((string) {
+        //string.documents.forEach((doc) async => globals.docId = doc.documentID);
+     // }
+      );
 
 //      debugPrint(" $docId");
 //      List docId1 = docId.split(",");

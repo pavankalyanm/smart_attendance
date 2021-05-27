@@ -1,6 +1,7 @@
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:smart_attendance/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_attendance/pages/Login/login1.dart';
 //import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
 //import 'package:smart_attendance/theme/style.dart';
@@ -12,6 +13,7 @@ import 'package:smart_attendance/services/validations.dart';
 import 'package:smart_attendance/globals.dart' as globals;
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -28,8 +30,21 @@ class _ProfilePageState extends State<ProfilePage> {
 //        .showSnackBar(new SnackBar(content: new Text(value)));
 //  }
 
+
+
   bool autovalidate = false;
   Validations validations = new Validations();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> signOut() async {
+    await auth.signOut();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
+
+  }
 
 @override
   void initState() {
@@ -66,23 +81,40 @@ class _ProfilePageState extends State<ProfilePage> {
     return new Scaffold(
         appBar: AppBar(title: Text('Profile'),
           automaticallyImplyLeading: false,),
-        body: ListView(
-          children: <Widget>[
-            Card(
-              child: ListTile(
-                leading: FlutterLogo(size: 56.0),
-                title: Text('${globals.name}'),
-                subtitle: Text('Click to update photo'),
+        body:
+        Column(
 
-              ),
+          children: [
+        Expanded(
+           child: ListView(
+              children: <Widget>[
+                Card(
+                  child: ListTile(
+                    leading: FlutterLogo(size: 56.0),
+                    title: Text('${globals.name}'),
+                    subtitle: Text('Click to update photo'),
+
+                  ),
+                ),
+                SizedBox(height: 40.0),
+                Center (child: Text("User Details :-")),
+
+                Card(child: ListTile(title: Text("Post   :  ${globals.post}"))),
+
+              ],
             ),
-            SizedBox(height: 40.0),
-            Center (child: Text("User Details :-")),
 
-            Card(child: ListTile(title: Text("Post   :  ${globals.post}"))),
+        ),
+            ElevatedButton(
+              onPressed: () {
 
+                signOut();
+                // Respond to button press
+              },
+              child: Text('LOGOUT'),
+            )
           ],
-        )
+        ),
     );
   }
 
