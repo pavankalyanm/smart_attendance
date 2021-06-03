@@ -185,6 +185,7 @@ class _teacherSignupState extends State<teacherSignup> {
   TextEditingController  nameInputController;
   TextEditingController classInputController;
   TextEditingController idInputController;
+  TextEditingController deptInputController;
 
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
@@ -195,7 +196,8 @@ class _teacherSignupState extends State<teacherSignup> {
   initState() {
     nameInputController = new TextEditingController();
     classInputController = new TextEditingController();
-    //idInputController = new TextEditingController();
+    idInputController = new TextEditingController();
+    deptInputController = new TextEditingController();
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
     confirmPwdInputController = new TextEditingController();
@@ -213,12 +215,14 @@ class _teacherSignupState extends State<teacherSignup> {
     }
   }
 
-  String pwdValidator(String value) {
-    if (value.length < 6) {
-      return 'Password must be longer than 6 characters';
-    } else {
-      return null;
-    }
+  String pwdValidator(String password) {
+    if (password.isEmpty) return 'Please enter a password.';
+    if (password.length < 8) return 'Password must contain minimum of 8 characters';
+    if (!password.contains(RegExp(r"[a-z]"))) return 'Password must contain at least one lowercase letter';
+    if (!password.contains(RegExp(r"[A-Z]"))) return 'Password must contain at least one uppercase letter';
+    if (!password.contains(RegExp(r"[0-9]"))) return 'Password must contain at least one digit';
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) return 'Password must contain at least one special character';
+    return null;
   }
 
   String nameValidator(String value) {
@@ -230,7 +234,14 @@ class _teacherSignupState extends State<teacherSignup> {
   }
   String classValidator(String value) {
     if (value.length < 3) {
-      return "Please enter class.";
+      return "Please enter designation.";
+    } else {
+      return null;
+    }
+  }
+  String deptValidator(String value) {
+    if (value.length < 3) {
+      return "Please enter department.";
     } else {
       return null;
     }
@@ -259,6 +270,7 @@ class _teacherSignupState extends State<teacherSignup> {
           //"uid": currentUser.uid,
           "name":  nameInputController.text,
           "post": classInputController.text,
+          "dept": deptInputController.text,
           //"attendance_id":currentUser.uid,
           "role":role,
           //"email": emailInputController.text,
@@ -282,6 +294,7 @@ class _teacherSignupState extends State<teacherSignup> {
           nameInputController.clear(),
           classInputController.clear(),
           idInputController.clear(),
+          deptInputController.clear(),
           emailInputController.clear(),
           pwdInputController.clear(),
           confirmPwdInputController.clear()
@@ -334,11 +347,17 @@ class _teacherSignupState extends State<teacherSignup> {
                       ),
                       TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Post*'),
+                              labelText: 'Designation*'),
                           controller: classInputController,
                           validator: classValidator,
                       ),
-                     /* TextFormField(
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: 'Department*'),
+                        controller: deptInputController,
+                        validator: deptValidator,
+                      ),
+                      /* TextFormField(
                           decoration: InputDecoration(
                               labelText: 'ID*'),
                           controller: idInputController,
@@ -346,14 +365,14 @@ class _teacherSignupState extends State<teacherSignup> {
                       ),*/
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                        labelText: 'Email*', hintText: "john.doe@gmail.com"),
                         controller: emailInputController,
                         keyboardType: TextInputType.emailAddress,
                         validator: emailValidator,
                       ),
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: 'Password*', hintText: "********"),
+                        labelText: 'Password*', hintText: "********"),
                         controller: pwdInputController,
                         obscureText: true,
                         validator: pwdValidator,
