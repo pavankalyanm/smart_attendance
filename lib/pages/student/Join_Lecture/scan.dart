@@ -12,7 +12,6 @@ import 'package:smart_attendance/pages/student/home.dart';
 
 import '../../../globals.dart';
 
-
 String docId;
 
 class ScanScreen extends StatefulWidget {
@@ -29,16 +28,11 @@ class _ScanState extends State<ScanScreen> {
     BackButtonInterceptor.add(myInterceptor);
   }
 
-
-
-
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
   }
-
-
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -58,7 +52,6 @@ class _ScanState extends State<ScanScreen> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("You Scanned wrong QR Code. Contact the Lecturer."),
-
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -81,20 +74,17 @@ class _ScanState extends State<ScanScreen> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Oops! try again and hold your device correctly"),
-
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
               child: new Text("Ok"),
               onPressed: () {
-                _scaffoldKey.currentState.showSnackBar(
-                    new SnackBar(duration: new Duration(seconds: 4), content:
-                    new Row(
-                      children: <Widget>[
-                        new Text("Try Again!")
-                      ],
-                    ),
-                    ));
+                _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                  duration: new Duration(seconds: 4),
+                  content: new Row(
+                    children: <Widget>[new Text("Try Again!")],
+                  ),
+                ));
                 Navigator.of(context).pop();
               },
             ),
@@ -109,7 +99,6 @@ class _ScanState extends State<ScanScreen> {
 //    super.initState();
 //  }
 
-
   void _showDialogSuccess() {
     // flutter defined function
     showDialog(
@@ -118,20 +107,17 @@ class _ScanState extends State<ScanScreen> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Attendance recorded succesfull"),
-
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
               child: new Text("Ok"),
               onPressed: () {
-                _scaffoldKey.currentState.showSnackBar(
-                    new SnackBar(duration: new Duration(seconds: 4), content:
-                    new Row(
-                      children: <Widget>[
-                        new Text("Try Again!")
-                      ],
-                    ),
-                    ));
+                _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                  duration: new Duration(seconds: 4),
+                  content: new Row(
+                    children: <Widget>[new Text("Try Again!")],
+                  ),
+                ));
                 Navigator.of(context).pop();
               },
             ),
@@ -140,31 +126,34 @@ class _ScanState extends State<ScanScreen> {
       },
     );
   }
+
   Future syncToPreviousAttendance() async {
     String collection1 = "users";
     String collection2 = "previous_attendance";
     String courseCode = globals.courseCode;
     String uid = globals.uid;
 
-
     var fireStore2 = Firestore.instance;
 
-
-    Map<String, String> map = { "time_stamp": "${new DateTime.now()}",
+    Map<String, String> map = {
+      "time_stamp": "${new DateTime.now()}",
       "course_code": "$courseCode"
     };
 
-
-    DocumentReference docRef = await fireStore2.collection("$collection1")
-        .document("$uid").collection("$collection2")
+    DocumentReference docRef = await fireStore2
+        .collection("$collection1")
+        .document("$uid")
+        .collection("$collection2")
         .add(map);
     debugPrint("The New Document created with Id : ${docRef.documentID} ");
 
-    Navigator.pop(context);
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => Lecture()
-    ),
+    /*Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Lecture()),
     );
+     */
+    _showDialogSuccess();
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -182,7 +171,6 @@ class _ScanState extends State<ScanScreen> {
 //            mainAxisAlignment: MainAxisAlignment.center,
 //            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: RaisedButton(
@@ -190,12 +178,8 @@ class _ScanState extends State<ScanScreen> {
                     textColor: Colors.white,
                     splashColor: Colors.blueGrey,
                     onPressed: checkNet,
-                    child: const Text('Click here to scan QR code')
-                ),
-              )
-              ,
-
-
+                    child: const Text('Click here to scan QR code')),
+              ),
             ],
           ),
         ));
@@ -211,15 +195,14 @@ class _ScanState extends State<ScanScreen> {
       String decrypt_data = xxtea.decryptToString(barcode, globals.key);
       debugPrint(decrypt_data);
 
-
       debugPrint("Decripting qr code");
-
 
       try {
         DocumentSnapshot snapshot = await Firestore.instance.collection("class")
             .document("${globals.clas}").collection("lectureID_qrCode")
             .document("$decrypt_data")
             .get();
+        debugPrint(snapshot.data['class_code']);
         if (snapshot.data['class_code'] == "${globals.clas}") {
 
           _scaffoldKey.currentState.showSnackBar(
@@ -239,85 +222,78 @@ class _ScanState extends State<ScanScreen> {
 
 
 //          syncToPreviousAttendance();
-        }
-        else {
-          debugPrint("Comparing global = ${globals.clas} : snapshot = ${snapshot
-              .data['class_code']}");
+        } else {
+          debugPrint(
+              "Comparing global = ${globals.clas} : snapshot = ${snapshot.data['class_code']}");
           _showDialogWrong();
         }
       } catch (e) {
-        print(e.message);
+        print(e);
 
         _showDialogWrong();
       }
-
 
 //      present.updating(barcode);
 
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          _scaffoldKey.currentState.showSnackBar(
-              new SnackBar(duration: new Duration(seconds: 4), content:
-              new Row(
-                children: <Widget>[
-                  new Text("grant the camera permission!")
-                ],
-              ),
-              ));
-
+          _scaffoldKey.currentState.showSnackBar(new SnackBar(
+            duration: new Duration(seconds: 4),
+            content: new Row(
+              children: <Widget>[new Text("grant the camera permission!")],
+            ),
+          ));
         });
       } else {
         setState(() {
-          _scaffoldKey.currentState.showSnackBar(
-              new SnackBar(duration: new Duration(seconds: 4), content:
-              new Row(
-                children: <Widget>[
-                  new Container( child: new Text("Unknown error: $e"),)
-                ],
-              ),
-              ));
-
+          _scaffoldKey.currentState.showSnackBar(new SnackBar(
+            duration: new Duration(seconds: 4),
+            content: new Row(
+              children: <Widget>[
+                new Container(
+                  child: new Text("Unknown error: $e"),
+                )
+              ],
+            ),
+          ));
         });
-
       }
     } on FormatException {
       setState(() {
-        _scaffoldKey.currentState.showSnackBar(
-            new SnackBar(duration: new Duration(seconds: 4), content:
-            new Row(
-              children: <Widget>[
-                new Text("Scanning not done correctly")
-              ],
-            ),
-            ));
-
+        _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          duration: new Duration(seconds: 4),
+          content: new Row(
+            children: <Widget>[new Text("Scanning not done correctly")],
+          ),
+        ));
       });
     } catch (e) {
       setState(() {
-        _scaffoldKey.currentState.showSnackBar(
-            new SnackBar(duration: new Duration(seconds: 4), content:
-            new Row(
-              children: <Widget>[
-                new Container( child: new Text("Unknown error: $e"),)
-              ],
-            ),
-            ));
-
+        _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          duration: new Duration(seconds: 4),
+          content: new Row(
+            children: <Widget>[
+              new Container(
+                child: new Text("Unknown error: no such method"),
+              )
+            ],
+          ),
+        ));
       });
     }
   }
 
-
   getLecturerDetails() async {
     debugPrint("Inside getClass func");
 
-    DocumentSnapshot snapshot = await Firestore.instance.collection(
-        'attendance').document('${globals.attendance_id}').get();
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('attendance')
+        .document('${globals.attendance_id}')
+        .get();
     if (snapshot.data == null) {
       debugPrint("No data in class > classcode");
-    }
-    else {
+    } else {
       globals.lecturerName = snapshot.data['name'];
       globals.post = snapshot.data['post'];
       findAttendanceId();
@@ -327,13 +303,13 @@ class _ScanState extends State<ScanScreen> {
   getCourseDetails() async {
     debugPrint("Inside getCourse func");
 
-    DocumentSnapshot snapshot = await Firestore.instance.collection('course')
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('course')
         .document('${globals.courseCode}')
         .get();
     if (snapshot.data == null) {
       debugPrint("No data in course > coursecode");
-    }
-    else {
+    } else {
       globals.courseName = snapshot.data['name'];
       globals.courseYear = snapshot.data['year'];
 
@@ -343,17 +319,15 @@ class _ScanState extends State<ScanScreen> {
 
   findAttendanceId() async {
     try {
-
-
       await Firestore.instance
           .collection("attendance")
           .document("${globals.attendance_id}")
           .collection("attendance")
-          .where(globals.docId='17001a0528',
-          //isEqualTo: "${globals.id}").getDocuments().then((string) {
-        //string.documents.forEach((doc) async => globals.docId = doc.documentID);
-     // }
-      );
+          .where('id', isEqualTo: "${globals.id}")
+          .getDocuments()
+          .then((string) {
+        string.documents.forEach((doc) async => globals.docId = doc.documentID);
+      });
 
 //      debugPrint(" $docId");
 //      List docId1 = docId.split(",");
@@ -366,8 +340,7 @@ class _ScanState extends State<ScanScreen> {
       debugPrint(" ${globals.docId}");
 
       markPresent();
-    }
-    catch (e) {
+    } catch (e) {
       print('Caught Firestore exception2');
       print(e);
       _showDialogTryAgain();
@@ -383,16 +356,13 @@ class _ScanState extends State<ScanScreen> {
           .document("${globals.docId}")
           .updateData({"attendance": "Present"});
 
-
       await syncToPreviousAttendance();
-    }
-    catch (e) {
+    } catch (e) {
       print('Caught Firestore exception3');
       print(e);
       _showDialogTryAgain();
     }
   }
-
 
   Future checkNet() async {
     try {
@@ -403,16 +373,14 @@ class _ScanState extends State<ScanScreen> {
     } on SocketException catch (_) {
       debugPrint('not connected');
 
-      _scaffoldKey.currentState.showSnackBar(
-          new SnackBar(duration: new Duration(seconds: 4), content:
-          new Row(
-            children: <Widget>[
-              new Text("Please check your internet connection!")
-            ],
-          ),
-          ));
+      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+        duration: new Duration(seconds: 4),
+        content: new Row(
+          children: <Widget>[
+            new Text("Please check your internet connection!")
+          ],
+        ),
+      ));
     }
-
-
   }
 }
