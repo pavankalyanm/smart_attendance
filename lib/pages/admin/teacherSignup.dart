@@ -1,12 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:smart_attendance/pages/admin/adminview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../../theme/style.dart';
-import '../../theme/style.dart';
 
 /*class teacherSignup extends StatelessWidget {
   const teacherSignup({Key key}) : super(key: key);
@@ -189,18 +185,16 @@ class _teacherSignupState extends State<teacherSignup> {
   TextEditingController  nameInputController;
   TextEditingController classInputController;
   TextEditingController idInputController;
-  TextEditingController deptInputController;
+
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
   String role='teacher';
-  String selecteddept;
 
   @override
   initState() {
     nameInputController = new TextEditingController();
     classInputController = new TextEditingController();
-    deptInputController = new TextEditingController();
     //idInputController = new TextEditingController();
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
@@ -267,7 +261,6 @@ class _teacherSignupState extends State<teacherSignup> {
           "post": classInputController.text,
           //"attendance_id":currentUser.uid,
           "role":role,
-          //"dept":deptInputController.text,
           //"email": emailInputController.text,
 
 
@@ -290,7 +283,6 @@ class _teacherSignupState extends State<teacherSignup> {
           classInputController.clear(),
           idInputController.clear(),
           emailInputController.clear(),
-          //deptInputController.clear(),
           pwdInputController.clear(),
           confirmPwdInputController.clear()
         })
@@ -373,78 +365,6 @@ class _teacherSignupState extends State<teacherSignup> {
                         obscureText: true,
                         validator: pwdValidator,
                       ),
-
-                      SizedBox(height: 40.0),
-              new StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance.collection('department').snapshots(),
-                  builder: (context, snapshot){
-                    //if (!snapshot.hasData) return const Center(
-                     // child: const CupertinoActivityIndicator(),
-                   // );
-                    var length = snapshot.data.documents.length;
-                    DocumentSnapshot ds = snapshot.data.documents[length - 1];
-                    // _queryCat = snapshot.data.documents;
-                    return new Container(
-                      padding: EdgeInsets.only(bottom: 16.0),
-                      //width: screenSize.width*0.9,
-                      child: new Row(
-                        children: <Widget>[
-                          new Expanded(
-                              flex: 2,
-                              child: new Container(
-                                padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
-                                child: new Text("Department"),
-                              )
-                          ),
-                          new Expanded(
-                            flex: 4,
-                            child:new InputDecorator(
-                              decoration: const InputDecoration(
-                                //labelText: 'Activity',
-                                hintText: 'Choose department',
-                                hintStyle: TextStyle(
-                                 // color: Colors.black,
-                                  fontSize: 16.0,
-                                  //fontFamily: "OpenSans",
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                              isEmpty: selecteddept == null,
-                              child: new DropdownButton(
-                                value: selecteddept,
-                                isDense: true,
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    selecteddept = newValue;
-                                   // dropDown = false;
-                                    print(selecteddept);
-                                  });
-                                },
-                                items: snapshot.data.documents.map((DocumentSnapshot document) {
-                                  return new DropdownMenuItem<String>(
-                                      value: document.data['name'],
-                                      //controller: deptInputController,
-                                      child: new Container(
-                                        decoration: new BoxDecoration(
-                                            //color: Colors.black,
-                                            borderRadius: new BorderRadius.circular(5.0)
-                                        ),
-                                        height: 100.0,
-                                        padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
-                                        //color: primaryColor,
-                                        child: new Text(document.data['name']),
-                                      )
-                                  );
-                                }).toList(),
-                              ),
-
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-              ),
                       RaisedButton(
                         child: Text("Register"),
                         color: Theme.of(context).primaryColor,

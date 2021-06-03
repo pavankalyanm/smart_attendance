@@ -103,7 +103,7 @@ class _GenerationState extends State<Generation> {
     List extraQrDocId = [];
     final QuerySnapshot querySnapshot = await Firestore.instance.collection("class").document(globals.classCode).collection("lectureID_qrCode").getDocuments();
 
-    debugPrint(" length : ${querySnapshot.documents.length}");
+    debugPrint(" lEngth : ${querySnapshot.documents.length}");
 
 
     if (querySnapshot.documents.length > 1) {
@@ -114,7 +114,7 @@ class _GenerationState extends State<Generation> {
       }
       debugPrint("${extraQrDocId[0]}");
 
-      debugPrint(" length : ${extraQrDocId.length}");
+      debugPrint(" leNgth : ${extraQrDocId.length}");
 
       for (int i = 1; i < extraQrDocId.length; i++) {
         debugPrint(" deleting ${extraQrDocId[i]}");
@@ -157,21 +157,41 @@ class _GenerationState extends State<Generation> {
     debugPrint(globals.qrCode);
 
     debugPrint("qr code made");
+    debugPrint(" studentid ${globals.studentId}");
     addStudents();
 
   }
 
   Future addStudents() async {
-    List studentId = globals.studentId;
-    globals.studentDocumentId.clear();
 
-    for (int i = 0; i < studentId.length; i++) {
-      Map<String, String> map = { "id": studentId[i],
-        "attendance": "Absent"
+  //create doc
+   /* Map<String, String> map = { "time_stamp": "${new DateTime.now()}",
+
+    };
+    DocumentReference docRef = await Firestore.instance.collection(
+        "attendance").document("${globals.attendance_id}").collection(
+        "attendance").add(map);
+    debugPrint("The New Document created with Id : ${docRef.documentID} ");*/
+
+
+   List studentId = globals.studentId;
+   globals.studentDocumentId.clear();
+
+
+    final QuerySnapshot querySnapshot = await Firestore.instance.collection("class").document(globals.classCode).collection("student").getDocuments();
+    debugPrint("${querySnapshot.documents.length}");
+
+    for (int i = 0; i < querySnapshot.documents.length; i++) {
+      DocumentSnapshot snapshot=await Firestore.instance.collection('class')
+          .document('${globals.classCode}').collection('student').document('${querySnapshot.documents[i].documentID}')
+          .get();
+      debugPrint(snapshot.data['id']);
+      //String stu_id= snapshot.data['id'] ;
+     Map<String, String> map = { 'id':snapshot.data['id']  ,
+       "attendance":'absent'
 //        "document" : "default"
 
       };
-
 
       DocumentReference docRef = await Firestore.instance.collection(
           "attendance").document("${globals.attendance_id}").collection(
@@ -258,8 +278,8 @@ Navigator.pop(context);
                   if (!snapshot.hasData)
                     return CircularProgressIndicator();
                   else {
-//                      if((globals.requiredStudents > globals.studentId.length) || (globals.requiredStudents == 0)){
-//                      globals.startAddingStudents = 1;}
+                      if((globals.requiredStudents > globals.studentId.length) || (globals.requiredStudents == 0)){
+                      globals.startAddingStudents = 1;}
 
 
                     List<DropdownMenuItem> classCodes = [];
@@ -420,13 +440,13 @@ Navigator.pop(context);
                     final result = await InternetAddress.lookup('google.com');
                     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
                       if (selectedCourseCode != null &&
-                          selectedClassCode != "Choose Class Code") {
+                          selectedClassCode != null) {
                         final QuerySnapshot querySnapshot = await Firestore
                             .instance
                             .collection("$selectedClassCode").getDocuments();
 
                         debugPrint(
-                            " length : ${querySnapshot.documents.length}");
+                            " Length : ${querySnapshot.documents.length}");
 
 
                         globals.studentId.clear();

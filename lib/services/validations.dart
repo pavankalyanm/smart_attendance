@@ -15,8 +15,17 @@ class Validations{
     return null;
   }
 
-  String validatePassword(String value) {
-    if (value.isEmpty) return 'Please choose a password.';
+  //String validatePassword(String value) {
+    //if (value.isEmpty) return 'Please choose a password.';
+    //return null;
+  //}
+  String validatePassword(String password) {
+    if (password.isEmpty) return 'Please enter a password.';
+    if (password.length < 8) return 'Password must contain minimum of 8 characters';
+    if (!password.contains(RegExp(r"[a-z]"))) return 'Password must contain at least one lowercase letter';
+    //if (!password.contains(RegExp(r"[A-Z]"))) return 'Password must contain at least one uppercase letter';
+    if (!password.contains(RegExp(r"[0-9]"))) return 'Password must contain at least one digit';
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) return 'Password must contain at least one special character';
     return null;
   }
 
