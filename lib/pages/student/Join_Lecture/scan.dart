@@ -106,7 +106,7 @@ class _ScanState extends State<ScanScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Attendance recorded succesfull"),
+          title: new Text("Attendance recorded successfully"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -197,6 +197,12 @@ class _ScanState extends State<ScanScreen> {
 
       debugPrint("Decripting qr code");
 
+      DocumentSnapshot snapshot = await Firestore.instance.collection("class")
+          .document("${globals.clas}").collection("lectureID_qrCode")
+          .document("$decrypt_data")
+          .get();
+      debugPrint(snapshot.data['class_code']);
+
       try {
         DocumentSnapshot snapshot = await Firestore.instance.collection("class")
             .document("${globals.clas}").collection("lectureID_qrCode")
@@ -210,7 +216,7 @@ class _ScanState extends State<ScanScreen> {
               new Row(
                 children: <Widget>[
                   new CircularProgressIndicator(),
-                  new Text("  Joining the Lecture..")
+                  new Text(" Scanning qrcode..")
                 ],
               ),
               ));
