@@ -297,14 +297,21 @@ Navigator.pop(context);
                     }
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+
                       children: <Widget>[
+                        new Expanded(
+                            flex:2,
+                            child: new Container(
+                              padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
+                              child: new Text("Classcode"),
+                            )
+                        ),
 
 //                          Icon(FontAwesomeIcons.coins,
 //                              size: 25.0, color: Color(0xff11b719)),
-                        SizedBox(width: 50.0),
-                        DropdownButton(
-
-
+                      new Expanded(
+                        flex:4,
+                       child:new DropdownButton(
                           items: classCodes,
                           onChanged: (classCodeValue) {
                             globals.studentId.clear();
@@ -327,6 +334,7 @@ Navigator.pop(context);
                             style: TextStyle(color: Color(0xff11b719)),
                           ),
                         ),
+                      ),
                       ],
                     );
                   }
@@ -356,10 +364,19 @@ Navigator.pop(context);
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        new Expanded(
+                            flex:2,
+                            child: new Container(
+                              padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
+                              child: new Text("Coursecode"),
+                            )
+                        ),
+
 //                          Icon(FontAwesomeIcons.coins,
 //                              size: 25.0, color: Color(0xff11b719)),
-                        SizedBox(width: 50.0),
-                        DropdownButton(
+                  new Expanded(
+                       flex: 4,
+                      child: new  DropdownButton(
                           items: courseCodes,
                           onChanged: (courseCodeValue) {
                             final snackBar = SnackBar(
@@ -381,6 +398,7 @@ Navigator.pop(context);
                             style: TextStyle(color: Color(0xff11b719)),
                           ),
                         ),
+                  ),
                       ],
                     );
                   }
