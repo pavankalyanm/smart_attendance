@@ -239,7 +239,7 @@ class _TeacherState extends State<Teacher> {
    ,
                   textColor: Colors.white70,
                   color: Colors.redAccent,
-                  child: new Text('Start Lecture')),
+                  child: new Text('Note Attendance')),
             ),
             new ListTile(
               title: new FlatButton(
@@ -273,7 +273,7 @@ class _TeacherState extends State<Teacher> {
     ,
                   textColor: Colors.white70,
                   color: Colors.redAccent,
-                  child: new Text('Previous Lectures')),
+                  child: new Text('Previous Attendance')),
             ),
             new ListTile(
               title: new FlatButton(

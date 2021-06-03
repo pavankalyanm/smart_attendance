@@ -54,7 +54,7 @@ class LectureState extends State<Lecture> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Do you want to stop attendance of this lecture?"),
+          title: new Text("Do you want to stop attendance ?"),
 
           actions: <Widget>[
             // usually buttons at the bottom of the dialog

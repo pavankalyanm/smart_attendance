@@ -63,7 +63,7 @@ class _GenerationState extends State<Generation> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Do you want to start the lecture?"),
+          title: new Text("Do you want to generate QR code?"),
 
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
