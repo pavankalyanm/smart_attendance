@@ -181,22 +181,22 @@ class studentSignup extends StatefulWidget {
 class _studentSignupState extends State<studentSignup> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
   TextEditingController  nameInputController;
-  TextEditingController classInputController;
+  TextEditingController academicyrInputController;
   TextEditingController idInputController;
 
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
+  TextEditingController regInputController;
   String role='student';
-  String courseValue = 'select course';
-  String branchValue = 'select branch';
-  String regulationValue = 'select regulation';
-  String yearValue = 'select year';
+  String selectedbranch;
+  String selectedprogramme;
 
   @override
   initState() {
     nameInputController = new TextEditingController();
-    classInputController = new TextEditingController();
+    regInputController = new TextEditingController();
+    academicyrInputController = new TextEditingController();
     idInputController = new TextEditingController();
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
@@ -232,13 +232,13 @@ class _studentSignupState extends State<studentSignup> {
       return null;
     }
   }
-  String classValidator(String value) {
-    if (value.length < 3) {
-      return "Please enter class.";
-    } else {
-      return null;
-    }
-  }
+ // String classValidator(String value) {
+   // if (value.length < 3) {
+     // return "Please enter class.";
+    //} else {
+    //  return null;
+   // }
+  //}
   String idValidator(String value) {
     if (value.length < 9) {
       return "Please enter a valid first name.";
@@ -262,9 +262,11 @@ class _studentSignupState extends State<studentSignup> {
             .setData({
           //"uid": currentUser.uid,
           "name":  nameInputController.text,
-          "class": classInputController.text,
+          "academicyear": academicyrInputController.text,
           "id": idInputController.text,
           "role":role,
+          "branch":selectedbranch,
+          "programme":selectedprogramme,
           //"email": emailInputController.text,
         })
             .then((result) => {
@@ -280,10 +282,11 @@ class _studentSignupState extends State<studentSignup> {
                   )),
                   (_) => false),
           nameInputController.clear(),
-          classInputController.clear(),
+          academicyrInputController.clear(),
           idInputController.clear(),
           emailInputController.clear(),
           pwdInputController.clear(),
+          regInputController.clear(),
           confirmPwdInputController.clear()
         })
             .catchError((err) => print(err)))
@@ -331,15 +334,163 @@ class _studentSignupState extends State<studentSignup> {
                       ),
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: 'Class*'),
-                        controller: classInputController,
-                        validator: classValidator,
+                            labelText: 'Academicyear'),
+                        controller: academicyrInputController,
+                        //validator: classValidator,
                       ),
                       TextFormField(
                         decoration: InputDecoration(
                             labelText: 'Roll.no*'),//ID*
                         controller: idInputController,
                         validator:idValidator,
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelText: 'Regulation'),
+                        controller: regInputController,
+                        //validator: classValidator,
+                      ),
+                      SizedBox(height: 40.0),
+                      new StreamBuilder<QuerySnapshot>(
+                          stream: Firestore.instance.collection('department').snapshots(),
+                          builder: (context, snapshot){
+                            //if (!snapshot.hasData) return const Center(
+                            // child: const CupertinoActivityIndicator(),
+                            // );
+                            var length = snapshot.data.documents.length;
+                            DocumentSnapshot ds = snapshot.data.documents[length - 1];
+                            // _queryCat = snapshot.data.documents;
+                            return new Container(
+                              padding: EdgeInsets.only(bottom: 16.0),
+                              //width: screenSize.width*0.9,
+                              child: new Row(
+                                children: <Widget>[
+                                  new Expanded(
+                                      flex: 2,
+                                      child: new Container(
+                                        padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
+                                        child: new Text("Branch"),
+                                      )
+                                  ),
+                                  new Expanded(
+                                    flex: 4,
+                                    child:new InputDecorator(
+                                      decoration: const InputDecoration(
+                                        //labelText: 'Activity',
+                                        hintText: 'Choose branch',
+                                        hintStyle: TextStyle(
+                                          // color: Colors.black,
+                                          fontSize: 16.0,
+                                          //fontFamily: "OpenSans",
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      isEmpty: selectedbranch == null,
+                                      child: new DropdownButton(
+                                        value: selectedbranch,
+                                        isDense: true,
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            selectedbranch = newValue;
+                                            // dropDown = false;
+                                            print(selectedbranch);
+                                          });
+                                        },
+                                        items: snapshot.data.documents.map((DocumentSnapshot document) {
+                                          return new DropdownMenuItem<String>(
+                                              value: document.data['name'],
+                                              //controller: deptInputController,
+                                              child: new Container(
+                                                decoration: new BoxDecoration(
+                                                  //color: Colors.black,
+                                                    borderRadius: new BorderRadius.circular(5.0)
+                                                ),
+                                                height: 100.0,
+                                                padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
+                                                //color: primaryColor,
+                                                child: new Text(document.data['name']),
+                                              )
+                                          );
+                                        }).toList(),
+                                      ),
+
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                      ),
+                      SizedBox(height: 40.0),
+                      new StreamBuilder<QuerySnapshot>(
+                          stream: Firestore.instance.collection('programme').snapshots(),
+                          builder: (context, snapshot){
+                            //if (!snapshot.hasData) return const Center(
+                            // child: const CupertinoActivityIndicator(),
+                            // );
+                            var length = snapshot.data.documents.length;
+                            DocumentSnapshot ds = snapshot.data.documents[length - 1];
+                            // _queryCat = snapshot.data.documents;
+                            return new Container(
+                              padding: EdgeInsets.only(bottom: 16.0),
+                              //width: screenSize.width*0.9,
+                              child: new Row(
+                                children: <Widget>[
+                                  new Expanded(
+                                      flex: 2,
+                                      child: new Container(
+                                        padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
+                                        child: new Text("Programme"),
+                                      )
+                                  ),
+                                  new Expanded(
+                                    flex: 4,
+                                    child:new InputDecorator(
+                                      decoration: const InputDecoration(
+                                        //labelText: 'Activity',
+                                        hintText: 'Choose Programme',
+                                        hintStyle: TextStyle(
+                                          // color: Colors.black,
+                                          fontSize: 16.0,
+                                          //fontFamily: "OpenSans",
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      isEmpty: selectedprogramme == null,
+                                      child: new DropdownButton(
+                                        value: selectedprogramme,
+                                        isDense: true,
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            selectedprogramme = newValue;
+                                            // dropDown = false;
+                                            print(selectedprogramme);
+                                          });
+                                        },
+                                        items: snapshot.data.documents.map((DocumentSnapshot document) {
+                                          return new DropdownMenuItem<String>(
+                                              value: document.data['name'],
+                                              //controller: deptInputController,
+                                              child: new Container(
+                                                decoration: new BoxDecoration(
+                                                  //color: Colors.black,
+                                                    borderRadius: new BorderRadius.circular(5.0)
+                                                ),
+                                                height: 100.0,
+                                                padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
+                                                //color: primaryColor,
+                                                child: new Text(document.data['name']),
+                                              )
+                                          );
+                                        }).toList(),
+                                      ),
+
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                       ),
                       TextFormField(
                         decoration: InputDecoration(
