@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
+import 'package:smart_attendance/pages/Login/login1.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_attendance/pages/teacher/Profile/profile.dart';
@@ -11,6 +12,7 @@ import 'package:smart_attendance/globals.dart' as globals;
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 //import 'package:smart_attendance/services/validations.dart';
 import 'package:smart_attendance/pages/welcome.dart';
+import 'package:smart_attendance/theme/style.dart' as style;
 
 class Teacher extends StatefulWidget {
   @override
@@ -156,7 +158,7 @@ class _TeacherState extends State<Teacher> {
                 Navigator.pop(pageContext);
  Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WelcomePage()),
+                  MaterialPageRoute(builder: (context) => Login()),
                 );
 
               },
@@ -174,9 +176,17 @@ class _TeacherState extends State<Teacher> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+
+  int _selectedTab = 0;
+  final _pageOptions = [
+    Generation(),
+    PreviousLectures(),
+    ProfilePage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    /*return new Scaffold(
         key: _scaffoldKey,
         appBar: new AppBar(
           title: new Text('Teacher Dashboard'),
@@ -308,6 +318,70 @@ class _TeacherState extends State<Teacher> {
                   child: new Text('Profile')),
             )
           ],
+        ));*/
+
+
+    //adding bottom nav bar
+
+
+    return MaterialApp(
+
+        theme: ThemeData(
+            primarySwatch: Colors.grey,
+            primaryTextTheme: TextTheme(
+              title: TextStyle(color: Colors.white),
+            )),
+        home: Scaffold(
+          key: _scaffoldKey,
+          appBar : AppBar(
+              title: Text("Hi "+'${globals.name}'),
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.indigo,
+              actions: <Widget>[
+                // action button
+                IconButton(
+                  color: Colors.white,
+                  icon: Icon(Icons.logout),
+                  onPressed: () {
+                    _showDialog(context);
+                  },
+                ),]),
+          body: _pageOptions[_selectedTab],
+          bottomNavigationBar: new Theme(
+            data: Theme.of(context).copyWith(
+              // sets the background color of the `BottomNavigationBar`
+                canvasColor: style.primaryColor,
+                // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+                primaryColor: Colors.white,
+                textTheme: Theme
+                    .of(context)
+                    .textTheme
+                    .copyWith(caption: new TextStyle(color: Colors.yellow))),
+            child : new BottomNavigationBar(
+
+              currentIndex: _selectedTab,
+              onTap: (int index) {
+                setState(() {
+                  _selectedTab = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text('Generate'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.category),
+                  title: Text('Previous Attendance'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_pin_circle),
+                  title: Text('Profile'),
+                ),
+
+              ],
+            ),
+          ),
         ));
   }
 }

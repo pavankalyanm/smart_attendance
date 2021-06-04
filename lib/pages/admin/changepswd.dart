@@ -69,6 +69,7 @@ class _changePasswordState extends State<changePassword> {
     return Scaffold(
         appBar: AppBar(
         title: Text("Change Password"),
+          backgroundColor: Colors.indigo,
     ),
     body: Container(
     padding: const EdgeInsets.all(20.0),
@@ -77,21 +78,39 @@ class _changePasswordState extends State<changePassword> {
     key: _registerFormKey,
     child: Column(
     children: <Widget>[
-    TextFormField(
-    decoration: InputDecoration(
+      TextFormField(
+        decoration: InputDecoration(
+            border: new OutlineInputBorder(
+
+              borderRadius: new BorderRadius.circular(20.0),
+              borderSide: new BorderSide(
+              ),
+            ),
     labelText: 'Password*', hintText: ""),
     controller:  chpwdInputController,
     validator: pwdValidator,
     ),
-      RaisedButton(
-        child: Text("Change Password"),
-        color: Theme.of(context).primaryColor,
-        textColor: Colors.white,
-        onPressed: () {
+      SizedBox(height: 15,),
+      MaterialButton(
 
+
+        minWidth: 160.0,
+        height: 60,
+        onPressed: (){
           _chpwd();
-
         },
+        color: Colors.indigoAccent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)
+        ),
+        child: Text(
+          "Add New Student",
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 18
+          ),
+        ),
       ),
 
     ],

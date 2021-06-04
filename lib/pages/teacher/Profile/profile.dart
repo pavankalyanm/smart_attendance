@@ -14,6 +14,7 @@ import 'package:smart_attendance/globals.dart' as globals;
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:smart_attendance/theme/style.dart' as style;
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -79,7 +80,14 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
 
     return new Scaffold(
-        appBar: AppBar(title: Text('Profile'),
+        appBar: AppBar(backgroundColor: Colors.white,
+          title: Container(
+            alignment: Alignment.center,
+            child: Text('Profile',
+                style: TextStyle(
+                  color: Colors.black,)
+            ),
+          ),
           automaticallyImplyLeading: false,),
         body:
         Column(
@@ -92,26 +100,29 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: ListTile(
                     leading: FlutterLogo(size: 56.0),
                     title: Text('${globals.name}'),
-                    subtitle: Text('Click to update photo'),
+                    subtitle: Text('${globals.post}'),
 
                   ),
                 ),
                 SizedBox(height: 40.0),
-                Center (child: Text("User Details :-")),
+                Center (child: Text("Details")),
 
-                Card(child: ListTile(title: Text("Post   :  ${globals.post}"))),
+                Card(child: ListTile(title: Text("Designation   :  ${globals.post}"))),
 
               ],
             ),
 
         ),
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(style.primaryColor),
+              ),
               onPressed: () {
 
                 signOut();
                 // Respond to button press
               },
-              child: Text('LOGOUT'),
+              child: Text('LOGOUT',style: TextStyle(color: Colors.white),),
             )
           ],
         ),

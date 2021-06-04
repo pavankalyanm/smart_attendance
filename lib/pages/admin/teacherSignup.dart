@@ -1,12 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:smart_attendance/pages/admin/adminview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:smart_attendance/theme/style.dart' as color;
 
-/*class studentSignup extends StatelessWidget {
-  const studentSignup({Key key}) : super(key: key);
+import '../../theme/style.dart';
+import '../../theme/style.dart';
+
+/*class teacherSignup extends StatelessWidget {
+  const teacherSignup({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -172,33 +175,33 @@ Widget inputFile({label, obscureText = false})
   );
 }*/
 
-class studentSignup extends StatefulWidget {
-  const studentSignup({Key key}) : super(key: key);
+
+
+class teacherSignup extends StatefulWidget {
+  const teacherSignup({Key key}) : super(key: key);
 
   @override
-  _studentSignupState createState() => _studentSignupState();
+  _teacherSignupState createState() => _teacherSignupState();
 }
 
-class _studentSignupState extends State<studentSignup> {
+class _teacherSignupState extends State<teacherSignup> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
   TextEditingController  nameInputController;
-  TextEditingController academicyrInputController;
+  TextEditingController classInputController;
   TextEditingController idInputController;
-
+  TextEditingController deptInputController;
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
-  TextEditingController regInputController;
-  String role='student';
-  String selectedbranch;
-  String selectedprogramme;
+  String role='teacher';
+  String selecteddept;
 
   @override
   initState() {
     nameInputController = new TextEditingController();
-    regInputController = new TextEditingController();
-    academicyrInputController = new TextEditingController();
-    idInputController = new TextEditingController();
+    classInputController = new TextEditingController();
+    deptInputController = new TextEditingController();
+    //idInputController = new TextEditingController();
     emailInputController = new TextEditingController();
     pwdInputController = new TextEditingController();
     confirmPwdInputController = new TextEditingController();
@@ -216,14 +219,12 @@ class _studentSignupState extends State<studentSignup> {
     }
   }
 
-  String pwdValidator(String password) {
-    if (password.isEmpty) return 'Please enter a password.';
-    if (password.length < 8) return 'Password must contain minimum of 8 characters';
-    if (!password.contains(RegExp(r"[a-z]"))) return 'Password must contain at least one lowercase letter';
-    if (!password.contains(RegExp(r"[A-Z]"))) return 'Password must contain at least one uppercase letter';
-    if (!password.contains(RegExp(r"[0-9]"))) return 'Password must contain at least one digit';
-    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) return 'Password must contain at least one special character';
-    return null;
+  String pwdValidator(String value) {
+    if (value.length < 6) {
+      return 'Password must be longer than 6 characters';
+    } else {
+      return null;
+    }
   }
 
   String nameValidator(String value) {
@@ -233,13 +234,13 @@ class _studentSignupState extends State<studentSignup> {
       return null;
     }
   }
- // String classValidator(String value) {
-   // if (value.length < 3) {
-     // return "Please enter class.";
-    //} else {
-    //  return null;
-   // }
-  //}
+  String classValidator(String value) {
+    if (value.length < 2) {
+      return "Please enter Designation.";
+    } else {
+      return null;
+    }
+  }
   String idValidator(String value) {
     if (value.length < 9) {
       return "Please enter a valid first name.";
@@ -247,6 +248,14 @@ class _studentSignupState extends State<studentSignup> {
       return null;
     }
   }
+
+  final snackBar = SnackBar(
+    duration: new Duration(seconds: 1),
+    content: Text(
+      'Teacher Added Successfully',
+      style: TextStyle(color: Color(0xff11b719)),
+    ),
+  );
 
 
   Future<void> registerUser() async {
@@ -263,14 +272,20 @@ class _studentSignupState extends State<studentSignup> {
             .setData({
           //"uid": currentUser.uid,
           "name":  nameInputController.text,
-          "academicyear": academicyrInputController.text,
-          "id": idInputController.text,
+          "post": classInputController.text,
+          //"attendance_id":currentUser.uid,
           "role":role,
-          "branch":selectedbranch,
-          "programme":selectedprogramme,
+          //"dept":deptInputController.text,
           //"email": emailInputController.text,
+
+
         })
+
+
             .then((result) => {
+
+
+         Scaffold.of(context).showSnackBar(snackBar),
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -283,11 +298,11 @@ class _studentSignupState extends State<studentSignup> {
                   )),
                   (_) => false),
           nameInputController.clear(),
-          academicyrInputController.clear(),
+          classInputController.clear(),
           idInputController.clear(),
           emailInputController.clear(),
+          //deptInputController.clear(),
           pwdInputController.clear(),
-          regInputController.clear(),
           confirmPwdInputController.clear()
         })
             .catchError((err) => print(err)))
@@ -314,12 +329,16 @@ class _studentSignupState extends State<studentSignup> {
 
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add Student"),
-          backgroundColor: color.primaryColor,
+          title: Text("Add Teacher"),
+          backgroundColor: Colors.indigo,
+
         ),
         body: Container(
             padding: const EdgeInsets.all(20.0),
@@ -332,7 +351,6 @@ class _studentSignupState extends State<studentSignup> {
                       TextFormField(
                         decoration: InputDecoration(
                             border: new OutlineInputBorder(
-
                               borderRadius: new BorderRadius.circular(20.0),
                               borderSide: new BorderSide(
                               ),
@@ -341,18 +359,50 @@ class _studentSignupState extends State<studentSignup> {
                         controller:  nameInputController,
                         validator: nameValidator,
                       ),
+
                       SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
                             border: new OutlineInputBorder(
-
                               borderRadius: new BorderRadius.circular(20.0),
                               borderSide: new BorderSide(
                               ),
                             ),
-                            labelText: 'Academicyear'),
-                        controller: academicyrInputController,
-                        //validator: classValidator,
+                            labelText: 'Designation*'),
+                        controller: classInputController,
+                        validator: classValidator,
+                      ),
+                      /* TextFormField(
+                          decoration: InputDecoration(
+                              labelText: 'ID*'),
+                          controller: idInputController,
+                          validator:idValidator,
+                      ),*/
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                        controller: emailInputController,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: emailValidator,
+                      ),
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Password*', hintText: "********"),
+                        controller: pwdInputController,
+                        obscureText: true,
+                        validator: pwdValidator,
                       ),
                       SizedBox(height: 10,),
                       TextFormField(
@@ -363,24 +413,13 @@ class _studentSignupState extends State<studentSignup> {
                               borderSide: new BorderSide(
                               ),
                             ),
-                            labelText: 'Roll.no*'),//ID*
-                        controller: idInputController,
-                        validator:idValidator,
+                            labelText: 'Confirm Password*', hintText: "********"),
+                        controller: confirmPwdInputController,
+                        obscureText: true,
+                        validator: pwdValidator,
                       ),
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
 
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Regulation'),
-                        controller: regInputController,
-                        //validator: classValidator,
-                      ),
-                      SizedBox(height: 10.0),
+                      SizedBox(height: 20.0),
                       new StreamBuilder<QuerySnapshot>(
                           stream: Firestore.instance.collection('department').snapshots(),
                           builder: (context, snapshot){
@@ -399,7 +438,7 @@ class _studentSignupState extends State<studentSignup> {
                                       flex: 2,
                                       child: new Container(
                                         padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
-                                        child: new Text("Branch"),
+                                        child: new Text("Department"),
                                       )
                                   ),
                                   new Expanded(
@@ -409,7 +448,8 @@ class _studentSignupState extends State<studentSignup> {
                                         border: OutlineInputBorder(
 
                                         ),
-                                        hintText: 'Choose branch',
+                                        //labelText: 'Activity',
+                                        hintText: 'Choose department',
                                         hintStyle: TextStyle(
                                           // color: Colors.black,
                                           fontSize: 16.0,
@@ -417,16 +457,16 @@ class _studentSignupState extends State<studentSignup> {
                                           fontWeight: FontWeight.normal,
                                         ),
                                       ),
-                                      isEmpty: selectedbranch == null,
+                                      isEmpty: selecteddept == null,
                                       child: DropdownButtonHideUnderline(
                                       child: new DropdownButton(
-                                        value: selectedbranch,
+                                        value: selecteddept,
                                         isDense: true,
                                         onChanged: (String newValue) {
                                           setState(() {
-                                            selectedbranch = newValue;
+                                            selecteddept = newValue;
                                             // dropDown = false;
-                                            print(selectedbranch);
+                                            print(selecteddept);
                                           });
                                         },
                                         items: snapshot.data.documents.map((DocumentSnapshot document) {
@@ -454,122 +494,6 @@ class _studentSignupState extends State<studentSignup> {
                             );
                           }
                       ),
-                     // SizedBox(height: 10.0),
-                      new StreamBuilder<QuerySnapshot>(
-                          stream: Firestore.instance.collection('programme').snapshots(),
-                          builder: (context, snapshot){
-                            //if (!snapshot.hasData) return const Center(
-                            // child: const CupertinoActivityIndicator(),
-                            // );
-                            var length = snapshot.data.documents.length;
-                            DocumentSnapshot ds = snapshot.data.documents[length - 1];
-                            // _queryCat = snapshot.data.documents;
-                            return new Container(
-                              padding: EdgeInsets.only(bottom: 16.0),
-                              //width: screenSize.width*0.9,
-                              child: new Row(
-                                children: <Widget>[
-                                  new Expanded(
-                                      flex: 2,
-                                      child: new Container(
-                                        padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
-                                        child: new Text("Programme"),
-                                      )
-                                  ),
-                                  new Expanded(
-                                    flex: 4,
-                                    child:new InputDecorator(
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(
-
-                                        ),
-                                        hintText: 'Choose Programme',
-                                        hintStyle: TextStyle(
-                                          // color: Colors.black,
-                                          fontSize: 16.0,
-                                          //fontFamily: "OpenSans",
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                      isEmpty: selectedprogramme == null,
-                                      child: DropdownButtonHideUnderline(
-                                      child: new DropdownButton(
-                                        value: selectedprogramme,
-                                        isDense: true,
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            selectedprogramme = newValue;
-                                            // dropDown = false;
-                                            print(selectedprogramme);
-                                          });
-                                        },
-                                        items: snapshot.data.documents.map((DocumentSnapshot document) {
-                                          return new DropdownMenuItem<String>(
-                                              value: document.data['name'],
-                                              //controller: deptInputController,
-                                              child: new Container(
-                                                decoration: new BoxDecoration(
-                                                  //color: Colors.black,
-                                                    borderRadius: new BorderRadius.circular(20.0)
-                                                ),
-                                                height: 100.0,
-                                                padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
-                                                //color: primaryColor,
-                                                child: new Text(document.data['name']),
-                                              )
-                                          );
-                                        }).toList(),
-                                      ),
-
-                                      ),),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                      ),
-                     // SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Email*', hintText: "john.doe@gmail.com"),
-                        controller: emailInputController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: emailValidator,
-                      ),
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Password*', hintText: "********"),
-                        controller: pwdInputController,
-                        obscureText: true,
-                        validator: pwdValidator,
-                      ),
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Confirm Password*', hintText: "********"),
-                        controller: confirmPwdInputController,
-                        obscureText: true,
-                        validator: pwdValidator,
-                      ),
                       SizedBox(height: 15,),
                       MaterialButton(
 
@@ -584,7 +508,7 @@ class _studentSignupState extends State<studentSignup> {
                             borderRadius: BorderRadius.circular(20)
                         ),
                         child: Text(
-                          "Add New Student",
+                          "Add New Teacher",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -604,5 +528,10 @@ class _studentSignupState extends State<studentSignup> {
                 ))));
   }
 }
+
+
+
+
+
 
 
