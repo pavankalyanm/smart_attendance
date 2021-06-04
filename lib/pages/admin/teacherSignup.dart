@@ -219,13 +219,16 @@ class _teacherSignupState extends State<teacherSignup> {
     }
   }
 
-  String pwdValidator(String value) {
-    if (value.length < 6) {
-      return 'Password must be longer than 6 characters';
-    } else {
-      return null;
-    }
+  String pwdValidator(String password) {
+    if (password.isEmpty) return 'Please enter a password.';
+    if (password.length < 8) return 'Password must contain minimum of 8 characters';
+    if (!password.contains(RegExp(r"[a-z]"))) return 'Password must contain at least one lowercase letter';
+    if (!password.contains(RegExp(r"[A-Z]"))) return 'Password must contain at least one uppercase letter';
+    if (!password.contains(RegExp(r"[0-9]"))) return 'Password must contain at least one digit';
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) return 'Password must contain at least one special character';
+    return null;
   }
+
 
   String nameValidator(String value) {
     if (value.length < 3) {
@@ -342,7 +345,7 @@ class _teacherSignupState extends State<teacherSignup> {
                       ),
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: 'Post*'),
+                            labelText: 'Designation*'),
                         controller: classInputController,
                         validator: classValidator,
                       ),
