@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:smart_attendance/pages/admin/changepswd.dart';
 import 'package:smart_attendance/pages/admin/studentSignup.dart';
 import 'package:smart_attendance/pages/admin/teacherSignup.dart';
 
@@ -97,6 +98,26 @@ class admin extends StatelessWidget {
                     ),
                     child: Text(
                       "Add Student",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18
+                      ),
+                    ),
+                  ), SizedBox(height:20),
+                  MaterialButton(
+                    minWidth: double.infinity,
+                    height: 60,
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> changePassword()));
+
+                    },
+                    color: Color(0xff0095FF),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)
+                    ),
+                    child: Text(
+                      "Change Password",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
