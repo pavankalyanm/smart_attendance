@@ -6,7 +6,7 @@ import 'package:smart_attendance/pages/student/home.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
 import 'dart:io';
 
-import 'teacher/home.dart';
+ import 'teacher/home.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
