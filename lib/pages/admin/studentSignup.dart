@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_attendance/pages/admin/adminview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smart_attendance/theme/style.dart' as color;
 
 /*class studentSignup extends StatelessWidget {
   const studentSignup({Key key}) : super(key: key);
@@ -318,6 +319,7 @@ class _studentSignupState extends State<studentSignup> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Add Student"),
+          backgroundColor: color.primaryColor,
         ),
         body: Container(
             padding: const EdgeInsets.all(20.0),
@@ -326,31 +328,59 @@ class _studentSignupState extends State<studentSignup> {
                   key: _registerFormKey,
                   child: Column(
                     children: <Widget>[
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Name*', hintText: "John"),
                         controller:  nameInputController,
                         validator: nameValidator,
                       ),
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Academicyear'),
                         controller: academicyrInputController,
                         //validator: classValidator,
                       ),
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Roll.no*'),//ID*
                         controller: idInputController,
                         validator:idValidator,
                       ),
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Regulation'),
                         controller: regInputController,
                         //validator: classValidator,
                       ),
-                      SizedBox(height: 40.0),
+                      SizedBox(height: 10.0),
                       new StreamBuilder<QuerySnapshot>(
                           stream: Firestore.instance.collection('department').snapshots(),
                           builder: (context, snapshot){
@@ -376,7 +406,9 @@ class _studentSignupState extends State<studentSignup> {
                                     flex: 4,
                                     child:new InputDecorator(
                                       decoration: const InputDecoration(
-                                        //labelText: 'Activity',
+                                        border: OutlineInputBorder(
+
+                                        ),
                                         hintText: 'Choose branch',
                                         hintStyle: TextStyle(
                                           // color: Colors.black,
@@ -386,6 +418,7 @@ class _studentSignupState extends State<studentSignup> {
                                         ),
                                       ),
                                       isEmpty: selectedbranch == null,
+                                      child: DropdownButtonHideUnderline(
                                       child: new DropdownButton(
                                         value: selectedbranch,
                                         isDense: true,
@@ -403,7 +436,7 @@ class _studentSignupState extends State<studentSignup> {
                                               child: new Container(
                                                 decoration: new BoxDecoration(
                                                   //color: Colors.black,
-                                                    borderRadius: new BorderRadius.circular(5.0)
+                                                    borderRadius: new BorderRadius.circular(20.0)
                                                 ),
                                                 height: 100.0,
                                                 padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
@@ -414,14 +447,14 @@ class _studentSignupState extends State<studentSignup> {
                                         }).toList(),
                                       ),
 
-                                    ),
+                                    ),),
                                   ),
                                 ],
                               ),
                             );
                           }
                       ),
-                      SizedBox(height: 40.0),
+                     // SizedBox(height: 10.0),
                       new StreamBuilder<QuerySnapshot>(
                           stream: Firestore.instance.collection('programme').snapshots(),
                           builder: (context, snapshot){
@@ -447,7 +480,9 @@ class _studentSignupState extends State<studentSignup> {
                                     flex: 4,
                                     child:new InputDecorator(
                                       decoration: const InputDecoration(
-                                        //labelText: 'Activity',
+                                        border: OutlineInputBorder(
+
+                                        ),
                                         hintText: 'Choose Programme',
                                         hintStyle: TextStyle(
                                           // color: Colors.black,
@@ -457,6 +492,7 @@ class _studentSignupState extends State<studentSignup> {
                                         ),
                                       ),
                                       isEmpty: selectedprogramme == null,
+                                      child: DropdownButtonHideUnderline(
                                       child: new DropdownButton(
                                         value: selectedprogramme,
                                         isDense: true,
@@ -474,7 +510,7 @@ class _studentSignupState extends State<studentSignup> {
                                               child: new Container(
                                                 decoration: new BoxDecoration(
                                                   //color: Colors.black,
-                                                    borderRadius: new BorderRadius.circular(5.0)
+                                                    borderRadius: new BorderRadius.circular(20.0)
                                                 ),
                                                 height: 100.0,
                                                 padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
@@ -485,41 +521,76 @@ class _studentSignupState extends State<studentSignup> {
                                         }).toList(),
                                       ),
 
-                                    ),
+                                      ),),
                                   ),
                                 ],
                               ),
                             );
                           }
                       ),
+                     // SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Email*', hintText: "john.doe@gmail.com"),
                         controller: emailInputController,
                         keyboardType: TextInputType.emailAddress,
                         validator: emailValidator,
                       ),
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Password*', hintText: "********"),
                         controller: pwdInputController,
                         obscureText: true,
                         validator: pwdValidator,
                       ),
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Confirm Password*', hintText: "********"),
                         controller: confirmPwdInputController,
                         obscureText: true,
                         validator: pwdValidator,
                       ),
-                      RaisedButton(
-                        child: Text("Register"),
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        onPressed: () {
+                      SizedBox(height: 15,),
+                      MaterialButton(
+
+
+                        minWidth: 160.0,
+                        height: 60,
+                        onPressed: (){
                           registerUser();
                         },
+                        color: Colors.indigoAccent,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: Text(
+                          "Add New Student",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18
+                          ),
+                        ),
                       ),
                       /* Text("Already have an account?"),
                       FlatButton(

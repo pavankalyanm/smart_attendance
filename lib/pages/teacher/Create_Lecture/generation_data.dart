@@ -14,6 +14,8 @@ import 'package:async/async.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
 
+import 'package:smart_attendance/theme/style.dart' as style;
+
 
 
 class Generation extends StatefulWidget {
@@ -157,7 +159,7 @@ class _GenerationState extends State<Generation> {
     debugPrint(globals.qrCode);
 
     debugPrint("qr code made");
-    debugPrint(" studentid ${globals.studentId}");
+   // debugPrint(" studentid ${globals.studentId}");
     addStudents();
 
   }
@@ -239,6 +241,7 @@ Navigator.pop(context);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        backgroundColor: Colors.white,
 //          leading: IconButton(
 //              icon: Icon(
 //                FontAwesomeIcons.bars,
@@ -249,7 +252,7 @@ Navigator.pop(context);
           alignment: Alignment.center,
           child: Text("Choose Class and Course",
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
               )),
         ),
         automaticallyImplyLeading: false,
@@ -289,7 +292,7 @@ Navigator.pop(context);
                         DropdownMenuItem(
                           child: Text(
                             snap.documentID,
-                            style: TextStyle(color: Color(0xff11b719)),
+                            style: TextStyle(color: style.primaryColor),
                           ),
                           value: "${snap.documentID}",
                         ),
@@ -319,9 +322,9 @@ Navigator.pop(context);
                               duration: new Duration(seconds: 1),
                               content: Text(
                                 'Selected Class Code is $classCodeValue',
-                                style: TextStyle(color: Color(0xff11b719)),
+                                style: TextStyle(color: Colors.white,
                               ),
-                            );
+                            ),);
                             Scaffold.of(context).showSnackBar(snackBar);
                             setState(() {
                               selectedClassCode = classCodeValue;
@@ -331,7 +334,7 @@ Navigator.pop(context);
                           isExpanded: false,
                           hint: new Text(
                             "Choose Class Code",
-                            style: TextStyle(color: Color(0xff11b719)),
+                            style: TextStyle(color: style.primaryColor),
                           ),
                         ),
                       ),
@@ -355,7 +358,7 @@ Navigator.pop(context);
                         DropdownMenuItem(
                           child: Text(
                             snap.documentID,
-                            style: TextStyle(color: Color(0xff11b719)),
+                            style: TextStyle(color: style.primaryColor),
                           ),
                           value: "${snap.documentID}",
                         ),
@@ -383,7 +386,7 @@ Navigator.pop(context);
                               duration: new Duration(seconds: 1),
                               content: Text(
                                 'Selected Course Code is $courseCodeValue',
-                                style: TextStyle(color: Color(0xff11b719)),
+                                style: TextStyle(color: Colors.white),
                               ),
                             );
                             Scaffold.of(context).showSnackBar(snackBar);
@@ -395,7 +398,7 @@ Navigator.pop(context);
                           isExpanded: false,
                           hint: new Text(
                             "Choose Course Code",
-                            style: TextStyle(color: Color(0xff11b719)),
+                            style: TextStyle(color: style.primaryColor),
                           ),
                         ),
                   ),
@@ -442,15 +445,20 @@ Navigator.pop(context);
 //                height: 10.0,
 //              ),
 //
-            RaisedButton(
-                color: Color(0xff11b719),
+            // ignore: deprecated_member_use
+            ButtonTheme(
+              //minWidth: ,
+             // height: 100,
+              child: RaisedButton(
+
+                color: style.primaryColor,
                 textColor: Colors.white,
                 child: Padding(
                     padding: EdgeInsets.all(10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Text("Submit", style: TextStyle(fontSize: 24.0)),
+                        Text("Generate QR", style: TextStyle(fontSize: 20.0)),
                       ],
                     )),
                 onPressed: () async {
@@ -509,7 +517,7 @@ Navigator.pop(context);
                         ),
                         ));
                   }
-                })
+                }),)
           ],
         ),
 
