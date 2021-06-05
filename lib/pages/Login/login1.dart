@@ -152,88 +152,55 @@ class _LoginState extends State<Login> {
         automaticallyImplyLeading: false,
       ),
       body:
-        new Center(
+      Center(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
 
-           child: Form(
+             child: Form(
 
-            key: _formKey,
-            child: Column(
+              key: _formKey,
+              child: Column(
 
-              children: <Widget>[
+                children: <Widget>[
 
-                SizedBox(height: 10,),
-               new Container(
-              width: 180,
-              height: 180,
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  image: ExactAssetImage('assets/res/jntu.png'),
-                  fit: BoxFit.fitHeight,
-                ),
-                ),),
-                SizedBox(height: 10,),
-                new Container(
-                  child: Text("WELCOME",style:TextStyle(fontFamily: 'poppins',fontWeight: FontWeight.bold,fontSize: 30),)
-
-                  ,
-
-                ),
-                SizedBox(height: 5,),
-            new Container(
-              child: Text("Login With the provided Institution Details",style:TextStyle(fontFamily: 'poppins',fontSize: 15),)
-
-              ,
-
-            ),
-            //initialValue: 'Input text',
-                SizedBox(height: 30,),
-
-            Container(
-              width: screenSize.width/1.2,
-              child: new TextFormField(
-
-                cursorColor: Colors.indigo,
-                style: TextStyle(fontSize: 20, color: Colors.indigo),
-                decoration: InputDecoration(
-                 // hintText: 'Please enter your email',
-                  hintStyle: TextStyle(color: Colors.indigo, fontSize: 20),
-                  labelText: 'Email',
-                  labelStyle: TextStyle(color: Colors.indigo, fontSize: 20),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)
+                  SizedBox(height: 10,),
+                 new Container(
+                width: 180,
+                height: 180,
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: ExactAssetImage('assets/res/jntu.png'),
+                    fit: BoxFit.fitHeight,
                   ),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.indigo[400])
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.indigo[400])
                   ),),
-                    //hintText: "Email",
+                  SizedBox(height: 10,),
+                  new Container(
+                    child: Text("WELCOME",style:TextStyle(fontFamily: 'poppins',fontWeight: FontWeight.bold,fontSize: 30),)
 
-                    obscureText: false,
-                    //textInputType: TextInputType.text,
-                    //textStyle: textStyle,
-                   // textFieldColor: textFieldColor,
-                    //icon: Icons.mail_outline,
-                    //iconColor: Colors.black,
-                    //bottomMargin: 20.0,
-                    validator: validations.validateEmail,
-                    onSaved: (input) => _email = input,
+                    ,
+
                   ),
-            ),
-                SizedBox(height: 30,),
-                Container(
-                  width: screenSize.width/1.2,
-                child:new TextFormField(
+                  SizedBox(height: 5,),
+              new Container(
+                child: Text("Login With the provided Institution Details",style:TextStyle(fontFamily: 'poppins',fontSize: 15),)
+
+                ,
+
+              ),
+              //initialValue: 'Input text',
+                  SizedBox(height: 30,),
+
+              Container(
+                width: screenSize.width/1.2,
+                child: new TextFormField(
+
                   cursorColor: Colors.indigo,
                   style: TextStyle(fontSize: 20, color: Colors.indigo),
                   decoration: InputDecoration(
-                    // hintText: 'Please enter your email',
+                   // hintText: 'Please enter your email',
                     hintStyle: TextStyle(color: Colors.indigo, fontSize: 20),
-                    labelText: 'Password',
+                    labelText: 'Email',
                     labelStyle: TextStyle(color: Colors.indigo, fontSize: 20),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     border: OutlineInputBorder(
@@ -247,18 +214,54 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide(color: Colors.indigo[400])
                     ),),
-                  //hintText: "Password",
-                  obscureText: true,
-                  //textInputType: TextInputType.text,
-                 // textStyle: textStyle,
-                  //textFieldColor: textFieldColor,
-                  //icon: Icons.lock_open,
-                  //iconColor: Colors.black,
-                  //bottomMargin: 30.0,
-                  validator: validations.validatePassword,
-                  onSaved: (input) => _password = input,
-                ),
-                ),
+                      //hintText: "Email",
+
+                      obscureText: false,
+                      //textInputType: TextInputType.text,
+                      //textStyle: textStyle,
+                     // textFieldColor: textFieldColor,
+                      //icon: Icons.mail_outline,
+                      //iconColor: Colors.black,
+                      //bottomMargin: 20.0,
+                      validator: validations.validateEmail,
+                      onSaved: (input) => _email = input,
+                    ),
+              ),
+                  SizedBox(height: 30,),
+                  Container(
+                    width: screenSize.width/1.2,
+                  child:new TextFormField(
+                    cursorColor: Colors.indigo,
+                    style: TextStyle(fontSize: 20, color: Colors.indigo),
+                    decoration: InputDecoration(
+                      // hintText: 'Please enter your email',
+                      hintStyle: TextStyle(color: Colors.indigo, fontSize: 20),
+                      labelText: 'Password',
+                      labelStyle: TextStyle(color: Colors.indigo, fontSize: 20),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15)
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.indigo[400])
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.indigo[400])
+                      ),),
+                    //hintText: "Password",
+                    obscureText: true,
+                    //textInputType: TextInputType.text,
+                   // textStyle: textStyle,
+                    //textFieldColor: textFieldColor,
+                    //icon: Icons.lock_open,
+                    //iconColor: Colors.black,
+                    //bottomMargin: 30.0,
+                    validator: validations.validatePassword,
+                    onSaved: (input) => _password = input,
+                  ),
+                  ),
 //              TextFormField(
 ////                validator: (input) {
 ////                  if (input.isEmpty) {
@@ -269,20 +272,21 @@ class _LoginState extends State<Login> {
 //
 //                onSaved: (input) => _email = input,
 //              ),
-                SizedBox(height: 30,),
-                new RoundedButton(
-                  buttonName: "LOGIN",
-                  onTap: checkNet,
-                  width: screenSize.width/2,
-                  height: 50.0,
-                  bottomMargin: 10.0,
-                  borderWidth: 0.0,
-                  buttonColor: primaryColor,
-                ),
-              ],
-            )),
-         ),
-    );
+                  SizedBox(height: 30,),
+                  new RoundedButton(
+                    buttonName: "LOGIN",
+                    onTap: checkNet,
+                    width: screenSize.width/2,
+                    height: 50.0,
+                    bottomMargin: 10.0,
+                    borderWidth: 0.0,
+                    buttonColor: primaryColor,
+                  ),
+                ],
+              )),
+           ),
+    ),
+      ),);
   }
 
 

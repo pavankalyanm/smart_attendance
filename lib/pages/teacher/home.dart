@@ -13,6 +13,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 //import 'package:smart_attendance/services/validations.dart';
 import 'package:smart_attendance/pages/welcome.dart';
 import 'package:smart_attendance/theme/style.dart' as style;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Teacher extends StatefulWidget {
   @override
@@ -81,6 +82,14 @@ class _TeacherState extends State<Teacher> {
   }
 
 
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> signOut() async {
+    await auth.signOut();
+
+
+  }
+
 
   void _showDialog(BuildContext pageContext) {
     // flutter defined function
@@ -121,6 +130,7 @@ class _TeacherState extends State<Teacher> {
                       ],
                     ),
                     ));
+                signOut();
 
                 globals.qrCode = null;
                 globals.classCode = null;
@@ -153,6 +163,8 @@ class _TeacherState extends State<Teacher> {
                 globals.role=null;
                 globals.lecturerName=null;
                 globals.docId=null;
+                debugPrint('${globals.role}');
+
 
 //Navigator.pop(pageContext);
                 Navigator.pop(pageContext);
