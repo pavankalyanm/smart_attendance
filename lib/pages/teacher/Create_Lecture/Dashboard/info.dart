@@ -34,31 +34,57 @@ class _InfoState extends State<Info> {
 
     return new Scaffold(
         appBar: AppBar(
-          title: Text('About Lecture'),
+          backgroundColor: Colors.white,
+//          leading: IconButton(
+//              icon: Icon(
+//                FontAwesomeIcons.bars,
+//                color: Colors.white,
+//              ),
+//              onPressed: () {}),
+          title: Container(
+            alignment: Alignment.center,
+            child: Text("Class Details",
+                style: TextStyle(
+                  color: Colors.black,
+                )),
+          ),
           automaticallyImplyLeading: false,
+//          actions: <Widget>[
+//            IconButton(
+//              icon: Icon(
+//                FontAwesomeIcons.coins,
+//                size: 20.0,
+//                color: Colors.white,
+//              ),
+//              onPressed: null,
+//            ),
+//          ],
         ),
         body: ListView(
           children: <Widget>[
             Center (child: Text("Lecturer :-")),
             Card(
               child: ListTile(
-                leading: FlutterLogo(size: 56.0),
+                leading: Image.asset('assets/res/teach.png'),
                 title: Text('${globals.name}'),
                 subtitle: Text('${globals.post}'),
 
               ),
             ),
-            SizedBox(height: 40.0),
-            Center (child: Text("Lecture Details :-")),
+            SizedBox(height: 20.0),
+            //Center (child: Text("Class Details :-")),
+            Card(child: ListTile(title: Text("Class Code        :  ${globals.classCode}"))),
+            Card(child: ListTile(title: Text("Programme         :  ${globals.programme}"))),
+            Card(child: ListTile(title: Text("Branch            :  ${globals.branch}"))),
+            Card(child: ListTile(title: Text("Semester          :  ${globals.courseYear}"))),
+            Card(child: ListTile(title: Text("Subject           :  ${globals.courseCode}"+'(${globals.courseName})'))),
+            //Card(child: ListTile(title: Text("${globals.courseName}"))),
 
-            Card(child: ListTile(title: Text("Course Code   :  ${globals.courseCode}"))),
-            Card(child: ListTile(title: Text("Course Name  :  ${globals.courseName}"))),
-            Card(child: ListTile(title: Text("Course Year :  ${globals.courseYear}"))),
-            Card(child: ListTile(title: Text("Class Code  :  ${globals.classCode}"))),
-            Card(child: ListTile(title: Text("Faculty  :  ${globals.faculty}"))),
-            Card(child: ListTile(title: Text("Programe  :  ${globals.programme}"))),
-            Card(child: ListTile(title: Text("Branch  :  ${globals.branch}"))),
-            Card(child: ListTile(title: Text("Section  :  ${globals.sec}"))),
+           // Card(child: ListTile(title: Text("Class Code  :  ${globals.classCode}"))),
+           // Card(child: ListTile(title: Text("Faculty  :  ${globals.name}"))),
+
+
+            Card(child: ListTile(title: Text("No.of Periods taken:  ${globals.periods_num}"))),
           ],
         )
     );

@@ -166,7 +166,7 @@ class _LoginState extends State<Login> {
                 children: <Widget>[
 
                   SizedBox(height: 10,),
-                 new Container(
+                /* new Container(
                 width: 180,
                 height: 180,
                 decoration: new BoxDecoration(
@@ -174,7 +174,7 @@ class _LoginState extends State<Login> {
                     image: ExactAssetImage('assets/res/jntu.png'),
                     fit: BoxFit.fitHeight,
                   ),
-                  ),),
+                  ),),*/
                   SizedBox(height: 10,),
                   new Container(
                     child: Text("WELCOME",style:TextStyle(fontFamily: 'poppins',fontWeight: FontWeight.bold,fontSize: 30),)
@@ -259,7 +259,7 @@ class _LoginState extends State<Login> {
                     //icon: Icons.lock_open,
                     //iconColor: Colors.black,
                     //bottomMargin: 30.0,
-                    validator: validations.validatePassword,
+                   // validator: validations.validatePassword,
                     onSaved: (input) => _password = input,
                   ),
                   ),

@@ -17,7 +17,7 @@ class GenerateScreen extends StatefulWidget {
 
 class GenerateScreenState extends State<GenerateScreen> {
 
-  static const double _topSectionTopPadding = 50.0;
+  static const double _topSectionTopPadding = 30.0;
   static const double _topSectionBottomPadding = 20.0;
   static const double _topSectionHeight = 50.0;
 
@@ -30,7 +30,16 @@ class GenerateScreenState extends State<GenerateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Attendance Started'),
+        backgroundColor: Colors.white,
+        title: Container(
+          alignment: Alignment.center,
+
+          child: Text(
+              'Attendance Started',
+          style: TextStyle(
+            color: Colors.black,
+          ),),
+        ),
         automaticallyImplyLeading: false,
       ),
       body: _contentWidget(),
@@ -59,15 +68,18 @@ class GenerateScreenState extends State<GenerateScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
 
-                      child:  Text("Students Should Scan the QR Code for Attendance"),
+                      child:  Text("Students Should Scan the QR Code for Attendance",
+                        style: TextStyle(
+                          fontSize: 16,
+                            fontWeight: FontWeight.bold,
+
+                        ),
+                      ),
 
                   )
                 ],
               ),
             ),
-          ),
-          SizedBox(
-            height: 1.0,
           ),
 
 

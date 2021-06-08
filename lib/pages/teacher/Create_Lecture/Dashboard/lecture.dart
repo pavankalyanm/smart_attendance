@@ -9,7 +9,7 @@ import 'package:smart_attendance/globals.dart' as globals;
 
 import 'package:smart_attendance/pages/teacher/Create_Lecture/dashboard/save_attendance.dart';
 
-
+import 'package:smart_attendance/theme/style.dart' as style;
 
 
 
@@ -166,7 +166,7 @@ class LectureState extends State<Lecture> {
         appBar : AppBar(
             title: Text("Click Icon to stop attendance"),
             automaticallyImplyLeading: false,
-            backgroundColor: Colors.red,
+            backgroundColor: style.primaryColor,
             actions: <Widget>[
         // action button
         IconButton(
@@ -180,9 +180,9 @@ class LectureState extends State<Lecture> {
         bottomNavigationBar: new Theme(
     data: Theme.of(context).copyWith(
     // sets the background color of the `BottomNavigationBar`
-    canvasColor: Colors.green,
+    canvasColor: style.primaryColor,
     // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-    primaryColor: Colors.red,
+    primaryColor: Colors.black,
     textTheme: Theme
         .of(context)
         .textTheme

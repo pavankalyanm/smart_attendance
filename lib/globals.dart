@@ -10,6 +10,7 @@ String qrId;
 String attendance_id;
 String courseName;
 String courseYear;
+String periods_num;
 
 List studentId = [];
 List studentDocumentId = [];

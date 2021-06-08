@@ -25,7 +25,8 @@ class Generation extends StatefulWidget {
 
 class _GenerationState extends State<Generation> {
   String selectedClassCode;
-
+  String semester;
+  String periods;
 //  = "Choose Class Code" ;
   String selectedCourseCode;
   final GlobalKey<FormState> _formKeyValue = new GlobalKey<FormState>();
@@ -189,11 +190,13 @@ class _GenerationState extends State<Generation> {
           .get();
       debugPrint(snapshot.data['id']);
       //String stu_id= snapshot.data['id'] ;
+
      Map<String, String> map = { 'id':snapshot.data['id']  ,
        "attendance":'absent'
 //        "document" : "default"
 
       };
+      globals.studentId.add(snapshot.data['id']);
 
       DocumentReference docRef = await Firestore.instance.collection(
           "attendance").document("${globals.attendance_id}").collection(
@@ -250,7 +253,7 @@ Navigator.pop(context);
 //              onPressed: () {}),
         title: Container(
           alignment: Alignment.center,
-          child: Text("Choose Class and Course",
+          child: Text("Choose Class Details",
               style: TextStyle(
                 color: Colors.black,
               )),
@@ -315,8 +318,12 @@ Navigator.pop(context);
                       new Expanded(
                         flex:4,
                        child:new DropdownButton(
+
                           items: classCodes,
                           onChanged: (classCodeValue) {
+                            semester=null;
+                            selectedCourseCode=null;
+                            periods=null;
                             globals.studentId.clear();
                             final snackBar = SnackBar(
                               duration: new Duration(seconds: 1),
@@ -343,10 +350,141 @@ Navigator.pop(context);
                   }
                 }),
 
+            //adding semester dropdown
+            SizedBox(height: 40.0),
+            StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance.collection("semester").snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return CircularProgressIndicator();
+                  else {
+                    List<DropdownMenuItem> Semester = [];
+                    for (int i = 0; i < snapshot.data.documents.length; i++) {
+                      DocumentSnapshot snap = snapshot.data.documents[i];
+                      Semester.add(
+                        DropdownMenuItem(
+                          child: Text(
+                            snap.documentID,
+                            style: TextStyle(color: style.primaryColor),
+                          ),
+                          value: "${snap.documentID}",
+                        ),
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        new Expanded(
+                            flex:2,
+                            child: new Container(
+                              padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
+                              child: new Text("Semester"),
+                            )
+                        ),
+
+//                          Icon(FontAwesomeIcons.coins,
+//                              size: 25.0, color: Color(0xff11b719)),
+                        new Expanded(
+                          flex: 4,
+                          child: new  DropdownButton(
+                            items: Semester,
+                            onChanged: (semesterValue) {
+                              selectedCourseCode=null;
+                              periods=null;
+                              final snackBar = SnackBar(
+                                duration: new Duration(seconds: 1),
+                                content: Text(
+                                  'Selected semester is $semesterValue',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                              Scaffold.of(context).showSnackBar(snackBar);
+                              setState(() {
+                                semester = semesterValue;
+                              });
+                            },
+                            value: semester,
+                            isExpanded: false,
+                            hint: new Text(
+                              "Choose Semester",
+                              style: TextStyle(color: style.primaryColor),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                }),
+
 
             SizedBox(height: 40.0),
             StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection("course").snapshots(),
+                stream: Firestore.instance.collection("semester").document('$semester').collection('courses').where("class", isEqualTo: "$selectedClassCode").snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return CircularProgressIndicator();
+                  else {
+                    List<DropdownMenuItem> courseCodes = [];
+                    for (int i = 0; i < snapshot.data.documents.length; i++) {
+                      DocumentSnapshot snap = snapshot.data.documents[i];
+                      courseCodes.add(
+                        DropdownMenuItem(
+                          child: Text(
+                            snap.documentID+'(${snap.data['name']})',
+                            style: TextStyle(color: style.primaryColor),
+                          ),
+                          value: "${snap.documentID}",
+                        ),
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        new Expanded(
+                            flex:2,
+                            child: new Container(
+                              padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
+                              child: new Text("Subject"),
+                            )
+                        ),
+
+//                          Icon(FontAwesomeIcons.coins,
+//                              size: 25.0, color: Color(0xff11b719)),
+                  new Expanded(
+                       flex: 4,
+                      child: new  DropdownButton(
+                          items: courseCodes,
+                          onChanged: (courseCodeValue) {
+                            periods=null;
+                            final snackBar = SnackBar(
+                              duration: new Duration(seconds: 1),
+                              content: Text(
+                                'Selected Subject Code is $courseCodeValue',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                            Scaffold.of(context).showSnackBar(snackBar);
+                            setState(() {
+                              selectedCourseCode = courseCodeValue;
+                            });
+                          },
+                          value: selectedCourseCode,
+                          isExpanded: false,
+                          hint: new Text(
+                            "Choose Subject Code",
+                            style: TextStyle(color: style.primaryColor),
+                          ),
+                        ),
+                  ),
+                      ],
+                    );
+                  }
+                }),
+
+            //widget for periods
+            SizedBox(height: 40.0),
+            StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance.collection("periods").snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData)
                     return CircularProgressIndicator();
@@ -371,43 +509,47 @@ Navigator.pop(context);
                             flex:2,
                             child: new Container(
                               padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
-                              child: new Text("Coursecode"),
+                              child: new Text("No. Of Periods"),
                             )
                         ),
 
 //                          Icon(FontAwesomeIcons.coins,
 //                              size: 25.0, color: Color(0xff11b719)),
-                  new Expanded(
-                       flex: 4,
-                      child: new  DropdownButton(
-                          items: courseCodes,
-                          onChanged: (courseCodeValue) {
-                            final snackBar = SnackBar(
-                              duration: new Duration(seconds: 1),
-                              content: Text(
-                                'Selected Course Code is $courseCodeValue',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            );
-                            Scaffold.of(context).showSnackBar(snackBar);
-                            setState(() {
-                              selectedCourseCode = courseCodeValue;
-                            });
-                          },
-                          value: selectedCourseCode,
-                          isExpanded: false,
-                          hint: new Text(
-                            "Choose Course Code",
-                            style: TextStyle(color: style.primaryColor),
+                        new Expanded(
+                          flex: 4,
+                          child: new  DropdownButton(
+                            items: courseCodes,
+                            onChanged: (periodsValue) {
+
+                              final snackBar = SnackBar(
+                                duration: new Duration(seconds: 1),
+                                content: Text(
+                                  'No. of Periods= $periodsValue',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                              Scaffold.of(context).showSnackBar(snackBar);
+                              setState(() {
+                                periods = periodsValue;
+                              });
+                            },
+                            value: periods,
+                            isExpanded: false,
+                            hint: new Text(
+                              "Select No. of periods",
+                              style: TextStyle(color: style.primaryColor),
+                            ),
                           ),
                         ),
-                  ),
                       ],
                     );
                   }
-                }),
+                }
+
+                ),
+
             SizedBox(
-              height: 150.0,
+              height: 100.0,
             ),
 //              StreamBuilder<QuerySnapshot>(
 //                  stream: Firestore.instance.collection(selectedClassCode).snapshots(),
@@ -548,17 +690,31 @@ Navigator.pop(context);
   getCourseDetails() async {
     debugPrint("Inside getCourse func");
 
-    DocumentSnapshot snapshot = await Firestore.instance.collection('course')
+    DocumentSnapshot snapshot = await Firestore.instance.collection('semester').document('$semester').collection('courses')
         .document('${globals.courseCode}')
         .get();
+    
+
     if (snapshot.data == null) {
       debugPrint("No data in course > coursecode");
     }
     else {
       globals.courseName = snapshot.data['name'];
       globals.courseYear = snapshot.data['year'];
-      checkingPastQrData();
+      getPeriods();
     }
+  }
+  getPeriods() async{
+
+     DocumentSnapshot snapshot = await Firestore.instance.collection('periods').document('$periods').get();
+     if (snapshot.data == null) {
+       debugPrint("No data ");
+     }else {
+       globals.periods_num = '$periods'+'(${snapshot.data['time']})';
+
+       checkingPastQrData();
+     }
+
   }
 
 }

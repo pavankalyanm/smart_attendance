@@ -20,6 +20,8 @@ class checkRole{
     if (globals.role == null) {
       firstwidget=Login();
     } else {
+
+
       if (globals.role== 'admin') {
       firstwidget=admin();
 

@@ -42,14 +42,14 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 
 
     }
-    Directory appDocDir = await getApplicationDocumentsDirectory();
+    Directory appDocDir = await getExternalStorageDirectory();
 
 
 
-    final file = File("${appDocDir.path}/${globals.classCode}_${globals.courseCode}_${new DateTime.now()}.txt");
+    final file = File("${appDocDir.path}/${globals.classCode}_${globals.courseCode}_${new DateTime.now()}.csv");
     final text = "${globals.attendanceDetails}";
     await file.writeAsString(text);
-    debugPrint('saved to $file}');
+    debugPrint('saved to $file');
 
 
 
@@ -68,7 +68,10 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text('Download Attendance'),
+          backgroundColor: Colors.white,
+          title: Container(
+              alignment: Alignment.center,
+              child: new Text('Download Attendance',style: TextStyle(color: Colors.black),)),
           automaticallyImplyLeading: false,
         ),
         body:  new Center(
@@ -82,23 +85,54 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 ////            ),
 //          ),
 
-        child: new ListView(
-          children: <Widget>[
+            child:Column(
+              children: [
+                SizedBox(height: 200,),
+                Container(
+                  child: new Text(
+                    'Click below to download Attendance',
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  height: 100.0,
+                  child: SizedBox.fromSize(
+                    size: Size(100, 100), // button width and height
+                    child: ClipOval(
+                      child: Material(
+                        color: Colors.indigo, // button color
+                        child: InkWell(
+                          splashColor: Color.fromRGBO(248, 177, 1, 1),
+                          // splash color
+                          onTap: () {
+                            _saveAttendanceToFile();
+                          },
+                          // button pressed
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.file_download,
+                                color: Colors.white,
+                              ), // icon
+                              Text(
+                                "Download",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ), // text
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
 
-            new ListTile(
-              title: new FlatButton(
-                  onPressed: () {
-
-                    _saveAttendanceToFile();
-
-                  },
-                  textColor: Colors.white70,
-                  color: Colors.redAccent,
-                  child: new Text('Click here to Save the file to downloads folder')),
-            ),
-
-          ],
-        )
 
         ));
   }

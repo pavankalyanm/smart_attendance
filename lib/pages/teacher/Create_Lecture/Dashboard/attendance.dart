@@ -24,7 +24,17 @@ class AttendanceState extends State<Attendance>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text('Live Attendance'),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+
+        title: Container(
+          alignment:Alignment.center,
+          child: Text('Live Attendance',
+          style: TextStyle(
+            color: Colors.black
+
+          ),),
+        ),
         automaticallyImplyLeading: false,),
       body: _buildBody(context),
     );
@@ -35,8 +45,10 @@ class AttendanceState extends State<Attendance>{
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('attendance').document("${globals.attendance_id}").collection("attendance").snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
-
+        if (snapshot.data==null) {
+          return CircularProgressIndicator();
+        }
+        debugPrint('${snapshot.data.documents.length}');
         return _buildList(context, snapshot.data.documents);
       },
     );
@@ -66,9 +78,9 @@ class AttendanceState extends State<Attendance>{
 
           onTap: () => record.reference.updateData(
               {
-            'attendance': tongle(record.attendance) }
+                'attendance': tongle(record.attendance) }
 
-            ),
+          ),
         ),
       ),
     );
@@ -76,10 +88,10 @@ class AttendanceState extends State<Attendance>{
 
   String tongle(String attendance) {
     if(attendance == "Absent") {
-      return "Present";
+      return "Absent";
     }
-    else if(attendance == "Present") { return "Absent"; }
-    else return "Present / Absent";
+    else if(attendance == "Present") { return "Present"; }
+    else return "Absent";
   }
 }
 

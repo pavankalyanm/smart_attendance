@@ -76,7 +76,7 @@ class _TeacherState extends State<Teacher> {
     Navigator.pop(context);
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => WelcomePage()),
+        MaterialPageRoute(builder: (context) => ProfilePage()),
     );
     return true;
   }

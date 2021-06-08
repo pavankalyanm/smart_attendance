@@ -7,6 +7,7 @@ import 'package:smart_attendance/pages/admin/teacherSignup.dart';
 import 'package:smart_attendance/services/logout.dart' as logout;
 import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/theme/style.dart' as style;
+import 'package:smart_attendance/services/logout.dart';
 
 
 
@@ -23,8 +24,12 @@ class _adminState extends State<admin> {
 
   void _showDialog(BuildContext pageContext) {
     // flutter defined function
+    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<
+        ScaffoldState>();
+
+    // flutter defined function
     showDialog(
-     // context: context,
+      //context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
@@ -36,21 +41,14 @@ class _adminState extends State<admin> {
             new FlatButton(
 
               child: new Text("No"),
-              onPressed: ()  {
-
-
+              onPressed: () {
                 Navigator.of(context).pop();
-
-
-
-
               },
             ),
             new FlatButton(
 
               child: new Text("Yes"),
               onPressed: () async {
-
                 _scaffoldKey.currentState.showSnackBar(
                     new SnackBar(duration: new Duration(seconds: 20), content:
                     new Row(
@@ -61,6 +59,7 @@ class _adminState extends State<admin> {
                     ),
                     ));
 
+               // signOut();
                 globals.qrCode = null;
                 globals.classCode = null;
                 globals.courseCode = null;
@@ -70,7 +69,7 @@ class _adminState extends State<admin> {
                 globals.qrId = null;
                 globals.attendance_id = null;
                 globals.courseName = null;
-                globals.courseYear= null;
+                globals.courseYear = null;
 
                 globals.studentId.clear();
                 globals.studentDocumentId.clear();
@@ -82,16 +81,16 @@ class _adminState extends State<admin> {
                 globals.id = null;
                 globals.currentCollection = null;
                 globals.key = "1234567890";
-                globals.clas= null;
+                globals.clas = null;
                 globals.branch = null;
-                globals.faculty= null;
-                globals.programme= null;
-                globals.sec=null;
-                globals.uid=null;
-                globals.name=null;
-                globals.role=null;
-                globals.lecturerName=null;
-                globals.docId=null;
+                globals.faculty = null;
+                globals.programme = null;
+                globals.sec = null;
+                globals.uid = null;
+                globals.name = null;
+                globals.role = null;
+                globals.lecturerName = null;
+                globals.docId = null;
 
 //Navigator.pop(pageContext);
                 Navigator.pop(pageContext);
@@ -99,18 +98,17 @@ class _adminState extends State<admin> {
                   context,
                   MaterialPageRoute(builder: (context) => Login()),
                 );
-
               },
             ),
-
-
-
 
 
           ],
         );
       },
     );
+
+
+
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -125,7 +123,7 @@ class _adminState extends State<admin> {
           actions: <Widget>[
             // action button
             IconButton(
-
+              color: Colors.white,
               icon: Icon(Icons.logout),
               onPressed: () {
                 _showDialog(context);
