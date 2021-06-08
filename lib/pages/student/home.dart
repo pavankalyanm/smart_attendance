@@ -11,6 +11,8 @@ import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/services/validations.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/welcome.dart';
+import 'package:smart_attendance/theme/style.dart' as style;
+import 'package:smart_attendance/pages/Login/login1.dart';
 
 class Student extends StatefulWidget {
   @override
@@ -123,7 +125,7 @@ class _StudentState extends State<Student> {
                 Navigator.pop(pageContext);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WelcomePage()),
+                  MaterialPageRoute(builder: (context) => Login()),
                 );
               },
             ),
@@ -138,9 +140,17 @@ class _StudentState extends State<Student> {
   bool autovalidate = false;
   Validations validations = new Validations();
 
+
+  int _selectedTab = 0;
+  final _pageOptions = [
+    ScanScreen(),
+    PreviousAttendance(),
+    ProfilePage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    /*return new Scaffold(
       key: _scaffoldKey,
       appBar:
         new AppBar(
@@ -268,7 +278,69 @@ class _StudentState extends State<Student> {
         ],
       ),
     );
+  }*/
+//adding bottom nav bar
+
+
+    return MaterialApp(
+
+        theme: ThemeData(
+            primarySwatch: Colors.grey,
+            primaryTextTheme: TextTheme(
+              title: TextStyle(color: Colors.white),
+            )),
+        home: Scaffold(
+          key: _scaffoldKey,
+          appBar : AppBar(
+              title: Text("Hi "+'${globals.name}'),
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.indigo,
+              actions: <Widget>[
+                // action button
+                IconButton(
+                  color: Colors.white,
+                  icon: Icon(Icons.logout),
+                  onPressed: () {
+                    _showDialog(context);
+                  },
+                ),]),
+          body: _pageOptions[_selectedTab],
+          bottomNavigationBar: new Theme(
+            data: Theme.of(context).copyWith(
+              // sets the background color of the `BottomNavigationBar`
+                canvasColor: style.primaryColor,
+                // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+                primaryColor: Colors.white,
+                textTheme: Theme
+                    .of(context)
+                    .textTheme
+                    .copyWith(caption: new TextStyle(color: Colors.yellow))),
+            child : new BottomNavigationBar(
+
+              currentIndex: _selectedTab,
+              onTap: (int index) {
+                setState(() {
+                  _selectedTab = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text('ScanQR'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.category),
+                  title: Text('Previous Attendance'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_pin_circle),
+                  title: Text('Profile'),
+                ),
+
+              ],
+            ),
+          ),
+        ));
   }
-
-
 }
+

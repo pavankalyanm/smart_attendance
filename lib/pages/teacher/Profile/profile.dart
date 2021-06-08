@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: <Widget>[
                 Card(
                   child: ListTile(
-                    leading: FlutterLogo(size: 56.0),
+                    leading: Image.asset("assets/res/teacher.png"),
                     title: Text('${globals.name}'),
                     subtitle: Text('${globals.post}'),
 

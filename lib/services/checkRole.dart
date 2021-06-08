@@ -71,6 +71,9 @@ globals.clas = snapshot.data['class'];
 globals.name = snapshot.data['name'];
 globals.id = snapshot.data['id'];
 globals.role = snapshot.data['role'];
+globals.academicyear = snapshot.data['academicyear'];
+globals.programme = snapshot.data['programme'];
+globals.branch = snapshot.data['branch'];
 debugPrint("Reached getStud func");
 
 debugPrint("Passes getStud func");

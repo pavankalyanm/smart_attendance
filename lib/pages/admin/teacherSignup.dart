@@ -219,12 +219,14 @@ class _teacherSignupState extends State<teacherSignup> {
     }
   }
 
-  String pwdValidator(String value) {
-    if (value.length < 6) {
-      return 'Password must be longer than 6 characters';
-    } else {
-      return null;
-    }
+  String pwdValidator(String password) {
+    if (password.isEmpty) return 'Please enter a password.';
+    if (password.length < 8) return 'Password must contain minimum of 8 characters';
+    if (!password.contains(RegExp(r"[a-z]"))) return 'Password must contain at least one lowercase letter';
+    if (!password.contains(RegExp(r"[A-Z]"))) return 'Password must contain at least one uppercase letter';
+    if (!password.contains(RegExp(r"[0-9]"))) return 'Password must contain at least one digit';
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) return 'Password must contain at least one special character';
+    return null;
   }
 
   String nameValidator(String value) {
@@ -235,8 +237,8 @@ class _teacherSignupState extends State<teacherSignup> {
     }
   }
   String classValidator(String value) {
-    if (value.length < 3) {
-      return "Please enter class.";
+    if (value.length < 2) {
+      return "Please enter Designation.";
     } else {
       return null;
     }
@@ -248,6 +250,14 @@ class _teacherSignupState extends State<teacherSignup> {
       return null;
     }
   }
+
+  final snackBar = SnackBar(
+    duration: new Duration(seconds: 1),
+    content: Text(
+      'Teacher Added Successfully',
+      style: TextStyle(color: Color(0xff11b719)),
+    ),
+  );
 
 
   Future<void> registerUser() async {
@@ -275,6 +285,9 @@ class _teacherSignupState extends State<teacherSignup> {
 
 
             .then((result) => {
+
+
+          Scaffold.of(context).showSnackBar(snackBar),
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -326,6 +339,8 @@ class _teacherSignupState extends State<teacherSignup> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Add Teacher"),
+          backgroundColor: Colors.indigo,
+
         ),
         body: Container(
             padding: const EdgeInsets.all(20.0),
@@ -334,15 +349,28 @@ class _teacherSignupState extends State<teacherSignup> {
                   key: _registerFormKey,
                   child: Column(
                     children: <Widget>[
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Name*', hintText: "John"),
                         controller:  nameInputController,
                         validator: nameValidator,
                       ),
+
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText: 'Post*'),
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Designation*'),
                         controller: classInputController,
                         validator: classValidator,
                       ),
@@ -352,29 +380,48 @@ class _teacherSignupState extends State<teacherSignup> {
                           controller: idInputController,
                           validator:idValidator,
                       ),*/
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Email*', hintText: "john.doe@gmail.com"),
                         controller: emailInputController,
                         keyboardType: TextInputType.emailAddress,
                         validator: emailValidator,
                       ),
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Password*', hintText: "********"),
                         controller: pwdInputController,
                         obscureText: true,
                         validator: pwdValidator,
                       ),
+                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
                             labelText: 'Confirm Password*', hintText: "********"),
                         controller: confirmPwdInputController,
                         obscureText: true,
                         validator: pwdValidator,
                       ),
 
-                      SizedBox(height: 40.0),
+                      SizedBox(height: 20.0),
                       new StreamBuilder<QuerySnapshot>(
                           stream: Firestore.instance.collection('department').snapshots(),
                           builder: (context, snapshot){
@@ -400,6 +447,9 @@ class _teacherSignupState extends State<teacherSignup> {
                                     flex: 4,
                                     child:new InputDecorator(
                                       decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+
+                                        ),
                                         //labelText: 'Activity',
                                         hintText: 'Choose department',
                                         hintStyle: TextStyle(
@@ -410,50 +460,63 @@ class _teacherSignupState extends State<teacherSignup> {
                                         ),
                                       ),
                                       isEmpty: selecteddept == null,
-                                      child: new DropdownButton(
-                                        value: selecteddept,
-                                        isDense: true,
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            selecteddept = newValue;
-                                            // dropDown = false;
-                                            print(selecteddept);
-                                          });
-                                        },
-                                        items: snapshot.data.documents.map((DocumentSnapshot document) {
-                                          return new DropdownMenuItem<String>(
-                                              value: document.data['name'],
-                                              //controller: deptInputController,
-                                              child: new Container(
-                                                decoration: new BoxDecoration(
-                                                  //color: Colors.black,
-                                                    borderRadius: new BorderRadius.circular(5.0)
-                                                ),
-                                                height: 100.0,
-                                                padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
-                                                //color: primaryColor,
-                                                child: new Text(document.data['name']),
-                                              )
-                                          );
-                                        }).toList(),
-                                      ),
+                                      child: DropdownButtonHideUnderline(
+                                        child: new DropdownButton(
+                                          value: selecteddept,
+                                          isDense: true,
+                                          onChanged: (String newValue) {
+                                            setState(() {
+                                              selecteddept = newValue;
+                                              // dropDown = false;
+                                              print(selecteddept);
+                                            });
+                                          },
+                                          items: snapshot.data.documents.map((DocumentSnapshot document) {
+                                            return new DropdownMenuItem<String>(
+                                                value: document.data['name'],
+                                                //controller: deptInputController,
+                                                child: new Container(
+                                                  decoration: new BoxDecoration(
+                                                    //color: Colors.black,
+                                                      borderRadius: new BorderRadius.circular(20.0)
+                                                  ),
+                                                  height: 100.0,
+                                                  padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
+                                                  //color: primaryColor,
+                                                  child: new Text(document.data['name']),
+                                                )
+                                            );
+                                          }).toList(),
+                                        ),
 
-                                    ),
+                                      ),),
                                   ),
                                 ],
                               ),
                             );
                           }
                       ),
-                      RaisedButton(
-                        child: Text("Register"),
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        onPressed: () {
+                      SizedBox(height: 15,),
+                      MaterialButton(
 
+
+                        minWidth: 160.0,
+                        height: 60,
+                        onPressed: (){
                           registerUser();
-
                         },
+                        color: Colors.indigoAccent,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: Text(
+                          "Add New Teacher",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18
+                          ),
+                        ),
                       ),
                       /* Text("Already have an account?"),
                       FlatButton(

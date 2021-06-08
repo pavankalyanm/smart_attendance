@@ -108,6 +108,7 @@ class _LoginState extends State<Login> {
         globals.name = snapshot.data['name'];
         globals.id = snapshot.data['id'];
         globals.role = snapshot.data['role'];
+        globals.academicyear = snapshot.data['academicyear'];
         debugPrint("Reached getStud func");
         getStud();
         debugPrint("Passes getStud func");

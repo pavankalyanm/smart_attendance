@@ -10,6 +10,7 @@ import 'package:xxtea/xxtea.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 
+import 'package:smart_attendance/theme/style.dart' as style;
 import '../../../globals.dart';
 
 String docId;
@@ -162,11 +163,16 @@ class _ScanState extends State<ScanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        appBar: new AppBar(
-          title: new Text('Please Scan the QR CODE'),
+        /*appBar: new AppBar(
+          title: new Text('Please Scan the QR CODE',
+            style: TextStyle(
+            color: Colors.black,
+            )
+          ),
+          backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-        ),
-        body: new Center(
+        ),*/
+        /*body: new Center(
           child: new ListView(
 //            mainAxisAlignment: MainAxisAlignment.center,
 //            crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -174,7 +180,7 @@ class _ScanState extends State<ScanScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: RaisedButton(
-                    color: Colors.blue,
+                    color: style.primaryColor,
                     textColor: Colors.white,
                     splashColor: Colors.blueGrey,
                     onPressed: checkNet,
@@ -182,7 +188,70 @@ class _ScanState extends State<ScanScreen> {
               ),
             ],
           ),
-        ));
+        )*/
+        body: new Center(
+
+// new Center(
+//// child: new Image.asset(
+//// 'images/white_snow.png',
+//// width: 490.0,
+//// height: 1200.0,
+//// fit: BoxFit.fill,
+//// ),
+// ),
+
+            child:Column(
+              children: [
+                SizedBox(height: 200,),
+                Container(
+                  child: new Text(
+                    'Click here to scan the QR Code',
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  height: 100.0,
+                  child: SizedBox.fromSize(
+                    size: Size(100, 100), // button width and height
+                    child: ClipOval(
+                      child: Material(
+                        color: Colors.indigo, // button color
+                        child: InkWell(
+                          splashColor: Color.fromRGBO(248, 177, 1, 1),
+// splash color
+                          onTap: () {
+                            checkNet();
+                          },
+// button pressed
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                              ), // icon
+                              Text(
+                                "Scan",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ), // text
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+
+
+        )
+
+    );
   }
 
   Future scan() async {
@@ -375,6 +444,7 @@ class _ScanState extends State<ScanScreen> {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         scan();
+        debugPrint("${globals.academicyear}");
       }
     } on SocketException catch (_) {
       debugPrint('not connected');

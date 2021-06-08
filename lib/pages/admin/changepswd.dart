@@ -104,7 +104,7 @@ class _changePasswordState extends State<changePassword> {
             borderRadius: BorderRadius.circular(20)
         ),
         child: Text(
-          "Add New Student",
+          "Change Password",
           style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,

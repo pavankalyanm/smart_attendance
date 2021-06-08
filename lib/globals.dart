@@ -31,3 +31,5 @@ String name;
 String role;
 String lecturerName;
 String docId;
+String academicyear;
+String sem;
