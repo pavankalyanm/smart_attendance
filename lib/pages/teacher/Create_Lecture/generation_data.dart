@@ -217,7 +217,10 @@ class _GenerationState extends State<Generation> {
 
     Map<String, String> map = { "time_stamp": "${new DateTime.now()}",
       "course_code": "${globals.courseCode}",
-      "class_code": "${globals.classCode}"
+      "class_code": "${globals.classCode}",
+      "course_name": "${globals.courseName}",
+      "periods":"${globals.periods_num}"
+
     };
 
 

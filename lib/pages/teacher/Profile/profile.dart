@@ -47,32 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   }
 
-@override
-  void initState() {
-    super.initState();
-    BackButtonInterceptor.add(myInterceptor);
-  }
 
-
-
-
-  @override
-  void dispose() {
-    BackButtonInterceptor.remove(myInterceptor);
-    super.dispose();
-  }
-
-
-
-  bool myInterceptor(bool stopDefaultButtonEvent) {
-    print("BACK BUTTON!"); // Do some stuff.
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Teacher()),
-    );
-    return true;
-  }
 
 
 

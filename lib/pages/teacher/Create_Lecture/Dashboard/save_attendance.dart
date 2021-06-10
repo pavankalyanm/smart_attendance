@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_attendance/globals.dart' as globals;
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:csv/csv.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 
 
@@ -26,35 +28,6 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 
 
 
-
-  Future _saveAttendanceToFile() async {
-
-    for (int i = 0; i < globals.studentDocumentId.length; i++) {
-
-      debugPrint("creating list , index : $i ");
-
-      DocumentSnapshot snapshot= await Firestore.instance.collection("attendance").document('${globals.attendance_id}').collection("attendance").document("${globals.studentDocumentId[i]}").get();
-      if (snapshot.data == null) {debugPrint("No data in student id ${globals.studentDocumentId[i]} ");}
-      else{
-        globals.attendanceDetails.putIfAbsent("${snapshot.data['id']}" , ()=> "${snapshot.data['attendance']}");
-
-      }
-
-
-    }
-    Directory appDocDir = await getExternalStorageDirectory();
-
-
-
-    final file = File("${appDocDir.path}/${globals.classCode}_${globals.courseCode}_${new DateTime.now()}.csv");
-    final text = "${globals.attendanceDetails}";
-    await file.writeAsString(text);
-    debugPrint('saved to $file');
-
-
-
-
-  }
 
 //  void showInSnackBar(String value) {
 //    _scaffoldKey.currentState
@@ -106,7 +79,7 @@ class _SaveAttendanceState extends State<SaveAttendance> {
                           splashColor: Color.fromRGBO(248, 177, 1, 1),
                           // splash color
                           onTap: () {
-                            _saveAttendanceToFile();
+                            saveAttendance._saveAttendanceToFile();
                           },
                           // button pressed
                           child: Column(
@@ -142,5 +115,60 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 
 
 
+class saveAttendance{
 
+  static Future _saveAttendanceToFile() async {
+
+    List<List<String>> data=[['Id','Attendance']];
+
+    for (int i = 0; i <globals.studentDocumentId.length; i++) {
+
+      debugPrint("creating list , index : $i ");
+
+      DocumentSnapshot snapshot= await Firestore.instance.collection("attendance").document('${globals.attendance_id}').collection("attendance").document("${globals.studentDocumentId[i]}").get();
+      if (snapshot.data == null) {debugPrint("No data in student id ${globals.studentDocumentId[i]} ");}
+      else{
+        //globals.attendanceDetails.putIfAbsent("${snapshot.data['id']}" , ()=> "${snapshot.data['attendance']}");
+        data.add(['${snapshot.data['id']}','${snapshot.data['attendance']}']);
+      }
+
+
+    }
+    Directory appDocDir = await getExternalStorageDirectory();
+    String csvData = ListToCsvConverter().convert(data);
+
+    String file_name="${globals.classCode}_${globals.courseName}_${new DateTime.now()}.csv";
+    final file = File('${appDocDir.path}/$file_name');
+    //  final text = "${globals.attendanceDetails}";
+    await file.writeAsString(csvData);
+    debugPrint('saved to $file');
+
+  // to fire store
+    toFirestore.upload(file,file_name);
+
+
+  }
+
+}
+
+class toFirestore{
+
+  static Future<void> upload(file,file_name) async{
+    try {
+      final storage = FirebaseStorage.instance;
+      StorageReference ref = await storage
+          .ref()
+          .child('attendance').child('$file_name');
+
+      final StorageUploadTask uploadTask = ref.putFile(
+          file);
+      
+      //debugPrint('${await ref.getDownloadURL()}');
+    }catch(e){
+      debugPrint("e");
+    }
+   }
+
+   
+}
 

@@ -5,38 +5,28 @@ import 'package:smart_attendance/globals.dart' as globals;
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
 
-
 class PreviousLectures extends StatefulWidget {
-
-  const PreviousLectures({ Key key }) : super(key: key);
-
+  const PreviousLectures({Key key}) : super(key: key);
 
   @override
   PreviousLecturesState createState() => new PreviousLecturesState();
-
 }
 
-class PreviousLecturesState extends State<PreviousLectures>{
-
+class PreviousLecturesState extends State<PreviousLectures> {
   PreviousLecturesState({Key key, this.user});
   final FirebaseUser user;
 
-@override
+  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
-
-
-
 
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
   }
-
-
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -48,11 +38,9 @@ class PreviousLecturesState extends State<PreviousLectures>{
     return true;
   }
 
-
   String collection1 = "users";
   String collection2 = "previous_lecture";
   String uid = globals.uid;
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +51,24 @@ class PreviousLecturesState extends State<PreviousLectures>{
         title: Container(
           alignment: Alignment.center,
           child: Text('Lectures Taken',
-            style: TextStyle(
-            color: Colors.black,)
-          ),
+              style: TextStyle(
+                color: Colors.black,
+              )),
         ),
-        automaticallyImplyLeading: false,),
+        automaticallyImplyLeading: false,
+      ),
       body: _buildBody(context),
-
     );
   }
 
   Widget _buildBody(BuildContext context) {
     debugPrint("inside _buildBody");
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('$collection1').document('$uid').collection('$collection2').snapshots(),
+      stream: Firestore.instance
+          .collection('$collection1')
+          .document('$uid')
+          .collection('$collection2')
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
 
@@ -95,7 +87,6 @@ class PreviousLecturesState extends State<PreviousLectures>{
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final record = Record.fromSnapshot(data);
 
-
     return Padding(
       key: ValueKey(record.time_stamp),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -105,33 +96,32 @@ class PreviousLecturesState extends State<PreviousLectures>{
           borderRadius: BorderRadius.circular(5.0),
         ),
         child: ListTile(
-          title: Text("Lecture Subject : ${record.course_code}"),
-          subtitle:  Text("Class : ${record.class_code}                                         Taken on ${record.time_stamp}"),
-
-
-
-
+          trailing: Icon(Icons.file_download),
+          onTap: () {
+            //function to download file
+          },
+          title: Text("Subject : ${record.course_name}"),
+          subtitle: Text(
+              "Class : ${record.class_code}                                                 Taken on ${record.time_stamp}"),
         ),
       ),
     );
   }
-
-
 }
 
 class Record {
   final String time_stamp;
-  final String course_code;
+  final String course_name;
   final String class_code;
 
   final DocumentReference reference;
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['time_stamp'] != null),
-        assert(map['course_code'] != null),
+        assert(map['course_name'] != null),
         assert(map['class_code'] != null),
         time_stamp = map['time_stamp'],
-        course_code = map['course_code'],
+        course_name = map['course_name'],
         class_code = map['class_code'];
 
   Record.fromSnapshot(DocumentSnapshot snapshot)
