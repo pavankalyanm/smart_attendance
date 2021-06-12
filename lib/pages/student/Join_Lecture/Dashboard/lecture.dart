@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/Dashboard/info.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/Dashboard/later.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/Dashboard/present.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+//import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 
 class Lecture extends StatefulWidget {
@@ -11,10 +11,9 @@ class Lecture extends StatefulWidget {
     return LectureState();
   }
 }
+
 class LectureState extends State<Lecture> {
-
-
-  @override
+/*  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
@@ -24,7 +23,7 @@ class LectureState extends State<Lecture> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }
+  }*/
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -40,20 +39,17 @@ class LectureState extends State<Lecture> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Do you want to quit lecture dashboard?"),
-
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
               child: new Text("Yes"),
               onPressed: () {
                 Navigator.of(context).pop();
-Navigator.pop(pageContext);
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => Student()),
+                Navigator.pop(pageContext);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Student()),
                 );
-              
-
-
               },
             ),
           ],
@@ -61,18 +57,6 @@ Navigator.pop(pageContext);
       },
     );
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
   int _selectedTab = 0;
   final _pageOptions = [
@@ -89,7 +73,6 @@ Navigator.pop(pageContext);
             title: TextStyle(color: Colors.white),
           )),
       home: Scaffold(
-
         body: _pageOptions[_selectedTab],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedTab,
@@ -115,4 +98,5 @@ Navigator.pop(pageContext);
         ),
       ),
     );
-  }}
+  }
+}

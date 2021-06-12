@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_attendance/globals.dart' as globals;
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+//import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
 
 class PreviousLectures extends StatefulWidget {
@@ -16,7 +16,7 @@ class PreviousLecturesState extends State<PreviousLectures> {
   PreviousLecturesState({Key key, this.user});
   final FirebaseUser user;
 
-  @override
+/*  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
@@ -26,7 +26,7 @@ class PreviousLecturesState extends State<PreviousLectures> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }
+  }*/
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -96,11 +96,17 @@ class PreviousLecturesState extends State<PreviousLectures> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         child: ListTile(
-          trailing: Icon(Icons.file_download),
+          trailing: IconButton(
+            color: Colors.black,
+            icon: Icon(Icons.file_download),
+            onPressed: () {
+             // _showDialog(context);
+            },
+          ),
           onTap: () {
             //function to download file
           },
-          title: Text("Subject : ${record.course_name}"),
+          title: Text("Subject : ${record.course_code}"),
           subtitle: Text(
               "Class : ${record.class_code}                                                 Taken on ${record.time_stamp}"),
         ),
@@ -111,7 +117,7 @@ class PreviousLecturesState extends State<PreviousLectures> {
 
 class Record {
   final String time_stamp;
-  final String course_name;
+  final String course_code;
   final String class_code;
 
   final DocumentReference reference;
@@ -121,7 +127,7 @@ class Record {
         assert(map['course_name'] != null),
         assert(map['class_code'] != null),
         time_stamp = map['time_stamp'],
-        course_name = map['course_name'],
+        course_code = map['course_name'],
         class_code = map['class_code'];
 
   Record.fromSnapshot(DocumentSnapshot snapshot)

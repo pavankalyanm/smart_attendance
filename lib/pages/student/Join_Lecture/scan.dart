@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_attendance/globals.dart' as globals;
 import 'package:xxtea/xxtea.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+//import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 
 import 'package:smart_attendance/theme/style.dart' as style;
@@ -23,7 +23,7 @@ class ScanScreen extends StatefulWidget {
 class _ScanState extends State<ScanScreen> {
   String barcode = "";
 
-  @override
+/*  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
@@ -33,7 +33,7 @@ class _ScanState extends State<ScanScreen> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }
+  }*/
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -200,58 +200,55 @@ class _ScanState extends State<ScanScreen> {
 //// ),
 // ),
 
-            child:Column(
-              children: [
-                SizedBox(height: 200,),
-                Container(
-                  child: new Text(
-                    'Click here to scan the QR Code',
-                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  height: 100.0,
-                  child: SizedBox.fromSize(
-                    size: Size(100, 100), // button width and height
-                    child: ClipOval(
-                      child: Material(
-                        color: Colors.indigo, // button color
-                        child: InkWell(
-                          splashColor: Color.fromRGBO(248, 177, 1, 1),
+            child: Column(
+          children: [
+            SizedBox(
+              height: 200,
+            ),
+            Container(
+              child: new Text(
+                'Click here to scan the QR Code',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              height: 100.0,
+              child: SizedBox.fromSize(
+                size: Size(100, 100), // button width and height
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.indigo, // button color
+                    child: InkWell(
+                      splashColor: Color.fromRGBO(248, 177, 1, 1),
 // splash color
-                          onTap: () {
-                            checkNet();
-                          },
+                      onTap: () {
+                        checkNet();
+                      },
 // button pressed
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                              ), // icon
-                              Text(
-                                "Scan",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                ),
-                              ), // text
-                            ],
-                          ),
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                          ), // icon
+                          Text(
+                            "Scan",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
+                          ), // text
+                        ],
                       ),
                     ),
                   ),
                 ),
-              ],
-            )
-
-
-        )
-
-    );
+              ),
+            ),
+          ],
+        )));
   }
 
   Future scan() async {
@@ -266,35 +263,37 @@ class _ScanState extends State<ScanScreen> {
 
       debugPrint("Decripting qr code");
 
-      DocumentSnapshot snapshot = await Firestore.instance.collection("class")
-          .document("${globals.clas}").collection("lectureID_qrCode")
+      DocumentSnapshot snapshot = await Firestore.instance
+          .collection("class")
+          .document("${globals.clas}")
+          .collection("lectureID_qrCode")
           .document("$decrypt_data")
           .get();
       debugPrint(snapshot.data['class_code']);
 
       try {
-        DocumentSnapshot snapshot = await Firestore.instance.collection("class")
-            .document("${globals.clas}").collection("lectureID_qrCode")
+        DocumentSnapshot snapshot = await Firestore.instance
+            .collection("class")
+            .document("${globals.clas}")
+            .collection("lectureID_qrCode")
             .document("$decrypt_data")
             .get();
         debugPrint(snapshot.data['class_code']);
         if (snapshot.data['class_code'] == "${globals.clas}") {
-
-          _scaffoldKey.currentState.showSnackBar(
-              new SnackBar(duration: new Duration(seconds: 20), content:
-              new Row(
-                children: <Widget>[
-                  new CircularProgressIndicator(),
-                  new Text(" Scanning qrcode..")
-                ],
-              ),
-              ));
+          _scaffoldKey.currentState.showSnackBar(new SnackBar(
+            duration: new Duration(seconds: 20),
+            content: new Row(
+              children: <Widget>[
+                new CircularProgressIndicator(),
+                new Text(" Scanning qrcode..")
+              ],
+            ),
+          ));
 
           globals.courseCode = snapshot.data['course_code'];
           globals.currentCollection = snapshot.data['collection_name'];
           globals.attendance_id = snapshot.data['attendance_id'];
           getCourseDetails();
-
 
 //          syncToPreviousAttendance();
         } else {

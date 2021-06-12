@@ -275,7 +275,7 @@ class _teacherSignupState extends State<teacherSignup> {
           //"uid": currentUser.uid,
           "name":  nameInputController.text,
           "post": classInputController.text,
-          //"attendance_id":currentUser.uid,
+          "attendance_id":currentUser.uid,
           "role":role,
           //"dept":deptInputController.text,
           //"email": emailInputController.text,

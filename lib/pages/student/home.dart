@@ -9,7 +9,7 @@ import 'package:smart_attendance/pages/student/Previous_Attendance/previous_atte
 import 'package:smart_attendance/pages/student/Profile/profile.dart';
 import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/services/validations.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+//import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/welcome.dart';
 import 'package:smart_attendance/theme/style.dart' as style;
 import 'package:smart_attendance/pages/Login/login1.dart';
@@ -29,19 +29,17 @@ class _StudentState extends State<Student> {
 //        .showSnackBar(new SnackBar(content: new Text(value)));
 //  }
 
-  @override
+/*  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
 
-
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }
-
+  }*/
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -64,30 +62,27 @@ class _StudentState extends State<Student> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Do you want to log out?"),
-
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
 
             new FlatButton(
-
               child: new Text("No"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             new FlatButton(
-
               child: new Text("Yes"),
               onPressed: () async {
-                _scaffoldKey.currentState.showSnackBar(
-                    new SnackBar(duration: new Duration(seconds: 20), content:
-                    new Row(
-                      children: <Widget>[
-                        new CircularProgressIndicator(),
-                        new Text("  Loging-out...")
-                      ],
-                    ),
-                    ));
+                _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                  duration: new Duration(seconds: 20),
+                  content: new Row(
+                    children: <Widget>[
+                      new CircularProgressIndicator(),
+                      new Text("  Loging-out...")
+                    ],
+                  ),
+                ));
 
                 globals.qrCode = null;
                 globals.classCode = null;
@@ -104,7 +99,6 @@ class _StudentState extends State<Student> {
                 globals.studentDocumentId.clear();
                 globals.attendanceDetails.clear();
                 globals.extraStudentDocumentId.clear();
-
 
 //for Students
                 globals.id = null;
@@ -129,8 +123,6 @@ class _StudentState extends State<Student> {
                 );
               },
             ),
-
-
           ],
         );
       },
@@ -139,7 +131,6 @@ class _StudentState extends State<Student> {
 
   bool autovalidate = false;
   Validations validations = new Validations();
-
 
   int _selectedTab = 0;
   final _pageOptions = [
@@ -281,9 +272,7 @@ class _StudentState extends State<Student> {
   }*/
 //adding bottom nav bar
 
-
     return MaterialApp(
-
         theme: ThemeData(
             primarySwatch: Colors.grey,
             primaryTextTheme: TextTheme(
@@ -291,8 +280,8 @@ class _StudentState extends State<Student> {
             )),
         home: Scaffold(
           key: _scaffoldKey,
-          appBar : AppBar(
-              title: Text("Hi "+'${globals.name}'),
+          appBar: AppBar(
+              title: Text("Hi " + '${globals.name}'),
               automaticallyImplyLeading: false,
               backgroundColor: Colors.indigo,
               actions: <Widget>[
@@ -303,20 +292,19 @@ class _StudentState extends State<Student> {
                   onPressed: () {
                     _showDialog(context);
                   },
-                ),]),
+                ),
+              ]),
           body: _pageOptions[_selectedTab],
           bottomNavigationBar: new Theme(
             data: Theme.of(context).copyWith(
-              // sets the background color of the `BottomNavigationBar`
+                // sets the background color of the `BottomNavigationBar`
                 canvasColor: style.primaryColor,
                 // sets the active color of the `BottomNavigationBar` if `Brightness` is light
                 primaryColor: Colors.white,
-                textTheme: Theme
-                    .of(context)
+                textTheme: Theme.of(context)
                     .textTheme
                     .copyWith(caption: new TextStyle(color: Colors.yellow))),
-            child : new BottomNavigationBar(
-
+            child: new BottomNavigationBar(
               currentIndex: _selectedTab,
               onTap: (int index) {
                 setState(() {
@@ -336,11 +324,9 @@ class _StudentState extends State<Student> {
                   icon: Icon(Icons.person_pin_circle),
                   title: Text('Profile'),
                 ),
-
               ],
             ),
           ),
         ));
   }
 }
-

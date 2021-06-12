@@ -11,7 +11,7 @@ import 'package:smart_attendance/pages/Login/login1.dart';
 //import 'package:smart_attendance/components/Buttons/roundedButton.dart';
 import 'package:smart_attendance/services/validations.dart';
 import 'package:smart_attendance/globals.dart' as globals;
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+//import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -38,25 +38,19 @@ class _ProfilePageState extends State<ProfilePage> {
       context,
       MaterialPageRoute(builder: (context) => Login()),
     );
-
   }
 
-@override
+/*  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
 
-
-
-
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }
-
-
+  }*/
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -68,66 +62,55 @@ class _ProfilePageState extends State<ProfilePage> {
     return true;
   }
 
-
   bool autovalidate = false;
   Validations validations = new Validations();
 
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
-      appBar: AppBar(title: Text('Attended Lectures'),
-        automaticallyImplyLeading: false,),
-      body:
-      Column(
-          children:[
-            Expanded(
-        child: ListView(
-
-          children: <Widget>[
-
-            Container(
-              child: Card(
-                child: ListTile(
-                  leading: FlutterLogo(size: 56.0),
-                  title: Text('${globals.name}'),
-                  subtitle: Text('Click to update photo'),
-
+      appBar: AppBar(
+        title: Text('Attended Lectures'),
+        automaticallyImplyLeading: false,
+      ),
+      body: Column(children: [
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              Container(
+                child: Card(
+                  child: ListTile(
+                    leading: FlutterLogo(size: 56.0),
+                    title: Text('${globals.name}'),
+                    subtitle: Text('Click to update photo'),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 40.0),
-            Center (child: Text("User Details :-")),
-
-            Card(child: ListTile(title: Text("Under faculty   :  ${globals.faculty}"))),
-            Card(child: ListTile(title: Text("Programme  :  ${globals.programme}"))),
-            Card(child: ListTile(title: Text("Branch  :  ${globals.branch}"))),
-            Card(child: ListTile(title: Text("Class  :  ${globals.clas}"))),
-            Card(child: ListTile(title: Text("Section  :  ${globals.sec}"))),
-            Card(child: ListTile(title: Text("Student Id  :  ${globals.id}"))),
-
-            SizedBox(height: 40.0),
-
-
-          ],
-
+              SizedBox(height: 40.0),
+              Center(child: Text("User Details :-")),
+              Card(
+                  child: ListTile(
+                      title: Text("Under faculty   :  ${globals.faculty}"))),
+              Card(
+                  child: ListTile(
+                      title: Text("Programme  :  ${globals.programme}"))),
+              Card(
+                  child: ListTile(title: Text("Branch  :  ${globals.branch}"))),
+              Card(child: ListTile(title: Text("Class  :  ${globals.clas}"))),
+              Card(child: ListTile(title: Text("Section  :  ${globals.sec}"))),
+              Card(
+                  child: ListTile(title: Text("Student Id  :  ${globals.id}"))),
+              SizedBox(height: 40.0),
+            ],
+          ),
         ),
-
-
-
-      ),
-            ElevatedButton(
-              onPressed: () {
-
-                signOut();
-                // Respond to button press
-              },
-              child: Text('LOGOUT'),
-            )
-
-    ]),
+        ElevatedButton(
+          onPressed: () {
+            signOut();
+            // Respond to button press
+          },
+          child: Text('LOGOUT'),
+        )
+      ]),
     );
   }
-
-
 }

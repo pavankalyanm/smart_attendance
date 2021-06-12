@@ -2,23 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_attendance/globals.dart' as globals;
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+//import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 
-
-
 class PreviousAttendance extends StatefulWidget {
-
-  const PreviousAttendance({ Key key }) : super(key: key);
-
+  const PreviousAttendance({Key key}) : super(key: key);
 
   @override
   PreviousAttendanceState createState() => new PreviousAttendanceState();
-
 }
 
-class PreviousAttendanceState extends State<PreviousAttendance>{
-
+class PreviousAttendanceState extends State<PreviousAttendance> {
   PreviousAttendanceState({Key key, this.user});
   final FirebaseUser user;
 
@@ -26,22 +20,17 @@ class PreviousAttendanceState extends State<PreviousAttendance>{
   String collection2 = "previous_attendance";
   String uid = globals.uid;
 
-@override
+/*  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
 
-
-
-
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }
-
-
+  }*/
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -53,19 +42,18 @@ class PreviousAttendanceState extends State<PreviousAttendance>{
     return true;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text('Attended Classes',
-          style: TextStyle(
-            color: Colors.black,
-          )
-      ),
+      appBar: AppBar(
+        title: Text('Attended Classes',
+            style: TextStyle(
+              color: Colors.black,
+            )),
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,),
+        automaticallyImplyLeading: false,
+      ),
       body: _buildBody(context),
     );
   }
@@ -73,7 +61,11 @@ class PreviousAttendanceState extends State<PreviousAttendance>{
   Widget _buildBody(BuildContext context) {
     debugPrint("inside _buildBody");
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('$collection1').document('$uid').collection('$collection2').snapshots(),
+      stream: Firestore.instance
+          .collection('$collection1')
+          .document('$uid')
+          .collection('$collection2')
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
 
@@ -92,7 +84,6 @@ class PreviousAttendanceState extends State<PreviousAttendance>{
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final record = Record.fromSnapshot(data);
 
-
     return Padding(
       key: ValueKey(record.time_stamp),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -104,15 +95,10 @@ class PreviousAttendanceState extends State<PreviousAttendance>{
         child: ListTile(
           title: Text("Lecture Subject : ${record.course_code}"),
           subtitle: Text("Attended on ${record.time_stamp}"),
-
-
-
         ),
       ),
     );
   }
-
-
 }
 
 class Record {

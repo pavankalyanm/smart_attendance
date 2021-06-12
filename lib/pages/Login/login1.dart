@@ -18,7 +18,7 @@ import 'package:smart_attendance/components/Buttons/textButton.dart';
 import 'package:smart_attendance/components/Buttons/roundedButton.dart';
 import 'package:smart_attendance/services/validations.dart';
 import 'package:smart_attendance/globals.dart' as globals;
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+//import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/database_helper.dart';
 
 class Login extends StatefulWidget {
@@ -26,27 +26,21 @@ class Login extends StatefulWidget {
   _LoginState createState() => new _LoginState();
 }
 
-
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email, _password;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  @override
+/*  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
 
-
-
-
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }
-
-
+  }*/
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -92,7 +86,6 @@ class _LoginState extends State<Login> {
           context,
           MaterialPageRoute(builder: (context) => admin()),
         );
-
       } else if (snapshot.data['role'] == 'teacher') {
         globals.name = snapshot.data['name'];
         globals.post = snapshot.data['post'];
@@ -147,26 +140,23 @@ class _LoginState extends State<Login> {
     return new Scaffold(
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
-      appBar:AppBar(
+      appBar: AppBar(
         title: Text('LogIn'),
         backgroundColor: Colors.indigo,
         automaticallyImplyLeading: false,
       ),
-      body:
-      Center(
+      body: Center(
         child: Container(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-
-             child: Form(
-
-              key: _formKey,
-              child: Column(
-
-                children: <Widget>[
-
-                  SizedBox(height: 10,),
-                /* new Container(
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    /* new Container(
                 width: 180,
                 height: 180,
                 decoration: new BoxDecoration(
@@ -175,94 +165,108 @@ class _LoginState extends State<Login> {
                     fit: BoxFit.fitHeight,
                   ),
                   ),),*/
-                  SizedBox(height: 10,),
-                  new Container(
-                    child: Text("WELCOME",style:TextStyle(fontFamily: 'poppins',fontWeight: FontWeight.bold,fontSize: 30),)
-
-                    ,
-
-                  ),
-                  SizedBox(height: 5,),
-              new Container(
-                child: Text("Login With the provided Institution Details",style:TextStyle(fontFamily: 'poppins',fontSize: 15),)
-
-                ,
-
-              ),
-              //initialValue: 'Input text',
-                  SizedBox(height: 30,),
-
-              Container(
-                width: screenSize.width/1.2,
-                child: new TextFormField(
-
-                  cursorColor: Colors.indigo,
-                  style: TextStyle(fontSize: 20, color: Colors.indigo),
-                  decoration: InputDecoration(
-                   // hintText: 'Please enter your email',
-                    hintStyle: TextStyle(color: Colors.indigo, fontSize: 20),
-                    labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.indigo, fontSize: 20),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
+                    SizedBox(
+                      height: 10,
                     ),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.indigo[400])
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.indigo[400])
-                    ),),
-                      //hintText: "Email",
-
-                      obscureText: false,
-                      //textInputType: TextInputType.text,
-                      //textStyle: textStyle,
-                     // textFieldColor: textFieldColor,
-                      //icon: Icons.mail_outline,
-                      //iconColor: Colors.black,
-                      //bottomMargin: 20.0,
-                      validator: validations.validateEmail,
-                      onSaved: (input) => _email = input,
-                    ),
-              ),
-                  SizedBox(height: 30,),
-                  Container(
-                    width: screenSize.width/1.2,
-                  child:new TextFormField(
-                    cursorColor: Colors.indigo,
-                    style: TextStyle(fontSize: 20, color: Colors.indigo),
-                    decoration: InputDecoration(
-                      // hintText: 'Please enter your email',
-                      hintStyle: TextStyle(color: Colors.indigo, fontSize: 20),
-                      labelText: 'Password',
-                      labelStyle: TextStyle(color: Colors.indigo, fontSize: 20),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)
+                    new Container(
+                      child: Text(
+                        "WELCOME",
+                        style: TextStyle(
+                            fontFamily: 'poppins',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.indigo[400])
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    new Container(
+                      child: Text(
+                        "Login With the provided Institution Details",
+                        style: TextStyle(fontFamily: 'poppins', fontSize: 15),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.indigo[400])
-                      ),),
-                    //hintText: "Password",
-                    obscureText: true,
-                    //textInputType: TextInputType.text,
-                   // textStyle: textStyle,
-                    //textFieldColor: textFieldColor,
-                    //icon: Icons.lock_open,
-                    //iconColor: Colors.black,
-                    //bottomMargin: 30.0,
-                   // validator: validations.validatePassword,
-                    onSaved: (input) => _password = input,
-                  ),
-                  ),
+                    ),
+                    //initialValue: 'Input text',
+                    SizedBox(
+                      height: 30,
+                    ),
+
+                    Container(
+                      width: screenSize.width / 1.2,
+                      child: new TextFormField(
+                        cursorColor: Colors.indigo,
+                        style: TextStyle(fontSize: 20, color: Colors.indigo),
+                        decoration: InputDecoration(
+                          // hintText: 'Please enter your email',
+                          hintStyle:
+                              TextStyle(color: Colors.indigo, fontSize: 20),
+                          labelText: 'Email',
+                          labelStyle:
+                              TextStyle(color: Colors.indigo, fontSize: 20),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.indigo[400])),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.indigo[400])),
+                        ),
+                        //hintText: "Email",
+
+                        obscureText: false,
+                        //textInputType: TextInputType.text,
+                        //textStyle: textStyle,
+                        // textFieldColor: textFieldColor,
+                        //icon: Icons.mail_outline,
+                        //iconColor: Colors.black,
+                        //bottomMargin: 20.0,
+                       // validator: validations.validateEmail,
+                        onSaved: (input) => _email = input,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      width: screenSize.width / 1.2,
+                      child: new TextFormField(
+                        cursorColor: Colors.indigo,
+                        style: TextStyle(fontSize: 20, color: Colors.indigo),
+                        decoration: InputDecoration(
+                          // hintText: 'Please enter your email',
+                          hintStyle:
+                              TextStyle(color: Colors.indigo, fontSize: 20),
+                          labelText: 'Password',
+                          labelStyle:
+                              TextStyle(color: Colors.indigo, fontSize: 20),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.indigo[400])),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.indigo[400])),
+                        ),
+                        //hintText: "Password",
+                        obscureText: true,
+                        //textInputType: TextInputType.text,
+                        // textStyle: textStyle,
+                        //textFieldColor: textFieldColor,
+                        //icon: Icons.lock_open,
+                        //iconColor: Colors.black,
+                        //bottomMargin: 30.0,
+                        // validator: validations.validatePassword,
+                        onSaved: (input) => _password = input,
+                      ),
+                    ),
 //              TextFormField(
 ////                validator: (input) {
 ////                  if (input.isEmpty) {
@@ -273,62 +277,55 @@ class _LoginState extends State<Login> {
 //
 //                onSaved: (input) => _email = input,
 //              ),
-                  SizedBox(height: 30,),
-                  new RoundedButton(
-                    buttonName: "LOGIN",
-                    onTap: checkNet,
-                    width: screenSize.width/2,
-                    height: 50.0,
-                    bottomMargin: 10.0,
-                    borderWidth: 0.0,
-                    buttonColor: primaryColor,
-                  ),
-                ],
-              )),
-           ),
-    ),
-      ),);
+                    SizedBox(
+                      height: 30,
+                    ),
+                    new RoundedButton(
+                      buttonName: "LOGIN",
+                      onTap: checkNet,
+                      width: screenSize.width / 2,
+                      height: 50.0,
+                      bottomMargin: 10.0,
+                      borderWidth: 0.0,
+                      buttonColor: primaryColor,
+                    ),
+                  ],
+                )),
+          ),
+        ),
+      ),
+    );
   }
-
-
-
-
-
-
 
   void signIn() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       try {
-
-
-
         FirebaseUser user = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: _email, password: _password);
 
-        _scaffoldKey.currentState.showSnackBar(
-            new SnackBar(duration: new Duration(seconds: 20), content:
-            new Row(
-              children: <Widget>[
-                new CircularProgressIndicator(),
-                new Text("  Loging-In...")
-              ],
-            ),
-            ));
+        _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          duration: new Duration(seconds: 20),
+          content: new Row(
+            children: <Widget>[
+              new CircularProgressIndicator(),
+              new Text("  Loging-In...")
+            ],
+          ),
+        ));
         globals.uid = user.uid;
         debugPrint("printing uid   ${globals.uid}");
         checkRole();
         debugPrint("Role checking done");
       } catch (e) {
-        _scaffoldKey.currentState.showSnackBar(
-            new SnackBar(duration: new Duration(seconds: 4), content:
-            new Row(
-              children: <Widget>[
-
-                new Text("Invalid email id or password entered"),
-              ],
-            ),
-            ));
+        _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          duration: new Duration(seconds: 4),
+          content: new Row(
+            children: <Widget>[
+              new Text("Invalid email id or password entered"),
+            ],
+          ),
+        ));
         print(e.message);
 
 //        showInSnackBar(e.message.toString());
@@ -345,15 +342,14 @@ class _LoginState extends State<Login> {
     } on SocketException catch (_) {
       debugPrint('not connected');
 
-      _scaffoldKey.currentState.showSnackBar(
-          new SnackBar(duration: new Duration(seconds: 4), content:
-          new Row(
-            children: <Widget>[
-              new Text("Please check your internet connection!")
-            ],
-          ),
-          ));
+      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+        duration: new Duration(seconds: 4),
+        content: new Row(
+          children: <Widget>[
+            new Text("Please check your internet connection!")
+          ],
+        ),
+      ));
     }
-
-
-}}
+  }
+}

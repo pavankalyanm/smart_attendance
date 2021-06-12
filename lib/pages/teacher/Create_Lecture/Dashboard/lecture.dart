@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_attendance/pages/teacher/Create_Lecture/dashboard/info.dart';
 import 'package:smart_attendance/pages/teacher/Create_Lecture/dashboard/attendance.dart';
 import 'package:smart_attendance/pages/teacher/Create_Lecture/dashboard/generate.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+//import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
 import 'package:smart_attendance/globals.dart' as globals;
 
@@ -12,35 +12,27 @@ import 'package:smart_attendance/pages/teacher/Create_Lecture/dashboard/save_att
 import 'package:smart_attendance/theme/style.dart' as style;
 import '';
 
-
-
-
-
 class Lecture extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return LectureState();
   }
 }
+
 class LectureState extends State<Lecture> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  @override
+/*  @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
 
-
-
-
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }
-
-
+  }*/
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -56,50 +48,43 @@ class LectureState extends State<Lecture> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Do you want to stop attendance ?"),
-
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
 
             new FlatButton(
-
               child: new Text("No"),
-              onPressed: ()  {
-
-
+              onPressed: () {
                 Navigator.of(context).pop();
-
-
-
-
               },
             ),
             new FlatButton(
-
               child: new Text("Yes"),
               onPressed: () async {
+                _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                  duration: new Duration(seconds: 20),
+                  content: new Row(
+                    children: <Widget>[
+                      new CircularProgressIndicator(),
+                      new Text("  Signing-In...")
+                    ],
+                  ),
+                ));
 
-                _scaffoldKey.currentState.showSnackBar(
-                    new SnackBar(duration: new Duration(seconds: 20), content:
-                    new Row(
-                      children: <Widget>[
-                        new CircularProgressIndicator(),
-                        new Text("  Signing-In...")
-                      ],
-                    ),
-                    ));
+                Firestore.instance
+                    .collection("class")
+                    .document("${globals.classCode}")
+                    .collection("lectureID_qrCode")
+                    .document("${globals.qrId}")
+                    .delete();
 
-                Firestore.instance.collection("class").document("${globals.classCode}").collection("lectureID_qrCode").document("${globals.qrId}").delete();
-
-
-
-        for (int i = 0; i < globals.studentDocumentId.length; i++) {
-          Firestore.instance.collection("attendance").document("${globals.attendance_id}")
-              .collection("attendance").document(globals.studentDocumentId[i])
-              .delete();
-
-        }
-
-
+                for (int i = 0; i < globals.studentDocumentId.length; i++) {
+                  Firestore.instance
+                      .collection("attendance")
+                      .document("${globals.attendance_id}")
+                      .collection("attendance")
+                      .document(globals.studentDocumentId[i])
+                      .delete();
+                }
 
 //                Firestore.instance.collection('attendance').document("${globals.attendance_id}").collection("attendance").getDocuments().then((snapshot) {
 //                  for (DocumentSnapshot ds in snapshot.documents){
@@ -120,31 +105,17 @@ class LectureState extends State<Lecture> {
 //                Navigator.of(context).pop();
                 Navigator.pop(pageContext);
 
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => Teacher()),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Teacher()),
                 );
-
-
-
-
-
-
-
-
               },
             ),
-
-
-
-
-
           ],
         );
       },
     );
   }
-
-
 
   int _selectedTab = 0;
   final _pageOptions = [
@@ -156,66 +127,63 @@ class LectureState extends State<Lecture> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
-      theme: ThemeData(
-          primarySwatch: Colors.grey,
-          primaryTextTheme: TextTheme(
-            title: TextStyle(color: Colors.white),
-          )),
-      home: Scaffold(
-        key: _scaffoldKey,
-        appBar : AppBar(
-            title: Text("Click Icon to stop attendance"),
-            automaticallyImplyLeading: false,
-            backgroundColor: style.primaryColor,
-            actions: <Widget>[
-        // action button
-        IconButton(
-
-        icon: Icon(Icons.close),
-        onPressed: () {
-          _showDialog(context);
-        },
-      ),]),
-        body: _pageOptions[_selectedTab],
-        bottomNavigationBar: new Theme(
-    data: Theme.of(context).copyWith(
-    // sets the background color of the `BottomNavigationBar`
-    canvasColor: style.primaryColor,
-    // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-    primaryColor: Colors.black,
-    textTheme: Theme
-        .of(context)
-        .textTheme
-        .copyWith(caption: new TextStyle(color: Colors.yellow))),
-        child : new BottomNavigationBar(
-
-          currentIndex: _selectedTab,
-          onTap: (int index) {
-            setState(() {
-              _selectedTab = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('QR CODE'),
+        theme: ThemeData(
+            primarySwatch: Colors.grey,
+            primaryTextTheme: TextTheme(
+              title: TextStyle(color: Colors.white),
+            )),
+        home: Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+              title: Text("Click Icon to stop attendance"),
+              automaticallyImplyLeading: false,
+              backgroundColor: style.primaryColor,
+              actions: <Widget>[
+                // action button
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    _showDialog(context);
+                  },
+                ),
+              ]),
+          body: _pageOptions[_selectedTab],
+          bottomNavigationBar: new Theme(
+            data: Theme.of(context).copyWith(
+                // sets the background color of the `BottomNavigationBar`
+                canvasColor: style.primaryColor,
+                // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+                primaryColor: Colors.black,
+                textTheme: Theme.of(context)
+                    .textTheme
+                    .copyWith(caption: new TextStyle(color: Colors.yellow))),
+            child: new BottomNavigationBar(
+              currentIndex: _selectedTab,
+              onTap: (int index) {
+                setState(() {
+                  _selectedTab = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text('QR CODE'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.category),
+                  title: Text('INFO'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.search),
+                  title: Text('ATTENDENCE'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.file_download),
+                  title: Text('DOWNLOAD'),
+                ),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.category),
-              title: Text('INFO'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              title: Text('ATTENDENCE'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.file_download),
-
-              title: Text('DOWNLOAD'),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }}
+          ),
+        ));
+  }
+}
