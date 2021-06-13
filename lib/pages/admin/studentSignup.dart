@@ -184,7 +184,7 @@ class _studentSignupState extends State<studentSignup> {
   TextEditingController  nameInputController;
   TextEditingController academicyrInputController;
   TextEditingController idInputController;
-
+  TextEditingController classcodeInputController;
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
@@ -197,6 +197,7 @@ class _studentSignupState extends State<studentSignup> {
   initState() {
     nameInputController = new TextEditingController();
     regInputController = new TextEditingController();
+    classcodeInputController=new TextEditingController();
     academicyrInputController = new TextEditingController();
     idInputController = new TextEditingController();
     emailInputController = new TextEditingController();
@@ -284,6 +285,7 @@ class _studentSignupState extends State<studentSignup> {
                   (_) => false),
           nameInputController.clear(),
           academicyrInputController.clear(),
+          classcodeInputController.clear(),
           idInputController.clear(),
           emailInputController.clear(),
           pwdInputController.clear(),
@@ -366,6 +368,19 @@ class _studentSignupState extends State<studentSignup> {
                             labelText: 'Roll.no*'),//ID*
                         controller: idInputController,
                         validator:idValidator,
+                      ),
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Classcode*'),//ID*
+                        controller: classcodeInputController,
+
                       ),
                       SizedBox(height: 10,),
                       TextFormField(
