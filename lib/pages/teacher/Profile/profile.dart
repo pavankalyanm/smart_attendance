@@ -65,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: <Widget>[
                 Card(
                   child: ListTile(
-                    leading: FlutterLogo(size: 56.0),
+                    leading: Image.asset("assets/res/teacher.png"),
                     title: Text('${globals.name}'),
                     subtitle: Text('${globals.post}'),
                   ),
@@ -75,10 +75,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 Card(
                     child: ListTile(
                         title: Text("Designation   :  ${globals.post}"))),
+                Card(
+                    child: ListTile(
+                        title: Text("Department   :  ${globals.dept}"))),
+
               ],
             ),
           ),
-          ElevatedButton(
+          /*ElevatedButton(
             style: ButtonStyle(
               backgroundColor:
                   MaterialStateProperty.all<Color>(style.primaryColor),
@@ -91,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
               'LOGOUT',
               style: TextStyle(color: Colors.white),
             ),
-          )
+          )*/
         ],
       ),
     );

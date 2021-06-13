@@ -69,7 +69,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text('Attended Lectures'),
+        title: Container(
+          alignment: Alignment.center,
+          child: Text('Profile',
+              style: TextStyle(
+                color: Colors.black,
+              )
+          ),
+        ),
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
       ),
       body: Column(children: [
@@ -79,37 +87,32 @@ class _ProfilePageState extends State<ProfilePage> {
               Container(
                 child: Card(
                   child: ListTile(
-                    leading: FlutterLogo(size: 56.0),
+                    leading: Image.asset("assets/res/student.png"),
                     title: Text('${globals.name}'),
-                    subtitle: Text('Click to update photo'),
+                    subtitle: Text('${globals.id}'),
                   ),
                 ),
               ),
               SizedBox(height: 40.0),
               Center(child: Text("User Details :-")),
-              Card(
-                  child: ListTile(
-                      title: Text("Under faculty   :  ${globals.faculty}"))),
-              Card(
-                  child: ListTile(
-                      title: Text("Programme  :  ${globals.programme}"))),
-              Card(
-                  child: ListTile(title: Text("Branch  :  ${globals.branch}"))),
-              Card(child: ListTile(title: Text("Class  :  ${globals.clas}"))),
-              Card(child: ListTile(title: Text("Section  :  ${globals.sec}"))),
-              Card(
-                  child: ListTile(title: Text("Student Id  :  ${globals.id}"))),
+              //Card(child: ListTile(title: Text("Under faculty   :  ${globals.faculty}"))),
+              Card(child: ListTile(title: Text("Class code :  ${globals.clas}"))),
+              Card(child: ListTile(title: Text("Academic Year  : ${globals.academicyear}"))),
+              Card(child: ListTile(title: Text("Programme  :  ${globals.programme}"))),
+              Card(child: ListTile(title: Text("Branch  :  ${globals.branch}"))),
+              //Card(child: ListTile(title: Text("Section  :  ${globals.sec}"))),
+              Card(child: ListTile(title: Text("Student Id  :  ${globals.id}"))),
               SizedBox(height: 40.0),
             ],
           ),
         ),
-        ElevatedButton(
+        /*ElevatedButton(
           onPressed: () {
             signOut();
             // Respond to button press
           },
           child: Text('LOGOUT'),
-        )
+        )*/
       ]),
     );
   }

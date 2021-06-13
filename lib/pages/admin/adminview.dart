@@ -2,12 +2,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:smart_attendance/pages/admin/changepswd.dart';
+import 'package:smart_attendance/pages/admin/classCodes.dart';
 import 'package:smart_attendance/pages/admin/studentSignup.dart';
 import 'package:smart_attendance/pages/admin/teacherSignup.dart';
 import 'package:smart_attendance/services/logout.dart' as logout;
 import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/theme/style.dart' as style;
 import 'package:smart_attendance/services/logout.dart';
+import 'package:smart_attendance/pages/admin/courseDetails.dart';
+
 
 
 
@@ -129,132 +132,178 @@ class _adminState extends State<admin> {
                 _showDialog(context);
               },
             ),]),
-      body: SafeArea(
-        child: Container(
-          // we will give media query height
-          // double.infinity make it big as my parent allows
-          // while MediaQuery make it big as per the screen
+      body: Container(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: SafeArea(
+          child: Container(
+            // we will give media query height
+            // double.infinity make it big as my parent allows
+            // while MediaQuery make it big as per the screen
 
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
-          child: Column(
-            // even space distribution
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text(
-                    "Welcome",
-                    style: TextStyle(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+            child: Column(
+              // even space distribution
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "Welcome",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+
+                      ),
+
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text("Hi Admin!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 30,
-
-                    ),
-
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text("Hi Admin!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    ),)
-                ],
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height / 3,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/res/jntu.png")
-                    )
+                      fontSize: 20,
+                      ),)
+                  ],
                 ),
-              ),
-
-              Column(
-                children: <Widget>[
-                  // the login button
-                  MaterialButton(
-                    minWidth: double.infinity,
-                    height: 60,
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => teacherSignup()));
-
-                    },
-                    color: style.primaryColor,
-
-                    // defining the shape
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                            //color: Colors.white
-                        ),
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(
-                      "Add Teacher",
-                      style: TextStyle(
-                          color: Colors.white,
-
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18
-                      ),
-                    ),
+                /*Container(
+                  height: MediaQuery.of(context).size.height / 3,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/res/jntu.png")
+                      )
                   ),
-                  // creating the signup button
-                  SizedBox(height:20),
-                  MaterialButton(
-                    minWidth: double.infinity,
-                    height: 60,
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> studentSignup()));
+                ),*/
 
-                    },
-                    color: style.primaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(
-                      "Add Student",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18
+                Column(
+                  children: <Widget>[
+                    // the login button
+                    MaterialButton(
+                      minWidth: double.infinity,
+                      height: 60,
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => teacherSignup()));
+
+                      },
+                      color: style.primaryColor,
+
+                      // defining the shape
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              //color: Colors.white
+                          ),
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Text(
+                        "Add Teacher",
+                        style: TextStyle(
+                            color: Colors.white,
+
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18
+                        ),
                       ),
                     ),
-                  ), SizedBox(height:20),
-                  MaterialButton(
-                    minWidth: double.infinity,
-                    height: 60,
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> changePassword()));
+                    // creating the signup button
+                    SizedBox(height:20),
+                    MaterialButton(
+                      minWidth: double.infinity,
+                      height: 60,
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> studentSignup()));
 
-                    },
-                    color: style.primaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(
-                      "Change Password",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18
+                      },
+                      color: style.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Text(
+                        "Add Student",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18
+                        ),
+                      ),
+                    ), SizedBox(height:20),
+                    MaterialButton(
+                      minWidth: double.infinity,
+                      height: 60,
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> changePassword()));
+
+                      },
+                      color: style.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Text(
+                        "Change Password",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18
+                        ),
                       ),
                     ),
-                  )
+                    SizedBox(height:20),
+                    MaterialButton(
+                      minWidth: double.infinity,
+                      height: 60,
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> courseDetails()));
 
-                ],
-              )
+                      },
+                      color: style.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Text(
+                        "Add Subjects",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18
+                        ),
+                      ),
+                    ),
+                    SizedBox(height:20),
+                    MaterialButton(
+                      minWidth: double.infinity,
+                      height: 60,
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> classCodes()));
+
+                      },
+                      color: style.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Text(
+                        "Add ClassCodes",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18
+                        ),
+                      ),
+                    )
+
+                  ],
+                )
 
 
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    );
+      ),);
   }
 }

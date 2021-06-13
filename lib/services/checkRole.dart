@@ -65,6 +65,7 @@ if (snapshot.data['role'] == 'admin') {
 globals.name = snapshot.data['name'];
 globals.post = snapshot.data['post'];
 globals.role = snapshot.data['role'];
+globals.dept=snapshot.data['dept'];
 globals.attendance_id = snapshot.data['attendance_id'];
 
 

@@ -93,7 +93,7 @@ class PreviousAttendanceState extends State<PreviousAttendance> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         child: ListTile(
-          title: Text("Lecture Subject : ${record.course_code}"),
+          title: Text("Subject : ${record.course_code}"),
           subtitle: Text("Attended on ${record.time_stamp}"),
         ),
       ),

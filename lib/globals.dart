@@ -11,6 +11,7 @@ String attendance_id;
 String courseName;
 String courseYear;
 String periods_num;
+String dept;
 
 List studentId = [];
 List studentDocumentId = [];

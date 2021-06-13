@@ -601,7 +601,10 @@ class _studentSignupState extends State<studentSignup> {
                       )*/
                     ],
                   ),
-                ))));
+                )
+            )
+        )
+    );
   }
 }
 
