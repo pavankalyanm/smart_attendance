@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:smart_attendance/pages/admin/adminview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smart_attendance/widgets/snackbar.dart';
 
 import '../../theme/style.dart';
 import '../../theme/style.dart';
@@ -251,17 +252,40 @@ class _teacherSignupState extends State<teacherSignup> {
     }
   }
 
-  final snackBar = SnackBar(
-    duration: new Duration(seconds: 1),
-    content: Text(
-      'Teacher Added Successfully',
-      style: TextStyle(color: Color(0xff11b719)),
-    ),
-  );
 
+
+
+  void showidalog(String val) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Succesfull"),
+            content: Text("$val"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Close"),
+                onPressed: () {
+                  nameInputController.clear();
+                  classInputController.clear();
+
+                  emailInputController.clear();
+                  deptInputController.clear();
+                  pwdInputController.clear();
+                  selecteddept=null;
+                  confirmPwdInputController.clear();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
 
   Future<void> registerUser() async {
+
     if (_registerFormKey.currentState.validate()) {
+
       if (pwdInputController.text ==
           confirmPwdInputController.text) {
         FirebaseAuth.instance
@@ -277,7 +301,7 @@ class _teacherSignupState extends State<teacherSignup> {
           "post": classInputController.text,
           "attendance_id":currentUser.uid,
           "role":role,
-          //"dept":deptInputController.text,
+          "dept":selecteddept,
           //"email": emailInputController.text,
 
 
@@ -287,56 +311,30 @@ class _teacherSignupState extends State<teacherSignup> {
             .then((result) => {
 
 
-          Scaffold.of(context).showSnackBar(snackBar),
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => admin(
-                    //title:
-                    // nameInputController
-                    //.text +
-                    //  "'s Tasks",
-                    //uid: currentUser.uid,
-                  )),
-                  (_) => false),
-          nameInputController.clear(),
-          classInputController.clear(),
-          idInputController.clear(),
-          emailInputController.clear(),
-          //deptInputController.clear(),
-          pwdInputController.clear(),
-          confirmPwdInputController.clear()
+          showidalog('user registered succesfully')
+
+
+
+
+
         })
-            .catchError((err) => print(err)))
-            .catchError((err) => print(err));
+            .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar)))
+            .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
       } else {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("Error"),
-                content: Text("The passwords do not match"),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text("Close"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
+        //showInSnackBar('Passwords are not matched');
+        _scaffoldKey.currentState.showSnackBar(showSnackBar('passwords not matcher').SnackBar);
       }
     }
 
   }
 
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
         appBar: AppBar(
           title: Text("Add Teacher"),
           backgroundColor: Colors.indigo,

@@ -1,15 +1,16 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
+import 'package:smart_attendance/pages/admin/addClasscode.dart';
 import 'package:smart_attendance/pages/admin/changepswd.dart';
-import 'package:smart_attendance/pages/admin/classCodes.dart';
+import 'package:smart_attendance/pages/admin/addClasscode.dart';
 import 'package:smart_attendance/pages/admin/studentSignup.dart';
 import 'package:smart_attendance/pages/admin/teacherSignup.dart';
 import 'package:smart_attendance/services/logout.dart' as logout;
 import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/theme/style.dart' as style;
 import 'package:smart_attendance/services/logout.dart';
-import 'package:smart_attendance/pages/admin/courseDetails.dart';
+import 'package:smart_attendance/pages/admin/addSubject.dart';
 
 
 
@@ -146,7 +147,7 @@ class _adminState extends State<admin> {
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
             child: Column(
               // even space distribution
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Column(
@@ -179,6 +180,10 @@ class _adminState extends State<admin> {
                       )
                   ),
                 ),*/
+
+                SizedBox(
+                  height:80,
+                ),
 
                 Column(
                   children: <Widget>[
@@ -277,7 +282,7 @@ class _adminState extends State<admin> {
                       minWidth: double.infinity,
                       height: 60,
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> classCodes()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> addClasscode()));
 
                       },
                       color: style.primaryColor,

@@ -40,13 +40,30 @@ class _changePasswordState extends State<changePassword> {
       FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
       //Pass in the password to updatePassword.
-      user.updatePassword(chpwdInputController.text).then((_){
-        print("Successfully changed password");
-        return showDialog(
+      user.updatePassword(chpwdInputController.text).then((result)=>{
+
+        showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text("Alert Dialog Box"),
-            content: Text("You have raised a Alert Dialog Box"),
+            title: Text("successful"),
+            content: Text("Password changed successfully"),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> admin()));
+
+                },
+                child: Text("ok"),
+              ),
+            ],
+          ),
+        ),
+      }).catchError((error){
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text("error"),
+            content: Text("Password can't be changed" + error.toString()),
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
@@ -58,8 +75,7 @@ class _changePasswordState extends State<changePassword> {
             ],
           ),
         );
-      }).catchError((error){
-        print("Password can't be changed" + error.toString());
+        //print("Password can't be changed" + error.toString());
         //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
       });
     }}

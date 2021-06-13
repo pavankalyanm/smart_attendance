@@ -31,6 +31,7 @@ dev_dependencies:
   animated_splash: ^1.0.0
   downloads_path_provider: ^0.1.0
   csv: ^5.0.0
+  flutter_launcher_icons: ^0.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -80,3 +81,9 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/applogo.jpg"

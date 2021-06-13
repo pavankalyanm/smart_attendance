@@ -4,6 +4,7 @@ import 'package:smart_attendance/pages/admin/adminview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_attendance/theme/style.dart' as color;
+import 'package:smart_attendance/widgets/snackbar.dart';
 
 /*class studentSignup extends StatelessWidget {
   const studentSignup({Key key}) : super(key: key);
@@ -184,7 +185,7 @@ class _studentSignupState extends State<studentSignup> {
   TextEditingController  nameInputController;
   TextEditingController academicyrInputController;
   TextEditingController idInputController;
-  TextEditingController classcodeInputController;
+
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
   TextEditingController confirmPwdInputController;
@@ -192,12 +193,13 @@ class _studentSignupState extends State<studentSignup> {
   String role='student';
   String selectedbranch;
   String selectedprogramme;
+  String selectedClassCode;
+  String currentUid;
 
   @override
   initState() {
     nameInputController = new TextEditingController();
     regInputController = new TextEditingController();
-    classcodeInputController=new TextEditingController();
     academicyrInputController = new TextEditingController();
     idInputController = new TextEditingController();
     emailInputController = new TextEditingController();
@@ -250,71 +252,112 @@ class _studentSignupState extends State<studentSignup> {
   }
 
 
+
+  void showidalog(String val) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Succesfull"),
+            content: Text("$val"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Close"),
+                onPressed: () {
+                  nameInputController.clear();
+                  idInputController.clear();
+                  selectedprogramme=null;
+                  emailInputController.clear();
+                 // deptInputController.clear();
+                  pwdInputController.clear();
+                  selectedbranch=null;
+                  confirmPwdInputController.clear();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
   Future<void> registerUser() async {
+
     if (_registerFormKey.currentState.validate()) {
+
       if (pwdInputController.text ==
           confirmPwdInputController.text) {
         FirebaseAuth.instance
             .createUserWithEmailAndPassword(
             email: emailInputController.text,
             password: pwdInputController.text)
-            .then((currentUser) => Firestore.instance
-            .collection("users")
-            .document(currentUser.uid)
-            .setData({
-          //"uid": currentUser.uid,
-          "name":  nameInputController.text,
-          "academicyear": academicyrInputController.text,
-          "id": idInputController.text,
-          "role":role,
-          "branch":selectedbranch,
-          "programme":selectedprogramme,
-          //"email": emailInputController.text,
-        })
+            .then((currentUser) =>
+
+
+              Firestore.instance
+                  .collection("users")
+                  .document(currentUid)
+                  .setData({
+                "name": nameInputController.text,
+
+                "id": idInputController.text,
+                "class_code": selectedClassCode,
+                "role": role,
+                "branch": selectedbranch,
+                "programme": selectedprogramme,
+                "academicyear": academicyrInputController.text,
+                //"email": emailInputController.text,
+
+              })
+
+
             .then((result) => {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => admin(
-                    //title:
-                    // nameInputController
-                    //.text +
-                    //  "'s Tasks",
-                    //uid: currentUser.uid,
-                  )),
-                  (_) => false),
-          nameInputController.clear(),
-          academicyrInputController.clear(),
-          classcodeInputController.clear(),
-          idInputController.clear(),
-          emailInputController.clear(),
-          pwdInputController.clear(),
-          regInputController.clear(),
-          confirmPwdInputController.clear()
+
+
+
+              addToClass(currentUser.uid),
+
+
+
+
+
         })
-            .catchError((err) => print(err)))
-            .catchError((err) => print(err));
+            .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar)))
+            .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
       } else {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("Error"),
-                content: Text("The passwords do not match"),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text("Close"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
+        //showInSnackBar('Passwords are not matched');
+        _scaffoldKey.currentState.showSnackBar(showSnackBar('passwords not matcher').SnackBar);
       }
     }
 
   }
+
+
+
+  Future<void> addToClass(String userid) async{
+
+    Map<String, String> classcode = {
+      "id":idInputController.text,
+      "name":nameInputController.text,
+
+    };
+
+    DocumentReference students = Firestore
+        .instance
+        .collection('class')
+        .document("$selectedClassCode").collection('student').document(currentUid);
+    students
+        .setData(classcode)
+        .then((value) => {
+      showidalog('Student added succesfully'),
+    })
+        .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
+
+}
+
+
+
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -344,19 +387,7 @@ class _studentSignupState extends State<studentSignup> {
                         validator: nameValidator,
                       ),
                       SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
 
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Academicyear'),
-                        controller: academicyrInputController,
-                        //validator: classValidator,
-                      ),
-                      SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
                             border: new OutlineInputBorder(
@@ -370,180 +401,94 @@ class _studentSignupState extends State<studentSignup> {
                         validator:idValidator,
                       ),
                       SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
 
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Classcode*'),//ID*
-                        controller: classcodeInputController,
+                      //class code
 
-                      ),
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
+                      StreamBuilder<QuerySnapshot>(
+                          stream: Firestore.instance.collection("class").snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData)
+                              return CircularProgressIndicator();
+                            else {
 
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Regulation'),
-                        controller: regInputController,
-                        //validator: classValidator,
-                      ),
-                      SizedBox(height: 10.0),
-                      new StreamBuilder<QuerySnapshot>(
-                          stream: Firestore.instance.collection('department').snapshots(),
-                          builder: (context, snapshot){
-                            //if (!snapshot.hasData) return const Center(
-                            // child: const CupertinoActivityIndicator(),
-                            // );
-                            var length = snapshot.data.documents.length;
-                            DocumentSnapshot ds = snapshot.data.documents[length - 1];
-                            // _queryCat = snapshot.data.documents;
-                            return new Container(
-                              padding: EdgeInsets.only(bottom: 16.0),
-                              //width: screenSize.width*0.9,
-                              child: new Row(
+
+                              List<DropdownMenuItem> classCodes = [];
+                              for (int i = 0; i < snapshot.data.documents.length; i++) {
+                                DocumentSnapshot snap = snapshot.data.documents[i];
+                                classCodes.add(
+                                  DropdownMenuItem(
+                                    child: Text(
+                                      snap.documentID,
+                                     // style: TextStyle(color: style.primaryColor),
+                                    ),
+                                    value: "${snap.documentID}",
+                                  ),
+                                );
+                              }
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   new Expanded(
+
                                       flex: 2,
                                       child: new Container(
-                                        padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
-                                        child: new Text("Branch"),
-                                      )
-                                  ),
+                                        padding:
+                                        EdgeInsets.fromLTRB(12.0, 10.0, 10.0, 10.0),
+                                        child: new Text("Class Code"),
+                                      )),
+
+//                          Icon(FontAwesomeIcons.coins,
+//                              size: 25.0, color: Color(0xff11b719)),
                                   new Expanded(
                                     flex: 4,
-                                    child:new InputDecorator(
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(
+                            child:new InputDecorator(
+                            decoration: const InputDecoration(
+                            border: OutlineInputBorder(
 
-                                        ),
-                                        hintText: 'Choose branch',
-                                        hintStyle: TextStyle(
-                                          // color: Colors.black,
-                                          fontSize: 16.0,
-                                          //fontFamily: "OpenSans",
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                      isEmpty: selectedbranch == null,
-                                      child: DropdownButtonHideUnderline(
-                                      child: new DropdownButton(
-                                        value: selectedbranch,
-                                        isDense: true,
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            selectedbranch = newValue;
-                                            // dropDown = false;
-                                            print(selectedbranch);
-                                          });
-                                        },
-                                        items: snapshot.data.documents.map((DocumentSnapshot document) {
-                                          return new DropdownMenuItem<String>(
-                                              value: document.data['name'],
-                                              //controller: deptInputController,
-                                              child: new Container(
-                                                decoration: new BoxDecoration(
-                                                  //color: Colors.black,
-                                                    borderRadius: new BorderRadius.circular(20.0)
-                                                ),
-                                                height: 100.0,
-                                                padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
-                                                //color: primaryColor,
-                                                child: new Text(document.data['name']),
-                                              )
-                                          );
-                                        }).toList(),
-                                      ),
+                            ),
+                            hintText: 'Choose Programme',
+                            hintStyle: TextStyle(
+                            // color: Colors.black,
+                            fontSize: 16.0,
+                            //fontFamily: "OpenSans",
+                            fontWeight: FontWeight.normal,
+                            ),
+                            ),
 
-                                    ),),
-                                  ),
+                            child: DropdownButtonHideUnderline(
+                                    child: new DropdownButton(
+                                      items: classCodes,
+                                      onChanged: (classCodeValue) {
+
+
+                                        //globals.studentId.clear();
+                                        final snackBar = SnackBar(
+                                          duration: new Duration(seconds: 1),
+                                          content: Text(
+                                            'Selected Class Code is $classCodeValue',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        );
+                                        Scaffold.of(context).showSnackBar(snackBar);
+                                        setState(() {
+                                          selectedClassCode = classCodeValue;
+                                        });
+                                      },
+                                      value: selectedClassCode,
+                                      isExpanded: false,
+                                      hint: new Text(
+                                        "Choose Class Code",
+                                       // style: TextStyle(color: style.primaryColor),
+                                      ),
+                                    ),
+                                  ),),),
                                 ],
-                              ),
-                            );
-                          }
-                      ),
-                     // SizedBox(height: 10.0),
-                      new StreamBuilder<QuerySnapshot>(
-                          stream: Firestore.instance.collection('programme').snapshots(),
-                          builder: (context, snapshot){
-                            //if (!snapshot.hasData) return const Center(
-                            // child: const CupertinoActivityIndicator(),
-                            // );
-                            var length = snapshot.data.documents.length;
-                            DocumentSnapshot ds = snapshot.data.documents[length - 1];
-                            // _queryCat = snapshot.data.documents;
-                            return new Container(
-                              padding: EdgeInsets.only(bottom: 16.0),
-                              //width: screenSize.width*0.9,
-                              child: new Row(
-                                children: <Widget>[
-                                  new Expanded(
-                                      flex: 2,
-                                      child: new Container(
-                                        padding: EdgeInsets.fromLTRB(12.0,10.0,10.0,10.0),
-                                        child: new Text("Programme"),
-                                      )
-                                  ),
-                                  new Expanded(
-                                    flex: 4,
-                                    child:new InputDecorator(
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(
-
-                                        ),
-                                        hintText: 'Choose Programme',
-                                        hintStyle: TextStyle(
-                                          // color: Colors.black,
-                                          fontSize: 16.0,
-                                          //fontFamily: "OpenSans",
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                      isEmpty: selectedprogramme == null,
-                                      child: DropdownButtonHideUnderline(
-                                      child: new DropdownButton(
-                                        value: selectedprogramme,
-                                        isDense: true,
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            selectedprogramme = newValue;
-                                            // dropDown = false;
-                                            print(selectedprogramme);
-                                          });
-                                        },
-                                        items: snapshot.data.documents.map((DocumentSnapshot document) {
-                                          return new DropdownMenuItem<String>(
-                                              value: document.data['name'],
-                                              //controller: deptInputController,
-                                              child: new Container(
-                                                decoration: new BoxDecoration(
-                                                  //color: Colors.black,
-                                                    borderRadius: new BorderRadius.circular(20.0)
-                                                ),
-                                                height: 100.0,
-                                                padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
-                                                //color: primaryColor,
-                                                child: new Text(document.data['name']),
-                                              )
-                                          );
-                                        }).toList(),
-                                      ),
-
-                                      ),),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                      ),
-                     // SizedBox(height: 10,),
+                              );
+                            }
+                          }),
+                        SizedBox(height: 10,),
                       TextFormField(
                         decoration: InputDecoration(
                             border: new OutlineInputBorder(
@@ -616,10 +561,7 @@ class _studentSignupState extends State<studentSignup> {
                       )*/
                     ],
                   ),
-                )
-            )
-        )
-    );
+                ))));
   }
 }
 
