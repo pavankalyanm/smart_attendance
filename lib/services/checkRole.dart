@@ -53,7 +53,7 @@ DocumentSnapshot snapshot = await Firestore.instance
     .collection('users')
     .document('$uid')
     .get();
-debugPrint(snapshot.data['role']);
+//debugPrint(snapshot.data['role']);
 
 if (snapshot.data == null) {
 

@@ -62,7 +62,7 @@ class _TeacherState extends State<Teacher> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }*/
+  }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -73,7 +73,7 @@ class _TeacherState extends State<Teacher> {
       MaterialPageRoute(builder: (context) => ProfilePage()),
     );
     return true;
-  }
+  }*/
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -346,17 +346,35 @@ class _TeacherState extends State<Teacher> {
               },
               items: [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home,color: Colors.white,),
-                  title: Text('Generate',style: TextStyle(color: Colors.white),),
+                  icon: Icon(
+                    Icons.home,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Generate',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 BottomNavigationBarItem(
-                 // backgroundColor:Colors.white,
-                  icon: Icon(Icons.category,color: Colors.white,),
-                  title: Text('Previous Attendance',style: TextStyle(color: Colors.white),),
+                  // backgroundColor:Colors.white,
+                  icon: Icon(
+                    Icons.category,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Previous Attendance',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person_pin_circle,color: Colors.white,),
-                  title: Text('Profile',style: TextStyle(color: Colors.white),),
+                  icon: Icon(
+                    Icons.person_pin_circle,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Profile',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),

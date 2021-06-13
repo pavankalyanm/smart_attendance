@@ -42,15 +42,7 @@ class _LoginState extends State<Login> {
     super.dispose();
   }*/
 
-  bool myInterceptor(bool stopDefaultButtonEvent) {
-    print("BACK BUTTON!"); // Do some stuff.
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WelcomePage()),
-    );
-    return true;
-  }
+
 //  void showInSnackBar(String value) {
 //    _scaffoldKey.currentState
 //        .showSnackBar(new SnackBar(content: new Text(value)));

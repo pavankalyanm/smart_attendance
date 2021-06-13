@@ -40,7 +40,7 @@ class _GenerationState extends State<Generation> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }*/
+  }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -50,7 +50,7 @@ class _GenerationState extends State<Generation> {
       MaterialPageRoute(builder: (context) => Teacher()),
     );
     return true;
-  }
+  }*/
 
   void _showDialog() {
     // flutter defined function

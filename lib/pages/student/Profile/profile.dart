@@ -2,6 +2,7 @@
 //import 'package:smart_attendance/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
+import 'package:smart_attendance/pages/student/Join_Lecture/scan.dart';
 //import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
 //import 'package:smart_attendance/theme/style.dart';
@@ -14,6 +15,7 @@ import 'package:smart_attendance/globals.dart' as globals;
 //import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -40,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-/*  @override
+ /*@override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
@@ -50,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }*/
+  }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -60,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
       MaterialPageRoute(builder: (context) => Student()),
     );
     return true;
-  }
+  }*/
 
   bool autovalidate = false;
   Validations validations = new Validations();
@@ -74,8 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Text('Profile',
               style: TextStyle(
                 color: Colors.black,
-              )
-          ),
+              )),
         ),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
@@ -96,12 +97,20 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 40.0),
               Center(child: Text("User Details :-")),
               //Card(child: ListTile(title: Text("Under faculty   :  ${globals.faculty}"))),
-              Card(child: ListTile(title: Text("Class code :  ${globals.clas}"))),
-              Card(child: ListTile(title: Text("Academic Year  : ${globals.academicyear}"))),
-              Card(child: ListTile(title: Text("Programme  :  ${globals.programme}"))),
-              Card(child: ListTile(title: Text("Branch  :  ${globals.branch}"))),
+              Card(
+                  child:
+                      ListTile(title: Text("Class code :  ${globals.clas}"))),
+              Card(
+                  child: ListTile(
+                      title: Text("Academic Year  : ${globals.academicyear}"))),
+              Card(
+                  child: ListTile(
+                      title: Text("Programme  :  ${globals.programme}"))),
+              Card(
+                  child: ListTile(title: Text("Branch  :  ${globals.branch}"))),
               //Card(child: ListTile(title: Text("Section  :  ${globals.sec}"))),
-              Card(child: ListTile(title: Text("Student Id  :  ${globals.id}"))),
+              Card(
+                  child: ListTile(title: Text("Student Id  :  ${globals.id}"))),
               SizedBox(height: 40.0),
             ],
           ),

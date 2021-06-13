@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_attendance/globals.dart' as globals;
+import 'package:smart_attendance/pages/student/Join_Lecture/scan.dart';
 //import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 
@@ -37,7 +38,7 @@ class PreviousAttendanceState extends State<PreviousAttendance> {
     Navigator.pop(context);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Student()),
+      MaterialPageRoute(builder: (context) => ScanScreen()),
     );
     return true;
   }

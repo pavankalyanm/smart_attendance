@@ -13,10 +13,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 
 import 'package:smart_attendance/services/validations.dart';
+import 'package:smart_attendance/widgets/snackbar.dart';
 
 
 
-
+final _scaffoldKey=GlobalKey<ScaffoldState>();
 
 class SaveAttendance extends StatefulWidget {
   @override
@@ -34,12 +35,59 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 //        .showSnackBar(new SnackBar(content: new Text(value)));
 //  }
 
+  static Future _saveAttendanceToFile() async {
+
+    List<List<String>> data=[['Id','Attendance']];
+
+    for (int i = 0; i <globals.studentDocumentId.length; i++) {
+
+      debugPrint("creating list , index : $i ");
+
+      DocumentSnapshot snapshot= await Firestore.instance.collection("attendance").document('${globals.attendance_id}').collection("attendance").document("${globals.studentDocumentId[i]}").get();
+      if (snapshot.data == null) {debugPrint("No data in student id ${globals.studentDocumentId[i]} ");}
+      else{
+        //globals.attendanceDetails.putIfAbsent("${snapshot.data['id']}" , ()=> "${snapshot.data['attendance']}");
+        data.add(['${snapshot.data['id']}','${snapshot.data['attendance']}']);
+      }
+
+
+    }
+    Directory appDocDir = await getExternalStorageDirectory();
+    String csvData = ListToCsvConverter().convert(data);
+
+    String file_name="${globals.classCode}_${globals.courseName}_${new DateTime.now()}.csv";
+    final file = File('${appDocDir.path}/$file_name');
+    //  final text = "${globals.attendanceDetails}";
+    await file.writeAsString(csvData);
+
+    final snackBar = SnackBar(
+      duration: new Duration(seconds: 8),
+      behavior: SnackBarBehavior.floating,
+      content: Text(
+        'File successfully downloaded to $file',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+
+    debugPrint('saved to $file');
+
+    // to fire store
+    toFirestore.upload(file,file_name);
+
+
+  }
+
+
 
 
   @override
   Widget build(BuildContext context) {
 
     return new Scaffold(
+      key: _scaffoldKey,
         appBar: new AppBar(
           backgroundColor: Colors.white,
           title: Container(
@@ -79,7 +127,7 @@ class _SaveAttendanceState extends State<SaveAttendance> {
                           splashColor: Color.fromRGBO(248, 177, 1, 1),
                           // splash color
                           onTap: () {
-                            saveAttendance._saveAttendanceToFile();
+                            _saveAttendanceToFile();
                           },
                           // button pressed
                           child: Column(
@@ -115,41 +163,8 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 
 
 
-class saveAttendance{
-
-  static Future _saveAttendanceToFile() async {
-
-    List<List<String>> data=[['Id','Attendance']];
-
-    for (int i = 0; i <globals.studentDocumentId.length; i++) {
-
-      debugPrint("creating list , index : $i ");
-
-      DocumentSnapshot snapshot= await Firestore.instance.collection("attendance").document('${globals.attendance_id}').collection("attendance").document("${globals.studentDocumentId[i]}").get();
-      if (snapshot.data == null) {debugPrint("No data in student id ${globals.studentDocumentId[i]} ");}
-      else{
-        //globals.attendanceDetails.putIfAbsent("${snapshot.data['id']}" , ()=> "${snapshot.data['attendance']}");
-        data.add(['${snapshot.data['id']}','${snapshot.data['attendance']}']);
-      }
 
 
-    }
-    Directory appDocDir = await getExternalStorageDirectory();
-    String csvData = ListToCsvConverter().convert(data);
-
-    String file_name="${globals.classCode}_${globals.courseName}_${new DateTime.now()}.csv";
-    final file = File('${appDocDir.path}/$file_name');
-    //  final text = "${globals.attendanceDetails}";
-    await file.writeAsString(csvData);
-    debugPrint('saved to $file');
-
-  // to fire store
-    toFirestore.upload(file,file_name);
-
-
-  }
-
-}
 
 class toFirestore{
 

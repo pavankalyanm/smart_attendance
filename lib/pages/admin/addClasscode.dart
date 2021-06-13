@@ -25,6 +25,8 @@ class _addClasscodeState extends State<addClasscode> {
 
 
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
+
+
   TextEditingController  classcodeInputController;
   TextEditingController academicyrInputController;
 
@@ -104,7 +106,7 @@ class _addClasscodeState extends State<addClasscode> {
         .then((value) => {
       showidalog('class code added succesfully'),
     })
-        .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
+        .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err"));
 }
 
 

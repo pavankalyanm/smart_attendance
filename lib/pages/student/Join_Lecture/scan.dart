@@ -33,7 +33,7 @@ class _ScanState extends State<ScanScreen> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }*/
+  }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -43,7 +43,7 @@ class _ScanState extends State<ScanScreen> {
       MaterialPageRoute(builder: (context) => Student()),
     );
     return true;
-  }
+  }*/
 
   void _showDialogWrong() {
     // flutter defined function

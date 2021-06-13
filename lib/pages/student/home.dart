@@ -13,6 +13,7 @@ import 'package:smart_attendance/services/validations.dart';
 import 'package:smart_attendance/pages/welcome.dart';
 import 'package:smart_attendance/theme/style.dart' as style;
 import 'package:smart_attendance/pages/Login/login1.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Student extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _StudentState extends State<Student> {
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
-  }*/
+  }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
     print("BACK BUTTON!"); // Do some stuff.
@@ -50,9 +51,15 @@ class _StudentState extends State<Student> {
       MaterialPageRoute(builder: (context) => WelcomePage()),
     );
     return true;
-  }
+  }*/
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
 
   void _showDialog(BuildContext pageContext) {
     // flutter defined function
@@ -313,16 +320,25 @@ class _StudentState extends State<Student> {
               },
               items: [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  title: Text('ScanQR'),
+                  icon: Icon(Icons.home, color: Colors.white),
+                  title: Text(
+                    'ScanQR',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.category),
-                  title: Text('Previous Attendance'),
+                  icon: Icon(Icons.category, color: Colors.white),
+                  title: Text(
+                    'Previous Attendance',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person_pin_circle),
-                  title: Text('Profile'),
+                  icon: Icon(Icons.person_pin_circle, color: Colors.white),
+                  title: Text(
+                    'Profile',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),

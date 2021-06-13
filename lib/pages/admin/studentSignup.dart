@@ -321,11 +321,11 @@ class _studentSignupState extends State<studentSignup> {
 
 
         })
-            .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar)))
-            .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
+            .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err")))
+            .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err"));
       } else {
         //showInSnackBar('Passwords are not matched');
-        _scaffoldKey.currentState.showSnackBar(showSnackBar('passwords not matcher').SnackBar);
+        showInSnackbar.showSnackbar(_scaffoldKey, "Passwords Not matched");
       }
     }
 
@@ -350,7 +350,7 @@ class _studentSignupState extends State<studentSignup> {
         .then((value) => {
       showidalog('Student added succesfully'),
     })
-        .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
+        .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err"));
 
 }
 

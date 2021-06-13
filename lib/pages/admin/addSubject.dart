@@ -15,11 +15,15 @@ class courseDetails extends StatefulWidget {
 
 class _courseDetailsState extends State<courseDetails> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
+
+
   TextEditingController  coursecodeInputController;
   TextEditingController coursenameInputController;
 
   String selectedsem;
   String selectedclasscode;
+
+
   @override
   initState() {
     coursecodeInputController= new TextEditingController();
@@ -50,6 +54,8 @@ class _courseDetailsState extends State<courseDetails> {
           );
         });
   }
+
+
   Future<void> addCoursecode() async{
 
     Map<String, String> coursecode = {
@@ -59,16 +65,17 @@ class _courseDetailsState extends State<courseDetails> {
       "classcode": selectedclasscode,
 
     };
-  DocumentReference users = Firestore
+  DocumentReference subject = Firestore
       .instance
       .collection('semester')
       .document("$selectedsem").collection('courses').document("${coursecodeInputController.text}");
-      users
+      subject
           .setData(coursecode)
       .then((value) => {
   showidalog('subject added succesfully'),
+      //showInSnackbar.showSnackbar(_scaffoldKey, "added"),
   })
-      .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
+      .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err"));//_scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
 }
 
 
@@ -143,6 +150,7 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
                         Scaffold.of(context).showSnackBar(snackBar);
                         setState(() {
                           selectedclasscode= classCodeValue;
+                          debugPrint('$selectedclasscode');
                         });
                       },
                       value: selectedclasscode,
@@ -251,7 +259,7 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
         minWidth: 160.0,
         height: 60,
         onPressed: (){
-          courseDetails();
+          addCoursecode();
         },
         color: Colors.indigoAccent,
         shape: RoundedRectangleBorder(

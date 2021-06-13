@@ -318,11 +318,11 @@ class _teacherSignupState extends State<teacherSignup> {
 
 
         })
-            .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar)))
-            .catchError((err) => _scaffoldKey.currentState.showSnackBar(showSnackBar('$err').SnackBar));
+            .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err")))
+            .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err"));
       } else {
         //showInSnackBar('Passwords are not matched');
-        _scaffoldKey.currentState.showSnackBar(showSnackBar('passwords not matcher').SnackBar);
+        showInSnackbar.showSnackbar(_scaffoldKey, "Passwords Not matched");
       }
     }
 

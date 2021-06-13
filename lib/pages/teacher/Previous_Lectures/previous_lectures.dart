@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_attendance/globals.dart' as globals;
+import 'package:smart_attendance/pages/teacher/Create_Lecture/generation_data.dart';
 //import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
 
@@ -33,7 +34,7 @@ class PreviousLecturesState extends State<PreviousLectures> {
     Navigator.pop(context);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Teacher()),
+      MaterialPageRoute(builder: (context) => Generation()),
     );
     return true;
   }
@@ -100,7 +101,7 @@ class PreviousLecturesState extends State<PreviousLectures> {
             color: Colors.black,
             icon: Icon(Icons.file_download),
             onPressed: () {
-             // _showDialog(context);
+              // _showDialog(context);
             },
           ),
           onTap: () {
