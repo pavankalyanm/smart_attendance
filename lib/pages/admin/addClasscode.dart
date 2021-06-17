@@ -65,7 +65,7 @@ class _addClasscodeState extends State<addClasscode> {
   context: context,
   builder: (BuildContext context) {
   return AlertDialog(
-  title: Text("Succesfull"),
+  title: Text("Succesful"),
   content: Text("$val"),
   actions: <Widget>[
   FlatButton(
@@ -118,7 +118,7 @@ class _addClasscodeState extends State<addClasscode> {
     return Scaffold(
         key:_scaffoldKey,
         appBar: AppBar(
-          title: Text("Add Student"),
+          title: Text("Add Classcodes"),
           backgroundColor: color.primaryColor,
         ),
         body: Container(

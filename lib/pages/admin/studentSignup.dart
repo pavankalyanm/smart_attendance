@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_attendance/theme/style.dart' as color;
 import 'package:smart_attendance/widgets/snackbar.dart';
 
+import '../../globals.dart';
+
 /*class studentSignup extends StatelessWidget {
   const studentSignup({Key key}) : super(key: key);
 
@@ -258,7 +260,7 @@ class _studentSignupState extends State<studentSignup> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Succesfull"),
+            title: Text("Succesful"),
             content: Text("$val"),
             actions: <Widget>[
               FlatButton(
@@ -321,8 +323,9 @@ class _studentSignupState extends State<studentSignup> {
 
 
         })
-            .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err")))
-            .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err"));
+                  .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err")))
+                  // ignore: invalid_return_type_for_catch_error
+                  .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err"));
       } else {
         //showInSnackBar('Passwords are not matched');
         showInSnackbar.showSnackbar(_scaffoldKey, "Passwords Not matched");
@@ -352,7 +355,7 @@ class _studentSignupState extends State<studentSignup> {
     })
         .catchError((err) => showInSnackbar.showSnackbar(_scaffoldKey, "$err"));
 
-}
+  }
 
 
 
@@ -536,7 +539,20 @@ class _studentSignupState extends State<studentSignup> {
 
                         minWidth: 160.0,
                         height: 60,
-                        onPressed: (){
+                        onPressed: () async {
+                          DocumentSnapshot snapshot = await Firestore.instance
+                              .collection('class')
+                              .document('$selectedClassCode')
+                              .get();
+                          await {
+                            if (snapshot.data == null) {
+                              debugPrint("No data in class > classcode"),
+                            } else {
+                              selectedbranch = snapshot.data['branch'],
+                              academicyear = snapshot.data['Academic year'],
+                              selectedprogramme = snapshot.data['programme'],
+                            }
+                          };
                           registerUser();
                         },
                         color: Colors.indigoAccent,

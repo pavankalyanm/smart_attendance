@@ -70,7 +70,7 @@ class GenerateScreenState extends State<GenerateScreen> {
 
                       child:  Text("Students Should Scan the QR Code for Attendance",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                             fontWeight: FontWeight.bold,
 
                         ),

@@ -260,7 +260,7 @@ class _teacherSignupState extends State<teacherSignup> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Succesfull"),
+            title: Text("Successfull"),
             content: Text("$val"),
             actions: <Widget>[
               FlatButton(
@@ -347,77 +347,6 @@ class _teacherSignupState extends State<teacherSignup> {
                   key: _registerFormKey,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Name*', hintText: "John"),
-                        controller:  nameInputController,
-                        validator: nameValidator,
-                      ),
-
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Designation*'),
-                        controller: classInputController,
-                        validator: classValidator,
-                      ),
-                      /* TextFormField(
-                          decoration: InputDecoration(
-                              labelText: 'ID*'),
-                          controller: idInputController,
-                          validator:idValidator,
-                      ),*/
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Email*', hintText: "john.doe@gmail.com"),
-                        controller: emailInputController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: emailValidator,
-                      ),
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Password*', hintText: "********"),
-                        controller: pwdInputController,
-                        obscureText: true,
-                        validator: pwdValidator,
-                      ),
-                      SizedBox(height: 10,),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-
-                              borderRadius: new BorderRadius.circular(20.0),
-                              borderSide: new BorderSide(
-                              ),
-                            ),
-                            labelText: 'Confirm Password*', hintText: "********"),
-                        controller: confirmPwdInputController,
-                        obscureText: true,
-                        validator: pwdValidator,
-                      ),
 
                       SizedBox(height: 20.0),
                       new StreamBuilder<QuerySnapshot>(
@@ -494,7 +423,80 @@ class _teacherSignupState extends State<teacherSignup> {
                             );
                           }
                       ),
-                      SizedBox(height: 15,),
+
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Name*', hintText: "John"),
+                        controller:  nameInputController,
+                        validator: nameValidator,
+                      ),
+
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Designation*'),
+                        controller: classInputController,
+                        validator: classValidator,
+                      ),
+                      /* TextFormField(
+                          decoration: InputDecoration(
+                              labelText: 'ID*'),
+                          controller: idInputController,
+                          validator:idValidator,
+                      ),*/
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Email*', hintText: "john.doe@gmail.com"),
+                        controller: emailInputController,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: emailValidator,
+                      ),
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Password*', hintText: "********"),
+                        controller: pwdInputController,
+                        obscureText: true,
+                        validator: pwdValidator,
+                      ),
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+
+                              borderRadius: new BorderRadius.circular(20.0),
+                              borderSide: new BorderSide(
+                              ),
+                            ),
+                            labelText: 'Confirm Password*', hintText: "********"),
+                        controller: confirmPwdInputController,
+                        obscureText: true,
+                        validator: pwdValidator,
+                      ),
+
+                      SizedBox(height: 20,),
                       MaterialButton(
 
 

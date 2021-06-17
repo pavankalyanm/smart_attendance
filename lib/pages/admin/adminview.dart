@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:smart_attendance/pages/admin/addClasscode.dart';
 import 'package:smart_attendance/pages/admin/changepswd.dart';
-import 'package:smart_attendance/pages/admin/addClasscode.dart';
+//import 'package:smart_attendance/pages/admin/addClasscode.dart';
 import 'package:smart_attendance/pages/admin/studentSignup.dart';
 import 'package:smart_attendance/pages/admin/teacherSignup.dart';
-import 'package:smart_attendance/services/logout.dart' as logout;
+//import 'package:smart_attendance/services/logout.dart' as logout;
 import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/theme/style.dart' as style;
-import 'package:smart_attendance/services/logout.dart';
+//import 'package:smart_attendance/services/logout.dart';
 import 'package:smart_attendance/pages/admin/addSubject.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 
@@ -26,44 +27,43 @@ class admin extends StatefulWidget {
 class _adminState extends State<admin> {
 
 
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
+
   void _showDialog(BuildContext pageContext) {
     // flutter defined function
-    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<
-        ScaffoldState>();
-
-    // flutter defined function
     showDialog(
-      //context: context,
+      context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Do you want to log out?"),
-
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
 
             new FlatButton(
-
               child: new Text("No"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             new FlatButton(
-
               child: new Text("Yes"),
               onPressed: () async {
-                _scaffoldKey.currentState.showSnackBar(
-                    new SnackBar(duration: new Duration(seconds: 20), content:
-                    new Row(
-                      children: <Widget>[
-                        new CircularProgressIndicator(),
-                        new Text("  Loging-out...")
-                      ],
-                    ),
-                    ));
+                /*_scaffoldKey.currentState.showSnackBar(new SnackBar(
+                  duration: new Duration(seconds: 20),
+                  content: new Row(
+                    children: <Widget>[
+                      new CircularProgressIndicator(),
+                      new Text("  Loging-out...")
+                    ],
+                  ),
+                ));*/
+                signOut();
 
-               // signOut();
                 globals.qrCode = null;
                 globals.classCode = null;
                 globals.courseCode = null;
@@ -80,7 +80,6 @@ class _adminState extends State<admin> {
                 globals.attendanceDetails.clear();
                 globals.extraStudentDocumentId.clear();
 
-
 //for Students
                 globals.id = null;
                 globals.currentCollection = null;
@@ -96,7 +95,7 @@ class _adminState extends State<admin> {
                 globals.lecturerName = null;
                 globals.docId = null;
 
-//Navigator.pop(pageContext);
+                Navigator.of(context).pop();
                 Navigator.pop(pageContext);
                 Navigator.push(
                   context,
@@ -104,15 +103,10 @@ class _adminState extends State<admin> {
                 );
               },
             ),
-
-
           ],
         );
       },
     );
-
-
-
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();

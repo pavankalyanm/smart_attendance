@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
       debugPrint("No data in users uid");
     } else {
       if (snapshot.data['role'] == 'admin') {
-// Can be made after wards
+        // Can be made after wards
         Navigator.pop(context);
         Navigator.push(
           context,

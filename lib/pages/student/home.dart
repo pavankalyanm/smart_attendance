@@ -14,6 +14,7 @@ import 'package:smart_attendance/pages/welcome.dart';
 import 'package:smart_attendance/theme/style.dart' as style;
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Student extends StatefulWidget {
   @override
