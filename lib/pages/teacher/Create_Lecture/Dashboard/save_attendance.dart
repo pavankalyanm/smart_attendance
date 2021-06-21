@@ -175,7 +175,7 @@ class toFirestore{
           .ref()
           .child('attendance').child('$file_name');
 
-      final StorageUploadTask uploadTask = ref.putFile(
+      final StorageUploadTask uploadTask = await ref.putFile(
           file);
       
       //debugPrint('${await ref.getDownloadURL()}');

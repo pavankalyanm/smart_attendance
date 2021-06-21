@@ -131,6 +131,7 @@ class _GenerationState extends State<Generation> {
       "attendance_id": globals.attendance_id,
       "collection_name": "attendance",
       "class_code": globals.classCode,
+      "semester":semester,
     };
 
     debugPrint("map made");
@@ -191,7 +192,13 @@ class _GenerationState extends State<Generation> {
 
       DocumentReference docRef = await Firestore.instance
           .collection("attendance")
-          .document("${globals.attendance_id}")
+          .document("${globals.attendance_id}");
+
+          await docRef.setData({'name': '${globals.name}',
+            'post':'${globals.post}'
+          });
+
+          await docRef
           .collection("attendance")
           .add(map);
       debugPrint("The New Document created with Id : ${docRef.documentID} ");
@@ -413,7 +420,7 @@ class _GenerationState extends State<Generation> {
                     .collection("semester")
                     .document('$semester')
                     .collection('courses')
-                    .where("class", isEqualTo: "$selectedClassCode")
+                    .where("classcode", isEqualTo: "$selectedClassCode")
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData)
@@ -425,7 +432,7 @@ class _GenerationState extends State<Generation> {
                       courseCodes.add(
                         DropdownMenuItem(
                           child: Text(
-                            snap.documentID + '(${snap.data['name']})',
+                            snap.documentID + '(${snap.data['coursename']})',
                             style: TextStyle(color: style.primaryColor),
                           ),
                           value: "${snap.documentID}",
@@ -688,8 +695,8 @@ class _GenerationState extends State<Generation> {
     if (snapshot.data == null) {
       debugPrint("No data in course > coursecode");
     } else {
-      globals.courseName = snapshot.data['name'];
-      globals.courseYear = snapshot.data['year'];
+      globals.courseName = snapshot.data['coursename'];
+      globals.courseYear = snapshot.data['semester'];
       getPeriods();
     }
   }

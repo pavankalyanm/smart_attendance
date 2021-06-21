@@ -263,13 +263,13 @@ class _ScanState extends State<ScanScreen> {
 
       debugPrint("Decripting qr code");
 
-      DocumentSnapshot snapshot = await Firestore.instance
+    /*  DocumentSnapshot snapshot = await Firestore.instance
           .collection("class")
           .document("${globals.clas}")
           .collection("lectureID_qrCode")
           .document("$decrypt_data")
           .get();
-      debugPrint(snapshot.data['class_code']);
+      debugPrint(snapshot.data['class_code']);*/
 
       try {
         DocumentSnapshot snapshot = await Firestore.instance
@@ -293,6 +293,7 @@ class _ScanState extends State<ScanScreen> {
           globals.courseCode = snapshot.data['course_code'];
           globals.currentCollection = snapshot.data['collection_name'];
           globals.attendance_id = snapshot.data['attendance_id'];
+          globals.sem=snapshot.data['semester'];
           getCourseDetails();
 
 //          syncToPreviousAttendance();
@@ -378,14 +379,14 @@ class _ScanState extends State<ScanScreen> {
     debugPrint("Inside getCourse func");
 
     DocumentSnapshot snapshot = await Firestore.instance
-        .collection('course')
-        .document('${globals.courseCode}')
+        .collection('semester')
+        .document('${globals.sem}').collection('courses').document('${globals.courseCode}')
         .get();
     if (snapshot.data == null) {
       debugPrint("No data in course > coursecode");
     } else {
-      globals.courseName = snapshot.data['name'];
-      globals.courseYear = snapshot.data['year'];
+      globals.courseName = snapshot.data['coursename'];
+      globals.courseYear = snapshot.data['semester'];
 
       getLecturerDetails();
     }
