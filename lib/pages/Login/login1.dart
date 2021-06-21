@@ -90,10 +90,12 @@ class _LoginState extends State<Login> {
           MaterialPageRoute(builder: (context) => Teacher()),
         );
       } else if (snapshot.data['role'] == 'student') {
-        globals.clas = snapshot.data['class'];
+        globals.clas = snapshot.data['class_code'];
         globals.name = snapshot.data['name'];
         globals.id = snapshot.data['id'];
         globals.role = snapshot.data['role'];
+        globals.programme=snapshot.data['programme'];
+        globals.branch=snapshot.data['branch'];
         globals.academicyear = snapshot.data['academicyear'];
         debugPrint("Reached getStud func");
         getStud();
