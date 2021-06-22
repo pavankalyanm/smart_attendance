@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_attendance/theme/style.dart' as color;
 import 'package:smart_attendance/widgets/snackbar.dart';
+import 'package:smart_attendance/services/validations.dart';
 
 class courseDetails extends StatefulWidget {
   @override
@@ -238,6 +239,7 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
               ),
             ),
             labelText: 'Subjectname'),
+        validator: Validations.validateTextfield,
         controller: coursenameInputController,
       ),
       SizedBox(height: 15,),
@@ -250,6 +252,7 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
               ),
             ),
             labelText: 'Subjectcode'),
+        validator: Validations.validateTextfield,
         controller: coursecodeInputController,
       ),
       SizedBox(height: 15,),
@@ -259,7 +262,11 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
         minWidth: 160.0,
         height: 60,
         onPressed: (){
-          addCoursecode();
+          if(selectedsem!=null && selectedclasscode!=null ) {
+            addCoursecode();
+          }else{
+            showInSnackbar.showSnackbar(_scaffoldKey, 'first select from the above');
+          }
         },
         color: Colors.indigoAccent,
         shape: RoundedRectangleBorder(

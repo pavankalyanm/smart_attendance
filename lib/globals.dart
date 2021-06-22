@@ -1,3 +1,6 @@
+
+
+
 library my_prj.globals;
 //for Teachers
 String qrCode;
@@ -12,6 +15,9 @@ String courseName;
 String courseYear;
 String periods_num;
 String dept;
+
+
+
 
 List studentId = [];
 List studentDocumentId = [];

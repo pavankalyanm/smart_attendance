@@ -503,7 +503,11 @@ class _teacherSignupState extends State<teacherSignup> {
                         minWidth: 160.0,
                         height: 60,
                         onPressed: (){
-                          registerUser();
+                          if(selecteddept!=null ) {
+                            registerUser();
+                          }else{
+                            showInSnackbar.showSnackbar(_scaffoldKey, 'first select from the above');
+                          }
                         },
                         color: Colors.indigoAccent,
                         shape: RoundedRectangleBorder(

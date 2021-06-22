@@ -37,7 +37,7 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 
   static Future _saveAttendanceToFile() async {
 
-    List<List<String>> data=[['Id','Attendance']];
+    List<List<String>> data=[['${globals.classCode}''-''${globals.sem}','${globals.courseName}','${new DateTime.now()}'],['Id','Attendance']];
 
     for (int i = 0; i <globals.studentDocumentId.length; i++) {
 

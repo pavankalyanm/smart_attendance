@@ -7,6 +7,7 @@ import 'package:smart_attendance/pages/teacher/Create_Lecture/dashboard/lecture.
 import 'dart:convert';
 
 import 'package:smart_attendance/globals.dart' as globals;
+import 'package:smart_attendance/services/getLocation.dart';
 import 'package:xxtea/xxtea.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +16,7 @@ import 'package:async/async.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
 
 import 'package:smart_attendance/theme/style.dart' as style;
+import 'package:geolocator/geolocator.dart';
 
 class Generation extends StatefulWidget {
   @override
@@ -29,6 +31,11 @@ class _GenerationState extends State<Generation> {
   String selectedCourseCode;
   final GlobalKey<FormState> _formKeyValue = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  Position _currentPosition;
+  String currentLocation;
+  double latitude;
+  double longitude;
 
 /*  @override
   void initState() {
@@ -126,13 +133,17 @@ class _GenerationState extends State<Generation> {
   Future createQrDocument() async {
     debugPrint("i am here");
 
-    Map<String, String> qrDetail = {
+    Map<String, dynamic> qrDetail = {
       "course_code": globals.courseCode,
       "attendance_id": globals.attendance_id,
       "collection_name": "attendance",
       "class_code": globals.classCode,
       "semester":semester,
+      'latitude':latitude,
+      'longitude':longitude,
     };
+
+
 
     debugPrint("map made");
     debugPrint("classCode : ${globals.classCode}");
@@ -142,7 +153,13 @@ class _GenerationState extends State<Generation> {
         .document(globals.classCode)
         .collection("lectureID_qrCode")
         .add(qrDetail);
+
+
+
+
     debugPrint("The New Document created with Id : ${qrId.documentID} ");
+
+
 
     globals.qrId = "${qrId.documentID}";
     globals.qrCode = xxtea.encryptToString(globals.qrId, globals.key);
@@ -607,7 +624,7 @@ class _GenerationState extends State<Generation> {
                       if (result.isNotEmpty &&
                           result[0].rawAddress.isNotEmpty) {
                         if (selectedCourseCode != null &&
-                            selectedClassCode != null) {
+                            selectedClassCode != null && semester!=null && periods!=null) {
                           final QuerySnapshot querySnapshot = await Firestore
                               .instance
                               .collection("$selectedClassCode")
@@ -711,7 +728,31 @@ class _GenerationState extends State<Generation> {
     } else {
       globals.periods_num = '$periods' + '(${snapshot.data['time']})';
 
-      checkingPastQrData();
+     getCurrentlocation();
+
     }
   }
+
+
+  getCurrentlocation() async{
+    await Geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
+        .then((Position position) {
+
+      latitude=position.latitude;
+      longitude=position.longitude;
+
+
+    }).catchError((e) {
+      print(e);
+    });
+    debugPrint('$currentLocation');
+    checkingPastQrData();
+  }
+
+
+
+
 }
+
+

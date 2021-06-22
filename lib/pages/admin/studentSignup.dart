@@ -553,7 +553,14 @@ class _studentSignupState extends State<studentSignup> {
                               selectedprogramme = snapshot.data['programme'],
                             }
                           };
-                          registerUser();
+
+
+                          if(selectedClassCode!=null ) {
+                            registerUser();
+                          }else{
+                            showInSnackbar.showSnackbar(_scaffoldKey, 'first select from the above');
+                          }
+
                         },
                         color: Colors.indigoAccent,
                         shape: RoundedRectangleBorder(

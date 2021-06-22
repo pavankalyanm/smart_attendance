@@ -314,7 +314,14 @@ class _addClasscodeState extends State<addClasscode> {
                         minWidth: 160.0,
                         height: 60,
                         onPressed: (){
-                          addClasscode();
+
+                          if(selectedbranch!=null && selectedprogramme!=null ) {
+                            addClasscode();
+                          }else{
+                            showInSnackbar.showSnackbar(_scaffoldKey, 'first select from the above');
+                          }
+
+
                         },
                         color: Colors.indigoAccent,
                         shape: RoundedRectangleBorder(

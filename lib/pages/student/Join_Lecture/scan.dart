@@ -6,15 +6,21 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_attendance/globals.dart' as globals;
+import 'package:smart_attendance/pages/teacher/Create_Lecture/generation_data.dart';
+import 'package:smart_attendance/services/getLocation.dart';
+import 'package:smart_attendance/widgets/dialog.dart';
 import 'package:xxtea/xxtea.dart';
 //import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/student/home.dart';
 
 import 'package:smart_attendance/theme/style.dart' as style;
 import '../../../globals.dart';
+import 'package:geolocator/geolocator.dart';
 
 String docId;
-
+Position studentLocation;
+double Tlatitude;
+double Tlongitude;
 class ScanScreen extends StatefulWidget {
   @override
   _ScanState createState() => new _ScanState();
@@ -22,6 +28,7 @@ class ScanScreen extends StatefulWidget {
 
 class _ScanState extends State<ScanScreen> {
   String barcode = "";
+
 
 /*  @override
   void initState() {
@@ -116,7 +123,7 @@ class _ScanState extends State<ScanScreen> {
                 _scaffoldKey.currentState.showSnackBar(new SnackBar(
                   duration: new Duration(seconds: 4),
                   content: new Row(
-                    children: <Widget>[new Text("Try Again!")],
+                    children: <Widget>[new Text("Attendance added to previous lectures")],
                   ),
                 ));
                 Navigator.of(context).pop();
@@ -127,6 +134,8 @@ class _ScanState extends State<ScanScreen> {
       },
     );
   }
+
+
 
   Future syncToPreviousAttendance() async {
     String collection1 = "users";
@@ -294,7 +303,11 @@ class _ScanState extends State<ScanScreen> {
           globals.currentCollection = snapshot.data['collection_name'];
           globals.attendance_id = snapshot.data['attendance_id'];
           globals.sem=snapshot.data['semester'];
-          getCourseDetails();
+          Tlatitude=snapshot.data['latitude'];
+          Tlongitude=snapshot.data['longitude'];
+          //getCourseDetails();
+
+          getcurrentLocation();
 
 //          syncToPreviousAttendance();
         } else {
@@ -357,6 +370,41 @@ class _ScanState extends State<ScanScreen> {
         ));
       });
     }
+  }
+
+
+
+
+  getcurrentLocation() async{
+    await Geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
+        .then((Position position) {
+
+      studentLocation = position;
+
+
+    }).catchError((e) {
+      print(e);
+    });
+    debugPrint('$studentLocation');
+   compareLocations();
+  }
+
+
+  compareLocations() async{
+
+
+    //double lan = studentLocation.longitude;
+    double distance= await Geolocator.distanceBetween(Tlatitude,Tlongitude,studentLocation.latitude,studentLocation.longitude);
+    debugPrint('$distance');
+    /*if(distance>10.0){
+      showInDialog.show(context, 'You are not in thr class');
+    }else {
+      getCourseDetails();
+    }*/
+
+    getCourseDetails();
+
   }
 
   getLecturerDetails() async {

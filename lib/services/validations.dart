@@ -29,4 +29,8 @@ class Validations{
     return null;
   }
 
+  static String validateTextfield(String value){
+    if (value.isEmpty) return ' field should not be null';
+  }
+
 }
