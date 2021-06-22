@@ -16,11 +16,15 @@ import 'package:smart_attendance/pages/student/home.dart';
 import 'package:smart_attendance/theme/style.dart' as style;
 import '../../../globals.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:local_auth/local_auth.dart';
 
 String docId;
 Position studentLocation;
 double Tlatitude;
 double Tlongitude;
+bool isauth=false;
+
+
 class ScanScreen extends StatefulWidget {
   @override
   _ScanState createState() => new _ScanState();
@@ -260,6 +264,60 @@ class _ScanState extends State<ScanScreen> {
         )));
   }
 
+
+
+
+  void _checkBiometric() async {
+    // check for biometric availability
+    final LocalAuthentication auth = LocalAuthentication();
+    bool canCheckBiometrics = false;
+    try {
+      canCheckBiometrics = await auth.canCheckBiometrics;
+    } catch (e) {
+      print("error biome trics $e");
+    }
+
+    print("biometric is available: $canCheckBiometrics");
+
+    // enumerate biometric technologies
+    List<BiometricType> availableBiometrics;
+    try {
+      availableBiometrics = await auth.getAvailableBiometrics();
+    } catch (e) {
+      print("error enumerate biometrics $e");
+    }
+
+    print("following biometrics are available");
+    if (availableBiometrics.isNotEmpty) {
+      availableBiometrics.forEach((ab) {
+        print("\ttech: $ab");
+      });
+    } else {
+      print("no biometrics are available");
+    }
+
+    // authenticate with biometrics
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticateWithBiometrics(
+        localizedReason: 'Touch your finger on the sensor to login',
+        useErrorDialogs: true,
+        stickyAuth: true,
+        //androidAuthStrings:
+        //AndroidAuthMessages(signInTitle: "Login to HomePage"));
+      );} catch (e) {
+      print("error using biometric auth: $e");
+    }
+    setState(() {
+      isauth = authenticated ? true : false;
+    });
+
+    print("authenticated: $authenticated");
+  }
+
+
+
+
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
@@ -491,7 +549,16 @@ class _ScanState extends State<ScanScreen> {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        scan();
+
+
+        isauth ?
+        scan():
+        _checkBiometric();
+
+
+
+
+
         debugPrint("${globals.academicyear}");
       }
     } on SocketException catch (_) {
