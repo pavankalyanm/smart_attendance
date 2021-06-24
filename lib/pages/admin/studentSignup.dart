@@ -297,7 +297,7 @@ class _studentSignupState extends State<studentSignup> {
 
               Firestore.instance
                   .collection("users")
-                  .document(currentUid)
+                  .document(currentUser.uid)
                   .setData({
                 "name": nameInputController.text,
 
