@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:smart_attendance/pages/admin/adminview.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
@@ -12,83 +13,40 @@ import 'package:smart_attendance/services/AuthService.dart';
 //import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter_splash/flutter_splash.dart';
 import 'package:animated_splash/animated_splash.dart';
-
+import 'package:smart_attendance/services/sharedpreferences.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 //final FirebaseAuth _auth = FirebaseAuth.instance;
 String uid;
+Widget home;
 
+void main() => runApp(MyApp());
 
-
-
-
-
- /*@override
+class MyApp extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
-
-   // debugPrint("${inputData()}");
-    void getid(String foo) {
-      uid = foo;
-    }
-
-    AuthService().getCurrentUID().then((value) => getid(value));
-
-
-    loadDetails.load(uid);
-
-   // Widget _home = checkRole().check(uid);
-
-
     return MaterialApp(
-      title: 'Smart Attendance',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+        title: 'Clean Code',
+        home: AnimatedSplashScreen.withScreenFunction(
+            duration: 2500,
+            splash: 'assets/res/jntu.png',
+            screenFunction: () async{
 
-      //user(_currentUser);
-      home: checkRole().check(uid) ,
+              final SharedPreferences preferences=await SharedPreferences.getInstance();
+              uid= await preferences.getString('userid');
+              if(uid==null){
+                home=Login();
+              }else{
+                await loadDetails.load(uid);
+                home=checkRole().check(uid);
+              }
+
+
+              return home ;
+            },
+            splashTransition: SplashTransition.fadeTransition,
+           // pageTransitionType: PageTransitionType.scale,
+            backgroundColor: Colors.blue
+        )
     );
-  }
-}*/
-
-
-
-//import 'package:flutter/material.dart';
-//import 'package:flutter_splash/flutter_splash.dart';
-
-void main() {
-  Function duringSplash = () {
-    void getid(String foo) {
-      uid = foo;
-    }
-
-    AuthService().getCurrentUID().then((value) => getid(value));
-
-
-    loadDetails.load(uid);
-    return 1;
-  };
-
-  Map<int, Widget> op = {1: Home(), };
-
-  runApp(MaterialApp(
-    home: AnimatedSplash(
-      imagePath: 'assets/res/jntu.png',
-      home: Home(),
-      customFunction: duringSplash,
-      duration: 2500,
-      type: AnimatedSplashType.BackgroundProcess,
-      outputAndHome: op,
-    ),
-  ));
-}
-
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return checkRole().check(uid);
   }
 }

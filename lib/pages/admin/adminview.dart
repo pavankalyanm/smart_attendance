@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:smart_attendance/pages/admin/addClasscode.dart';
 import 'package:smart_attendance/pages/admin/changepswd.dart';
@@ -63,7 +64,8 @@ class _adminState extends State<admin> {
                   ),
                 ));*/
                 signOut();
-
+                final SharedPreferences preferences=await SharedPreferences.getInstance();
+                preferences.remove('userid');
                 globals.qrCode = null;
                 globals.classCode = null;
                 globals.courseCode = null;

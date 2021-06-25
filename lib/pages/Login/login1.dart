@@ -10,6 +10,7 @@ import 'package:smart_attendance/pages/welcome.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
+import 'package:smart_attendance/services/sharedpreferences.dart';
 import 'package:smart_attendance/theme/style.dart';
 import '../admin.dart';
 import 'style.dart';
@@ -20,6 +21,7 @@ import 'package:smart_attendance/services/validations.dart';
 import 'package:smart_attendance/globals.dart' as globals;
 //import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/database_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -30,10 +32,12 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email, _password;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-/*  @override
-  void initState() {
+
+/* @override
+  void initState() async {
     super.initState();
-    BackButtonInterceptor.add(myInterceptor);
+
+    final SharedPreferences preferences= await SharedPreferences.getInstance();
   }
 
   @override
@@ -60,6 +64,8 @@ class _LoginState extends State<Login> {
 //    final id = await dbHelper.insert(row);
 //    print('inserted row id: $id');
 //  }
+
+
 
   checkRole() async {
     debugPrint("Inside getStud func");
@@ -309,6 +315,11 @@ class _LoginState extends State<Login> {
           ),
         ));
         globals.uid = user.uid;
+
+        final SharedPreferences preferences= await SharedPreferences.getInstance();
+        preferences.setString('userid', user.uid);
+
+
         debugPrint("printing uid   ${globals.uid}");
         checkRole();
         debugPrint("Role checking done");

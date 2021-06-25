@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
@@ -111,7 +112,8 @@ class _TeacherState extends State<Teacher> {
                   ),
                 ));
                 signOut();
-
+                final SharedPreferences preferences=await SharedPreferences.getInstance();
+                preferences.remove('userid');
                 globals.qrCode = null;
                 globals.classCode = null;
                 globals.courseCode = null;

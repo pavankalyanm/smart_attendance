@@ -5,6 +5,8 @@ import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/pages/teacher/Create_Lecture/generation_data.dart';
 //import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:smart_attendance/pages/teacher/home.dart';
+import 'package:smart_attendance/widgets/dialog.dart';
+import 'package:smart_attendance/widgets/snackbar.dart';
 
 class PreviousLectures extends StatefulWidget {
   const PreviousLectures({Key key}) : super(key: key);
@@ -42,7 +44,7 @@ class PreviousLecturesState extends State<PreviousLectures> {
   String collection1 = "users";
   String collection2 = "previous_lecture";
   String uid = globals.uid;
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -106,6 +108,8 @@ class PreviousLecturesState extends State<PreviousLectures> {
           ),
           onTap: () {
             //function to download file
+
+            showInDialog.show(context, 'File Successfully download to PATH:/storage/emulated/0/data/com.saqr.android/files');
           },
           title: Text("Subject : ${record.course_code}"),
           subtitle: Text(

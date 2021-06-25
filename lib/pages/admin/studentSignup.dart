@@ -197,6 +197,7 @@ class _studentSignupState extends State<studentSignup> {
   String selectedprogramme;
   String selectedClassCode;
   String currentUid;
+  String acedamicyear;
 
   @override
   initState() {
@@ -297,7 +298,7 @@ class _studentSignupState extends State<studentSignup> {
 
               Firestore.instance
                   .collection("users")
-                  .document(currentUid)
+                  .document(currentUser.uid)
                   .setData({
                 "name": nameInputController.text,
 
@@ -306,7 +307,7 @@ class _studentSignupState extends State<studentSignup> {
                 "role": role,
                 "branch": selectedbranch,
                 "programme": selectedprogramme,
-                "academicyear": academicyrInputController.text,
+                "academicyear": acedamicyear,
                 //"email": emailInputController.text,
 
               })
@@ -540,22 +541,14 @@ class _studentSignupState extends State<studentSignup> {
                         minWidth: 160.0,
                         height: 60,
                         onPressed: () async {
-                          DocumentSnapshot snapshot = await Firestore.instance
-                              .collection('class')
-                              .document('$selectedClassCode')
-                              .get();
-                          await {
-                            if (snapshot.data == null) {
-                              debugPrint("No data in class > classcode"),
-                            } else {
-                              selectedbranch = snapshot.data['branch'],
-                              academicyear = snapshot.data['Academic year'],
-                              selectedprogramme = snapshot.data['programme'],
-                            }
-                          };
+
+
+
+
 
 
                           if(selectedClassCode!=null ) {
+                            await getClassdetails();
                             registerUser();
                           }else{
                             showInSnackbar.showSnackbar(_scaffoldKey, 'first select from the above');
@@ -585,6 +578,23 @@ class _studentSignupState extends State<studentSignup> {
                     ],
                   ),
                 ))));
+  }
+
+  getClassdetails() async{
+
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('class')
+        .document('$selectedClassCode')
+        .get();
+
+    if (snapshot.data == null) {
+      debugPrint("No data in class > classcode");
+    } else {
+      selectedbranch = snapshot.data['branch'];
+      acedamicyear = snapshot.data['Academic year'];
+      selectedprogramme = snapshot.data['programme'];
+    }
+
   }
 }
 

@@ -17,12 +17,14 @@ import 'package:smart_attendance/theme/style.dart' as style;
 import '../../../globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 String docId;
 Position studentLocation;
 double Tlatitude;
 double Tlongitude;
 bool isauth=false;
+bool isSwitched=false;
 
 
 class ScanScreen extends StatefulWidget {
@@ -213,10 +215,15 @@ class _ScanState extends State<ScanScreen> {
 //// ),
 // ),
 
+
             child: Column(
           children: [
             SizedBox(
-              height: 200,
+              height: 40,
+            ),
+            onSwitch(),
+            SizedBox(
+              height: 160,
             ),
             Container(
               child: new Text(
@@ -260,9 +267,48 @@ class _ScanState extends State<ScanScreen> {
                 ),
               ),
             ),
+
           ],
-        )));
+        ))
+
+    );
+
+
   }
+
+  Widget onSwitch() =>
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Select Mode of the Class",style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+            ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: LiteRollingSwitch(
+                value: false,
+                textOn: 'Online',
+                textOff: 'Offline',
+                colorOn: Colors.indigo,
+                colorOff: Colors.indigo,
+                iconOn: Icons.check,
+                iconOff: Icons.power_settings_new,
+                animationDuration: Duration(milliseconds: 800),
+                onChanged: (bool state) {
+                  isSwitched=state;
+                  print('turned ${(isSwitched) ? 'online' : 'offline'}');
+                },
+              ),
+            )
+          ],
+        ),
+      );
+
+
 
 
 
@@ -365,7 +411,7 @@ class _ScanState extends State<ScanScreen> {
           Tlongitude=snapshot.data['longitude'];
           //getCourseDetails();
 
-          getcurrentLocation();
+          isSwitched ? getcurrentLocation() : getCourseDetails();
 
 //          syncToPreviousAttendance();
         } else {

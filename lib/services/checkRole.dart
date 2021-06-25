@@ -60,6 +60,7 @@ if (snapshot.data == null) {
 } else {
 if (snapshot.data['role'] == 'admin') {
 
+  globals.role = snapshot.data['role'];
 
 } else if (snapshot.data['role'] == 'teacher') {
 globals.name = snapshot.data['name'];

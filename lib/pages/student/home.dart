@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import "package:flutter/material.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 
 //import 'package:flutter/rendering.dart';
@@ -91,7 +92,8 @@ class _StudentState extends State<Student> {
                     ],
                   ),
                 ));
-
+                final SharedPreferences preferences=await SharedPreferences.getInstance();
+                preferences.remove('userid');
                 globals.qrCode = null;
                 globals.classCode = null;
                 globals.courseCode = null;
