@@ -22,6 +22,7 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 String docId;
 Position studentLocation;
 double Tlatitude;
+double distance;
 double Tlongitude;
 bool isauth=false;
 bool isSwitched=false;
@@ -96,7 +97,7 @@ class _ScanState extends State<ScanScreen> {
                 _scaffoldKey.currentState.showSnackBar(new SnackBar(
                   duration: new Duration(seconds: 4),
                   content: new Row(
-                    children: <Widget>[new Text("Try Again!")],
+                    children: <Widget>[new Text("Attendance Updated")],
                   ),
                 ));
                 Navigator.of(context).pop();
@@ -313,7 +314,7 @@ class _ScanState extends State<ScanScreen> {
 
 
 
-  void _checkBiometric() async {
+  /*void _checkBiometric() async {
     // check for biometric availability
     final LocalAuthentication auth = LocalAuthentication();
     bool canCheckBiometrics = false;
@@ -359,7 +360,7 @@ class _ScanState extends State<ScanScreen> {
     });
 
     print("authenticated: $authenticated");
-  }
+  }*/
 
 
 
@@ -412,6 +413,7 @@ class _ScanState extends State<ScanScreen> {
           //getCourseDetails();
 
           isSwitched ? getcurrentLocation() : getCourseDetails();
+
 
 //          syncToPreviousAttendance();
         } else {
@@ -499,15 +501,15 @@ class _ScanState extends State<ScanScreen> {
 
 
     //double lan = studentLocation.longitude;
-    double distance= await Geolocator.distanceBetween(Tlatitude,Tlongitude,studentLocation.latitude,studentLocation.longitude);
+    distance= await Geolocator.distanceBetween(Tlatitude,Tlongitude,studentLocation.latitude,studentLocation.longitude);
     debugPrint('$distance');
-    /*if(distance>10.0){
-      showInDialog.show(context, 'You are not in thr class');
+    if(distance>10.0){
+      showInDialog.show(context, 'You are not in the class');
     }else {
       getCourseDetails();
-    }*/
+    }
 
-    getCourseDetails();
+    //getCourseDetails();
 
   }
 
@@ -596,10 +598,11 @@ class _ScanState extends State<ScanScreen> {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
 
-
+        /*await _checkBiometric();
         isauth ?
         scan():
-        _checkBiometric();
+        _checkBiometric();*/
+        scan();
 
 
 
