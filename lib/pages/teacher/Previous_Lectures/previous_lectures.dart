@@ -44,7 +44,7 @@ class PreviousLecturesState extends State<PreviousLectures> {
 
   @override
   void initState() {
-  
+
     super.initState();
 
     ///register a send port for the other isolates
