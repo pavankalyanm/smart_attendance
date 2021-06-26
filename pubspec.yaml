@@ -40,6 +40,7 @@ dev_dependencies:
   image_gallery_saver: ^1.6.9
   permission_handler: ^8.1.1
   lite_rolling_switch: ^0.1.1
+  share: ^2.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
