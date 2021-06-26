@@ -15,6 +15,7 @@ String courseName;
 String courseYear;
 String periods_num;
 String dept;
+String previousDoc;
 
 
 

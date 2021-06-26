@@ -18,7 +18,7 @@ import 'package:smart_attendance/widgets/snackbar.dart';
 
 
 final _scaffoldKey=GlobalKey<ScaffoldState>();
-
+String downloadUrl;
 class SaveAttendance extends StatefulWidget {
   @override
   _SaveAttendanceState createState() => new _SaveAttendanceState();
@@ -75,7 +75,7 @@ class _SaveAttendanceState extends State<SaveAttendance> {
     debugPrint('saved to $file');
 
     // to fire store
-    toFirestore.upload(file,file_name);
+     await toFirestore.upload(file,file_name);
 
 
   }
@@ -168,22 +168,40 @@ class _SaveAttendanceState extends State<SaveAttendance> {
 
 class toFirestore{
 
-  static Future<void> upload(file,file_name) async{
+  static Future upload(file,file_name) async{
     try {
+      print('${globals.uid}');
       final storage = FirebaseStorage.instance;
-      StorageReference ref = await storage
+      StorageReference ref = storage
           .ref()
           .child('attendance').child('$file_name');
 
-      final StorageUploadTask uploadTask = await ref.putFile(
-          file);
-      
-      //debugPrint('${await ref.getDownloadURL()}');
+
+      StorageUploadTask uploadTask = ref.putFile(file);
+      StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+      downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+      updateUrl(downloadUrl);
+
     }catch(e){
       debugPrint("e");
     }
+
+
+
    }
 
+   static Future<void> updateUrl(Url)async{
+
+
+    DocumentReference reference= Firestore.instance.collection('users').document('${globals.uid}')
+                                .collection('previous_lecture')
+                                 .document('${globals.previousDoc}');
+    Map<String ,dynamic> data={
+      "url":'$Url',
+    };
+    await reference.updateData(data);
+    print('$Url');
+   }
    
 }
 

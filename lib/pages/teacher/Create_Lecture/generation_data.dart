@@ -245,7 +245,8 @@ class _GenerationState extends State<Generation> {
     debugPrint("The New Document created with Id : ${docRef.documentID} ");
 
     debugPrint("added to previous lectures");
-
+    globals.previousDoc = docRef.documentID;
+    debugPrint("The New Document created with Id : ${globals.previousDoc} ");
     Navigator.pop(context);
     Navigator.push(
       context,

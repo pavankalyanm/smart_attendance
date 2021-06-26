@@ -1,3 +1,6 @@
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +10,10 @@ import 'package:smart_attendance/pages/teacher/Create_Lecture/generation_data.da
 import 'package:smart_attendance/pages/teacher/home.dart';
 import 'package:smart_attendance/widgets/dialog.dart';
 import 'package:smart_attendance/widgets/snackbar.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 class PreviousLectures extends StatefulWidget {
   const PreviousLectures({Key key}) : super(key: key);
@@ -18,6 +25,49 @@ class PreviousLectures extends StatefulWidget {
 class PreviousLecturesState extends State<PreviousLectures> {
   PreviousLecturesState({Key key, this.user});
   final FirebaseUser user;
+
+
+
+  int progress = 0;
+
+
+  ReceivePort _receivePort = ReceivePort();
+
+  static downloadingCallback(id, status, progress) {
+    ///Looking up for a send port
+    SendPort sendPort = IsolateNameServer.lookupPortByName("downloading");
+
+    ///ssending the data
+    sendPort.send([id, status, progress]);
+  }
+
+
+  @override
+  void initState() {
+  
+    super.initState();
+
+    ///register a send port for the other isolates
+    IsolateNameServer.registerPortWithName(_receivePort.sendPort, "downloading");
+
+
+    ///Listening for the data is comming other isolataes
+    _receivePort.listen((message) {
+      setState(() {
+        progress = message[2];
+      });
+
+      print(progress);
+    });
+
+
+    FlutterDownloader.registerCallback(downloadingCallback);
+  }
+
+
+
+
+
 
 /*  @override
   void initState() {
@@ -49,6 +99,7 @@ class PreviousLecturesState extends State<PreviousLectures> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Container(
@@ -102,15 +153,21 @@ class PreviousLecturesState extends State<PreviousLectures> {
           trailing: IconButton(
             color: Colors.black,
             icon: Icon(Icons.file_download),
-            onPressed: () {
+            onPressed: () async{
               // _showDialog(context);
+              print('${record.course_code}');
+              final Directory  = await getExternalStorageDirectory();
+              String path=Directory.path;
+              await downloadFile(record.url,path).then((value) => {
+                showInDialog.show(context, "File Successfully downloaded to $path")
+                //showIntoast.showToast(context,"File Successfully downloaded to $path"),
+              });
+
+
+
             },
           ),
-          onTap: () {
-            //function to download file
 
-            showInDialog.show(context, 'File Successfully download to PATH:/storage/emulated/0/data/com.saqr.android/files');
-          },
           title: Text("Subject : ${record.course_code}"),
           subtitle: Text(
               "Class : ${record.class_code}                                                 Taken on ${record.time_stamp}"),
@@ -120,10 +177,27 @@ class PreviousLecturesState extends State<PreviousLectures> {
   }
 }
 
+Future downloadFile(url , path) async {
+
+  await [Permission.storage].request();
+  try {
+    final id = await FlutterDownloader.enqueue(
+        url: url,
+        //headers: {"auth": "test_for_sql_encoding"},
+        savedDir: path,
+        showNotification: true,
+        openFileFromNotification: true);
+  }catch(e){
+    print(e);
+  }
+    // print('${Directory.path}');
+}
+
 class Record {
   final String time_stamp;
   final String course_code;
   final String class_code;
+  final String url;
 
   final DocumentReference reference;
 
@@ -131,9 +205,11 @@ class Record {
       : assert(map['time_stamp'] != null),
         assert(map['course_name'] != null),
         assert(map['class_code'] != null),
+        assert(map['url']!=null),
         time_stamp = map['time_stamp'],
         course_code = map['course_name'],
-        class_code = map['class_code'];
+        class_code = map['class_code'],
+        url        =map['url'];
 
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);

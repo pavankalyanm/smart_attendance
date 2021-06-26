@@ -16,10 +16,19 @@ import 'package:animated_splash/animated_splash.dart';
 import 'package:smart_attendance/services/sharedpreferences.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 //final FirebaseAuth _auth = FirebaseAuth.instance;
+import 'package:flutter_downloader/flutter_downloader.dart';
 String uid;
 Widget home;
 
-void main() => runApp(MyApp());
+const debug = true;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(debug: debug);
+
+  runApp(new MyApp());
+}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -33,9 +42,11 @@ class MyApp extends StatelessWidget {
 
               final SharedPreferences preferences=await SharedPreferences.getInstance();
               uid= await preferences.getString('userid');
+
               if(uid==null){
                 home=Login();
               }else{
+                globals.uid=uid;
                 await loadDetails.load(uid);
                 home=checkRole().check(uid);
               }
