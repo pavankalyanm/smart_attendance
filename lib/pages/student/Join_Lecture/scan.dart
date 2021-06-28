@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smart_attendance/faceapi/pages/home.dart';
+import 'package:smart_attendance/faceapi/pages/sign-up.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/Dashboard/lecture.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
@@ -244,7 +246,18 @@ class _ScanState extends State<ScanScreen> {
                       splashColor: Color.fromRGBO(248, 177, 1, 1),
 // splash color
                       onTap: () {
-                        checkNet();
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => MyHomePage(
+
+                            ),
+                          ),
+                        );
+
+
+                       // checkNet();
                       },
 // button pressed
                       child: Column(

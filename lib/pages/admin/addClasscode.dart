@@ -33,6 +33,15 @@ class _addClasscodeState extends State<addClasscode> {
   String selectedbranch;
   String selectedprogramme;
 
+  String yearValidator(String value) {
+    if (value.length < 4) {
+      return "Please enter a valid year.";
+    } else {
+      return null;
+    }
+  }
+
+
   @override
   initState() {
   classcodeInputController = new TextEditingController();
@@ -152,7 +161,7 @@ class _addClasscodeState extends State<addClasscode> {
                             ),
                             labelText: 'Academicyear'),
                         controller: academicyrInputController,
-                        //validator: classValidator,
+                        validator: yearValidator ,
                       ),
                       SizedBox(height: 10,),
 

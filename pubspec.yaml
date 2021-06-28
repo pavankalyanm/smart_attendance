@@ -33,7 +33,7 @@ dev_dependencies:
   animated_splash_screen: ^1.1.0
   downloads_path_provider: ^0.1.0
   csv: ^5.0.0
-  flutter_launcher_icons: ^0.8.0
+  flutter_launcher_icons: ^0.9.0
   geolocator: ^7.1.0
   local_auth: ^1.1.6
   screenshot: ^1.2.1
@@ -42,7 +42,14 @@ dev_dependencies:
   lite_rolling_switch: ^0.1.1
   share: ^2.0.4
   flutter_downloader: ^1.6.1
-
+  cupertino_icons: ^1.0.2
+  tflite_flutter: ^0.8.0
+  camera: ^0.8.1
+  path: ^1.8.0
+  google_ml_kit: ^0.5.0
+  image: ^3.0.2
+  font_awesome_flutter: ^9.0.0
+  url_launcher: ^6.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

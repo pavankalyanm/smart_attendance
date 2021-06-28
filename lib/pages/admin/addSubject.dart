@@ -24,7 +24,13 @@ class _courseDetailsState extends State<courseDetails> {
   String selectedsem;
   String selectedclasscode;
 
-
+  String nameValidator(String value) {
+    if (value.length < 3) {
+      return "Please enter a valid name.";
+    } else {
+      return null;
+    }
+  }
   @override
   initState() {
     coursecodeInputController= new TextEditingController();
@@ -239,8 +245,9 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
               ),
             ),
             labelText: 'Subjectname'),
-        validator: Validations.validateTextfield,
+
         controller: coursenameInputController,
+        validator: nameValidator,
       ),
       SizedBox(height: 15,),
       TextFormField(
@@ -252,8 +259,9 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
               ),
             ),
             labelText: 'Subjectcode'),
-        validator: Validations.validateTextfield,
+
         controller: coursecodeInputController,
+        validator: nameValidator,
       ),
       SizedBox(height: 15,),
       MaterialButton(
