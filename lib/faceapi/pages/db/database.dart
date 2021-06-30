@@ -22,7 +22,7 @@ class DataBaseService {
 
   /// loads a simple json file.
   Future loadDB() async {
-    var tempDir = await getApplicationDocumentsDirectory();
+    var tempDir = await getExternalStorageDirectory();
     String _embPath = tempDir.path + '/emb.json';
 
     jsonFile = new File(_embPath);

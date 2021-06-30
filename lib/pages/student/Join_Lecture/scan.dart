@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smart_attendance/faceapi/pages/db/database.dart';
 import 'package:smart_attendance/faceapi/pages/home.dart';
+import 'package:smart_attendance/faceapi/pages/sign-in.dart';
 import 'package:smart_attendance/faceapi/pages/sign-up.dart';
+import 'package:smart_attendance/faceapi/services/facenet.service.dart';
+import 'package:smart_attendance/faceapi/services/ml_kit_service.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/Dashboard/lecture.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +24,7 @@ import '../../../globals.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:camera/camera.dart';
 
 String docId;
 Position studentLocation;
@@ -37,6 +42,44 @@ class ScanScreen extends StatefulWidget {
 
 class _ScanState extends State<ScanScreen> {
   String barcode = "";
+  CameraDescription cameraDescription;
+  bool loading = false;
+  FaceNetService _faceNetService = FaceNetService();
+  MLKitService _mlKitService = MLKitService();
+  DataBaseService _dataBaseService = DataBaseService();
+  @override
+  void initState() {
+    super.initState();
+    _startUp();
+  }
+
+  /// 1 Obtain a list of the available cameras on the device.
+  /// 2 loads the face net model
+  _startUp() async {
+    _setLoading(true);
+
+    List<CameraDescription> cameras = await availableCameras();
+
+    /// takes the front camera
+    cameraDescription = cameras.firstWhere(
+          (CameraDescription camera) =>
+      camera.lensDirection == CameraLensDirection.front,
+    );
+
+    // start the services
+    await _faceNetService.loadModel();
+    await _dataBaseService.loadDB();
+    _mlKitService.initialize();
+
+    _setLoading(false);
+  }
+
+  // shows or hides the circular progress indicator
+  _setLoading(bool value) {
+    setState(() {
+      loading = value;
+    });
+  }
 
 
 /*  @override
@@ -220,70 +263,70 @@ class _ScanState extends State<ScanScreen> {
 
 
             child: Column(
-          children: [
-            SizedBox(
-              height: 40,
-            ),
-            onSwitch(),
-            SizedBox(
-              height: 160,
-            ),
-            Container(
-              child: new Text(
-                'Click here to scan the QR Code',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              height: 100.0,
-              child: SizedBox.fromSize(
-                size: Size(100, 100), // button width and height
-                child: ClipOval(
-                  child: Material(
-                    color: Colors.indigo, // button color
-                    child: InkWell(
-                      splashColor: Color.fromRGBO(248, 177, 1, 1),
+              children: [
+                SizedBox(
+                  height: 40,
+                ),
+                onSwitch(),
+                SizedBox(
+                  height: 160,
+                ),
+                Container(
+                  child: new Text(
+                    'Click here to scan the QR Code',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  height: 100.0,
+                  child: SizedBox.fromSize(
+                    size: Size(100, 100), // button width and height
+                    child: ClipOval(
+                      child: Material(
+                        color: Colors.indigo, // button color
+                        child: InkWell(
+                          splashColor: Color.fromRGBO(248, 177, 1, 1),
 // splash color
-                      onTap: () {
+                          onTap: () {
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => MyHomePage(
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => SignIn(
+                                  cameraDescription: cameraDescription,
+                                ),
+                              ),
+                            );
 
-                            ),
-                          ),
-                        );
 
-
-                       // checkNet();
-                      },
+                            // checkNet();
+                          },
 // button pressed
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.camera_alt,
-                            color: Colors.white,
-                          ), // icon
-                          Text(
-                            "Scan",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ), // text
-                        ],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                              ), // icon
+                              Text(
+                                "Scan",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ), // text
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
 
-          ],
-        ))
+              ],
+            ))
 
     );
 
@@ -390,7 +433,7 @@ class _ScanState extends State<ScanScreen> {
 
       debugPrint("Decripting qr code");
 
-    /*  DocumentSnapshot snapshot = await Firestore.instance
+      /*  DocumentSnapshot snapshot = await Firestore.instance
           .collection("class")
           .document("${globals.clas}")
           .collection("lectureID_qrCode")
@@ -506,7 +549,7 @@ class _ScanState extends State<ScanScreen> {
       print(e);
     });
     debugPrint('$studentLocation');
-   compareLocations();
+    compareLocations();
   }
 
 

@@ -221,11 +221,11 @@ class SignUpState extends State<SignUp> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: !_bottomSheetVisible
             ? AuthActionButton(
-                _initializeControllerFuture,
-                onPressed: onShot,
-                isLogin: false,
-                reload: _reload,
-              )
+          _initializeControllerFuture,
+          onPressed: onShot,
+          isLogin: false,
+          reload: _reload,
+        )
             : Container());
   }
 }
