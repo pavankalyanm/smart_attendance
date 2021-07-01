@@ -17,7 +17,7 @@ import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/pages/student/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
-
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => new _ProfilePageState();
@@ -148,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Container(
           //alignment: Alignment.center,
-          child: Text('Profile',
+          child: Text('Settings',
               style: TextStyle(
                 color: Colors.white,
               )),
@@ -167,9 +167,51 @@ class _ProfilePageState extends State<ProfilePage> {
           ]
       ),
       body: Column(children: [
-        Expanded(
+        SizedBox(height: 20,),
+      Center(
+      child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text("Select Mode of the Class",style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold
+        ),
+        ),
+
+        Container(
+          height: 60,
+          width: 125,
+          child: Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: LiteRollingSwitch(
+              value: false,
+              textOn: 'Online',
+              textOff: 'Offline',
+              colorOn: Colors.indigo,
+              colorOff: Colors.indigo,
+              iconOn: Icons.check,
+              iconOff: Icons.power_settings_new,
+              animationDuration: Duration(milliseconds: 800),
+              onChanged: (bool state) {
+                globals.isonline=state;
+                print('${globals.isonline}');
+              },
+            ),
+          ),
+        )
+      ],
+    ),
+    ),
+    SizedBox(height: 20,),
+
+    Expanded(
           child: ListView(
             children: <Widget>[
+              //SizedBox(height: 40.0),
+              Center(child: Text("PROFILE" , style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16
+              ),)),
               Container(
                 child: Card(
                   child: ListTile(
@@ -179,23 +221,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 40.0),
-              Center(child: Text("User Details :-")),
+
               //Card(child: ListTile(title: Text("Under faculty   :  ${globals.faculty}"))),
               Card(
                   child:
-                      ListTile(title: Text("Class code :  ${globals.clas}"))),
+                      ListTile(title: Text("Class code            :  ${globals.clas}"))),
               Card(
                   child: ListTile(
-                      title: Text("Academic Year  : ${globals.academicyear}"))),
+                      title: Text("Academic Year     : ${globals.academicyear}"))),
               Card(
                   child: ListTile(
-                      title: Text("Programme  :  ${globals.programme}"))),
+                      title: Text("Programme           :  ${globals.programme}"))),
               Card(
-                  child: ListTile(title: Text("Branch  :  ${globals.branch}"))),
+                  child: ListTile(title: Text("Branch                   :  ${globals.branch}"))),
               //Card(child: ListTile(title: Text("Section  :  ${globals.sec}"))),
               Card(
-                  child: ListTile(title: Text("Student Id  :  ${globals.id}"))),
+                  child: ListTile(title: Text("Student Id             :  ${globals.id}"))),
               SizedBox(height: 40.0),
             ],
           ),

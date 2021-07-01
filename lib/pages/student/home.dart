@@ -339,20 +339,7 @@ class _StudentState extends State<Student> {
             )),
         home: Scaffold(
           key: _scaffoldKey,
-          /*appBar: AppBar(
-              title: Text("Hi " + '${globals.name}'),
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.indigo,
-              actions: <Widget>[
-                // action button
-                IconButton(
-                  color: Colors.white,
-                  icon: Icon(Icons.logout),
-                  onPressed: () {
-                    _showDialog(context);
-                  },
-                ),
-              ]),*/
+
           body: _pageOptions[_selectedTab],
           bottomNavigationBar: new Theme(
             data: Theme.of(context).copyWith(
@@ -389,9 +376,9 @@ class _StudentState extends State<Student> {
                   ),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person_pin, color: Colors.white),
+                  icon: Icon(Icons.settings, color: Colors.white),
                   title: Text(
-                    'Profile',
+                    'Settings',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
