@@ -87,15 +87,16 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                     imagePath: _cameraService.imagePath,
                   )));*/
       await _cameraService.dispose();
-      /*Navigator.push(
+
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => ScanScreen(
             //cameraDescription: cameraDescription,
           ),
         ),
-      );*/
-      checkNet();
+      );
+      //checkNet();
 
 
     } else {
@@ -136,11 +137,12 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                   this.predictedUser = User.fromDB(userAndPass);
                 }
               }
-              PersistentBottomSheetController bottomSheetController =
+              /*PersistentBottomSheetController bottomSheetController =
               Scaffold.of(context)
                   .showBottomSheet((context) => signSheet(context));
 
-              bottomSheetController.closed.whenComplete(() => widget.reload());
+              bottomSheetController.closed.whenComplete(() => widget.reload());*/
+              _signIn(context);
             }
           } catch (e) {
             // If an error occurs, log the error to the console.
@@ -330,9 +332,17 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 //    super.initState();
 //  }
 
-  void _showDialogSuccess() {
+  void _showDialogSuccess() async {
     // flutter defined function
-    showDialog(
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => Student(
+          //cameraDescription: cameraDescription,
+        ),
+      ),
+    );
+    showDialog (
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
@@ -350,14 +360,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                   ),
                 ));
                 //Navigator.of(context).pop();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => Student(
-                      //cameraDescription: cameraDescription,
-                    ),
-                  ),
-                );
+
               },
             ),
           ],
@@ -500,18 +503,15 @@ class _AuthActionButtonState extends State<AuthActionButton> {
         ));
       });
     } catch (e) {
-      setState(() {
-        _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      showInDialog.show(context, e);
+        /*_scaffoldKey.currentState.showSnackBar(new SnackBar(
           duration: new Duration(seconds: 4),
           content: new Row(
             children: <Widget>[
               new Container(
                 child: new Text("Unknown error: no such method"),
               )
-            ],
-          ),
-        ));
-      });
+            ],*/
     }
   }
 

@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
 
               final SharedPreferences preferences=await SharedPreferences.getInstance();
               uid= await preferences.getString('userid');
-
               if(uid==null){
                 home=Login();
               }else{

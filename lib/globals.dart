@@ -42,3 +42,4 @@ String lecturerName;
 String docId;
 String academicyear;
 String sem;
+bool isoffline=true;

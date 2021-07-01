@@ -12,6 +12,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_attendance/globals.dart' as globals;
+import 'package:smart_attendance/pages/student/Previous_Attendance/previous_attendance.dart';
 import 'package:smart_attendance/pages/teacher/Create_Lecture/generation_data.dart';
 import 'package:smart_attendance/services/getLocation.dart';
 import 'package:smart_attendance/widgets/dialog.dart';
@@ -178,7 +179,15 @@ class _ScanState extends State<ScanScreen> {
                     children: <Widget>[new Text("Attendance added to previous lectures")],
                   ),
                 ));
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Student(
+                      //cameraDescription: cameraDescription,
+                    ),
+                  ),
+                );
               },
             ),
           ],
@@ -267,7 +276,7 @@ class _ScanState extends State<ScanScreen> {
                 SizedBox(
                   height: 40,
                 ),
-                onSwitch(),
+                //onSwitch(),
                 SizedBox(
                   height: 160,
                 ),

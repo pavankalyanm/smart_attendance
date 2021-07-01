@@ -151,6 +151,9 @@ class _LoginState extends State<Login> {
         debugPrint("Reached getStud func");
         getStud();
         debugPrint("Passes getStud func");
+        final SharedPreferences preferences= await SharedPreferences.getInstance();
+        preferences.setString('classcode', globals.clas);
+
         Navigator.pop(context);
         Navigator.push(
           context,

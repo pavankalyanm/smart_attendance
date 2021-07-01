@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_attendance/globals.dart' as globals;
-import 'package:cloud_firestore/cloud_firestore.dart'
-
-;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:smart_attendance/pages/admin/adminview.dart';
 import 'package:smart_attendance/pages/student/home.dart';
@@ -71,7 +70,9 @@ globals.attendance_id = snapshot.data['attendance_id'];
 
 
 } else if (snapshot.data['role'] == 'student') {
-globals.clas = snapshot.data['class'];
+  final SharedPreferences preferences=await SharedPreferences.getInstance();
+globals.clas = preferences.getString("classcode");
+print(globals.clas);
 globals.name = snapshot.data['name'];
 globals.id = snapshot.data['id'];
 globals.role = snapshot.data['role'];
