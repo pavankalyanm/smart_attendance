@@ -48,11 +48,11 @@ class PreviousAttendanceState extends State<PreviousAttendance> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Attended Classes',
+        title: Text('Hi ${globals.name}',
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.white,
             )),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.indigo,
         automaticallyImplyLeading: false,
       ),
       body: _buildBody(context),

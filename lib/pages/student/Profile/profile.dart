@@ -1,6 +1,7 @@
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:smart_attendance/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/scan.dart';
 //import 'package:flutter/material.dart';
@@ -31,14 +32,87 @@ class _ProfilePageState extends State<ProfilePage> {
 //    _scaffoldKey.currentState
 //        .showSnackBar(new SnackBar(content: new Text(value)));
 //  }
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<void> signOut() async {
     await auth.signOut();
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Login()),
+  }
+
+  void _showDialog(BuildContext pageContext) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Do you want to log out?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+
+            new FlatButton(
+              child: new Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Yes"),
+              onPressed: () async {
+                _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                  duration: new Duration(seconds: 20),
+                  content: new Row(
+                    children: <Widget>[
+                      new CircularProgressIndicator(),
+                      new Text("  Loging-out...")
+                    ],
+                  ),
+                ));
+                final SharedPreferences preferences=await SharedPreferences.getInstance();
+                preferences.remove('userid');
+                globals.qrCode = null;
+                globals.classCode = null;
+                globals.courseCode = null;
+                globals.startAddingStudents = 0;
+                globals.requiredStudents = 0;
+                globals.post = null;
+                globals.qrId = null;
+                globals.attendance_id = null;
+                globals.courseName = null;
+                globals.courseYear = null;
+
+                globals.studentId.clear();
+                globals.studentDocumentId.clear();
+                globals.attendanceDetails.clear();
+                globals.extraStudentDocumentId.clear();
+
+//for Students
+                globals.id = null;
+                globals.currentCollection = null;
+                globals.key = "1234567890";
+                globals.clas = null;
+                globals.branch = null;
+                globals.faculty = null;
+                globals.programme = null;
+                globals.sec = null;
+                globals.uid = null;
+                globals.name = null;
+                globals.role = null;
+                globals.lecturerName = null;
+                globals.docId = null;
+
+                Navigator.of(context).pop();
+                Navigator.pop(pageContext);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -70,16 +144,27 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key:_scaffoldKey,
       appBar: AppBar(
         title: Container(
-          alignment: Alignment.center,
+          //alignment: Alignment.center,
           child: Text('Profile',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
               )),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.indigo,
         automaticallyImplyLeading: false,
+          actions: <Widget>[
+            // action button
+            IconButton(
+              color: Colors.white,
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                _showDialog(context);
+              },
+            ),
+          ]
       ),
       body: Column(children: [
         Expanded(

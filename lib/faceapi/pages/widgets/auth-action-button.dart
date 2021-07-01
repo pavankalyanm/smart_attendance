@@ -7,7 +7,9 @@ import 'package:smart_attendance/faceapi/pages/widgets/app_button.dart';
 import 'package:smart_attendance/faceapi/services/camera.service.dart';
 import 'package:smart_attendance/faceapi/services/facenet.service.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/scan.dart';
+import 'package:smart_attendance/pages/student/home.dart';
 import '../home.dart';
 import 'app_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -70,7 +72,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
     /// resets the face stored in the face net sevice
     this._faceNetService.setPredictedData(null);
     Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => MyHomePage()));
+        MaterialPageRoute(builder: (BuildContext context) => Login()));
   }
 
   Future _signIn(context) async {
@@ -85,14 +87,15 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                     imagePath: _cameraService.imagePath,
                   )));*/
       await _cameraService.dispose();
-      Navigator.push(
+      /*Navigator.push(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => ScanScreen(
             //cameraDescription: cameraDescription,
           ),
         ),
-      );
+      );*/
+      checkNet();
 
 
     } else {
@@ -164,7 +167,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'CAPTURE',
+                'Authenticate',
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(
@@ -223,7 +226,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                 SizedBox(height: 10),
                 widget.isLogin && predictedUser != null
                     ? AppButton(
-                  text: 'LOGIN',
+                  text: 'Authenticate',
                   onPressed: () async {
                     _signIn(context);
                   },
@@ -234,7 +237,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                 )
                     : !widget.isLogin
                     ? AppButton(
-                  text: 'SIGN UP',
+                  text: 'Add Your Face',
                   onPressed: () async {
                     await _signUp(context);
                   },
@@ -346,7 +349,15 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                     children: <Widget>[new Text("Attendance added to previous lectures")],
                   ),
                 ));
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Student(
+                      //cameraDescription: cameraDescription,
+                    ),
+                  ),
+                );
               },
             ),
           ],

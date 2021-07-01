@@ -339,7 +339,7 @@ class _StudentState extends State<Student> {
             )),
         home: Scaffold(
           key: _scaffoldKey,
-          appBar: AppBar(
+          /*appBar: AppBar(
               title: Text("Hi " + '${globals.name}'),
               automaticallyImplyLeading: false,
               backgroundColor: Colors.indigo,
@@ -352,7 +352,7 @@ class _StudentState extends State<Student> {
                     _showDialog(context);
                   },
                 ),
-              ]),
+              ]),*/
           body: _pageOptions[_selectedTab],
           bottomNavigationBar: new Theme(
             data: Theme.of(context).copyWith(

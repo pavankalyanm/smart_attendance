@@ -290,17 +290,17 @@ class _ScanState extends State<ScanScreen> {
 // splash color
                           onTap: () {
 
-                            Navigator.push(
+                           /* Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) => SignIn(
 
                                 ),
                               ),
-                            );
+                            );*/
 
 
-                            // checkNet();
+                             checkNet();
                           },
 // button pressed
                           child: Column(
