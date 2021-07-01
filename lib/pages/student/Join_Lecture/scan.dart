@@ -294,7 +294,7 @@ class _ScanState extends State<ScanScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) => SignIn(
-                                  cameraDescription: cameraDescription,
+
                                 ),
                               ),
                             );

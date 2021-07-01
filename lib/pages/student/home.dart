@@ -2,6 +2,10 @@ import 'dart:io';
 
 import "package:flutter/material.dart";
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_attendance/faceapi/pages/db/database.dart';
+import 'package:smart_attendance/faceapi/pages/sign-in.dart';
+import 'package:smart_attendance/faceapi/services/facenet.service.dart';
+import 'package:smart_attendance/faceapi/services/ml_kit_service.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 
 //import 'package:flutter/rendering.dart';
@@ -16,6 +20,8 @@ import 'package:smart_attendance/theme/style.dart' as style;
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:camera/camera.dart';
+
 
 class Student extends StatefulWidget {
   @override
@@ -54,6 +60,49 @@ class _StudentState extends State<Student> {
     );
     return true;
   }*/
+  FaceNetService _faceNetService = FaceNetService();
+  MLKitService _mlKitService = MLKitService();
+  DataBaseService _dataBaseService = DataBaseService();
+
+  CameraDescription cameraDescription;
+  bool loading = false;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _startUp();
+  }
+
+  /// 1 Obtain a list of the available cameras on the device.
+  /// 2 loads the face net model
+  _startUp() async {
+    _setLoading(true);
+
+    List<CameraDescription> cameras = await availableCameras();
+
+    /// takes the front camera
+    cameraDescription = cameras.firstWhere(
+          (CameraDescription camera) =>
+      camera.lensDirection == CameraLensDirection.front,
+    );
+
+    // start the services
+    await _faceNetService.loadModel();
+    await _dataBaseService.loadDB();
+    _mlKitService.initialize();
+
+    _setLoading(false);
+  }
+
+  // shows or hides the circular progress indicator
+  _setLoading(bool value) {
+    setState(() {
+      loading = value;
+    });
+  }
+
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -144,8 +193,8 @@ class _StudentState extends State<Student> {
 
   int _selectedTab = 0;
   final _pageOptions = [
-    ScanScreen(),
     PreviousAttendance(),
+    SignIn(),
     ProfilePage(),
   ];
 
@@ -316,28 +365,31 @@ class _StudentState extends State<Student> {
                     .copyWith(caption: new TextStyle(color: Colors.yellow))),
             child: new BottomNavigationBar(
               currentIndex: _selectedTab,
-              onTap: (int index) {
+              onTap: (int index)  {
                 setState(() {
-                  _selectedTab = index;
+                    _selectedTab = index;
+
+
                 });
               },
               items: [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home, color: Colors.white),
+                  icon: Icon(Icons.skip_previous, color: Colors.white),
                   title: Text(
+                    'Attendance',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.camera_alt, color: Colors.white),
+                  title: Text(
+
                     'ScanQR',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.category, color: Colors.white),
-                  title: Text(
-                    'Previous Attendance',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person_pin_circle, color: Colors.white),
+                  icon: Icon(Icons.person_pin, color: Colors.white),
                   title: Text(
                     'Profile',
                     style: TextStyle(color: Colors.white),

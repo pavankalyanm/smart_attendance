@@ -44,6 +44,7 @@ class FaceNetService {
           'mobilefacenet.tflite',
           options: interpreterOptions);
       print('model loaded successfully');
+
     } catch (e) {
       print('Failed to load model.');
       print(e);

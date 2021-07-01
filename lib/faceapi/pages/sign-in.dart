@@ -1,6 +1,7 @@
 // A screen that allows users to take a picture using a given camera.
 import 'dart:async';
 import 'dart:io';
+import 'package:smart_attendance/faceapi/pages/db/database.dart';
 import 'package:smart_attendance/faceapi/pages/widgets/FacePainter.dart';
 import 'package:smart_attendance/faceapi/pages/widgets/auth-action-button.dart';
 import 'package:smart_attendance/faceapi/pages/widgets/camera_header.dart';
@@ -12,12 +13,15 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class SignIn extends StatefulWidget {
-  final CameraDescription cameraDescription;
+import 'package:smart_attendance/pages/student/Previous_Attendance/previous_attendance.dart';
+import 'package:smart_attendance/pages/student/home.dart';
 
-  const SignIn({
+class SignIn extends StatefulWidget {
+
+
+   SignIn({
     Key key,
-    @required this.cameraDescription,
+
   }) : super(key: key);
 
   @override
@@ -44,12 +48,17 @@ class SignInState extends State<SignIn> {
   Size imageSize;
   Face faceDetected;
 
+  DataBaseService _dataBaseService = DataBaseService();
+
+  CameraDescription cameraDescription;
+  bool loading = false;
+
   @override
   void initState() {
     super.initState();
 
     /// starts the camera & start framing faces
-    _start();
+   _start();
   }
 
   @override
@@ -59,10 +68,24 @@ class SignInState extends State<SignIn> {
     super.dispose();
   }
 
+
+
+
   /// starts the camera & start framing faces
   _start() async {
+
+
+
+    List<CameraDescription> cameras = await availableCameras();
+
+    /// takes the front camera
+    cameraDescription = cameras.firstWhere(
+          (CameraDescription camera) =>
+      camera.lensDirection == CameraLensDirection.front,
+    );
+
     _initializeControllerFuture =
-        _cameraService.startService(widget.cameraDescription);
+        _cameraService.startService(cameraDescription);
     await _initializeControllerFuture;
 
     setState(() {
@@ -144,8 +167,16 @@ class SignInState extends State<SignIn> {
     }
   }
 
-  _onBackPressed() {
-    Navigator.of(context).pop();
+  _onBackPressed() async {
+   // await dispose();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => Student(
+          //cameraDescription: cameraDescription,
+        ),
+      ),
+    );
   }
 
   _reload() {

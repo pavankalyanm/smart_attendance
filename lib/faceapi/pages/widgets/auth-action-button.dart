@@ -7,6 +7,7 @@ import 'package:smart_attendance/faceapi/pages/widgets/app_button.dart';
 import 'package:smart_attendance/faceapi/services/camera.service.dart';
 import 'package:smart_attendance/faceapi/services/facenet.service.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_attendance/pages/student/Join_Lecture/scan.dart';
 import '../home.dart';
 import 'app_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,8 +85,14 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                     imagePath: _cameraService.imagePath,
                   )));*/
       await _cameraService.dispose();
-
-      checkNet();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => ScanScreen(
+            //cameraDescription: cameraDescription,
+          ),
+        ),
+      );
 
 
     } else {
