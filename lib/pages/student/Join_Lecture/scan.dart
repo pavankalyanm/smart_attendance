@@ -8,7 +8,8 @@ import 'package:smart_attendance/faceapi/pages/sign-up.dart';
 import 'package:smart_attendance/faceapi/services/facenet.service.dart';
 import 'package:smart_attendance/faceapi/services/ml_kit_service.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/Dashboard/lecture.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+//import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_attendance/globals.dart' as globals;
@@ -477,7 +478,7 @@ class _ScanState extends State<ScanScreen> {
           Tlongitude=snapshot.data['longitude'];
           //getCourseDetails();
 
-          globals.isonline ? getcurrentLocation() : getCourseDetails();
+          globals.isonline ? getCourseDetails() : getcurrentLocation();
 
 
 //          syncToPreviousAttendance();

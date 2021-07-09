@@ -13,7 +13,7 @@ import 'package:smart_attendance/pages/student/home.dart';
 import '../home.dart';
 import 'app_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+//import 'package:barcode_scan/barcode_scan.dart';
 import 'package:xxtea/xxtea.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:camera/camera.dart';
@@ -405,7 +405,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
   //scan functions
 
 
-  Future  scan() async {
+  /*Future  scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
 
@@ -659,7 +659,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
         ),
       ));
     }
-  }
+  }*/
 
 }
 
