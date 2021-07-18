@@ -50,6 +50,9 @@ dev_dependencies:
   image: ^3.0.2
   font_awesome_flutter: ^9.0.0
   url_launcher: ^6.0.3
+  floating_bottom_navigation_bar: ^1.5.2
+  google_fonts: any
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -69,6 +72,14 @@ flutter:
     - assets/login-screen-background.png
     - assets/signup-screen-background.png
     - assets/mobilefacenet.tflite
+    - assets/notification.png
+    - assets/calendar.png
+    - assets/festival.png
+    - assets/food.png
+    - assets/map.png
+    - assets/setting.png
+    - assets/todo.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/.

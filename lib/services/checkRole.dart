@@ -76,6 +76,7 @@ print(globals.clas);
 globals.name = snapshot.data['name'];
 globals.id = snapshot.data['id'];
 globals.role = snapshot.data['role'];
+globals.facedata=snapshot.data['facedata'];
 globals.academicyear = snapshot.data['academicyear'];
 globals.programme = snapshot.data['programme'];
 globals.branch = snapshot.data['branch'];

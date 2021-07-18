@@ -477,7 +477,7 @@ class _ScanState extends State<ScanScreen> {
           Tlongitude=snapshot.data['longitude'];
           //getCourseDetails();
 
-          globals.isonline ? getcurrentLocation() : getCourseDetails();
+          globals.isonline ?  getCourseDetails() : getcurrentLocation();
 
 
 //          syncToPreviousAttendance();

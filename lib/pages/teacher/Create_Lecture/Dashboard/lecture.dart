@@ -10,7 +10,7 @@ import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/pages/teacher/Create_Lecture/dashboard/save_attendance.dart';
 
 import 'package:smart_attendance/theme/style.dart' as style;
-import '';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 
 class Lecture extends StatefulWidget {
   @override
@@ -47,7 +47,7 @@ class LectureState extends State<Lecture> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Do you want to stop attendance ?"),
+          title: new Text("Make sure You downloaded the Attendance?"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
 
@@ -135,6 +135,11 @@ class LectureState extends State<Lecture> {
         home: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(10),
+                ),
+              ),
               title: Text("Click Icon to stop attendance"),
               automaticallyImplyLeading: false,
               backgroundColor: style.primaryColor,
@@ -157,30 +162,23 @@ class LectureState extends State<Lecture> {
                 textTheme: Theme.of(context)
                     .textTheme
                     .copyWith(caption: new TextStyle(color: Colors.yellow))),
-            child: new BottomNavigationBar(
+            child: FloatingNavbar(
+              backgroundColor: Colors.indigo,
+
               currentIndex: _selectedTab,
-              onTap: (int index) {
+              onTap: (int index)  {
                 setState(() {
                   _selectedTab = index;
+
+
                 });
               },
               items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  title: Text('QR CODE'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.category),
-                  title: Text('INFO'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  title: Text('ATTENDENCE'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.file_download),
-                  title: Text('DOWNLOAD'),
-                ),
+                FloatingNavbarItem(icon: Icons.home_outlined, title: 'QR'),
+                FloatingNavbarItem(icon: Icons.category_outlined, title: 'Info'),
+                FloatingNavbarItem(icon: Icons.search, title: 'Live'),
+                FloatingNavbarItem(icon: Icons.download_outlined, title: 'Download'),
+
               ],
             ),
           ),
