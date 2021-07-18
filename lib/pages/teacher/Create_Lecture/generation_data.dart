@@ -197,7 +197,7 @@ class _GenerationState extends State<Generation> {
           .collection('student')
           .document('${querySnapshot.documents[i].documentID}')
           .get();
-      debugPrint(snapshot.data['id']);
+      debugPrint("Id:${snapshot.data['id']}");
       //String stu_id= snapshot.data['id'] ;
 
       Map<String, String> map = {
@@ -207,19 +207,20 @@ class _GenerationState extends State<Generation> {
       };
       globals.studentId.add(snapshot.data['id']);
 
-      DocumentReference docRef = await Firestore.instance
+      DocumentReference Ref = await Firestore.instance
           .collection("attendance")
           .document("${globals.attendance_id}");
 
-          await docRef.setData({'name': '${globals.name}',
+          await Ref.setData({'name': '${globals.name}',
             'post':'${globals.post}'
           });
-
-          await docRef
+        DocumentReference docRef=await Ref
           .collection("attendance")
           .add(map);
       debugPrint("The New Document created with Id : ${docRef.documentID} ");
       globals.studentDocumentId.insert(i, "${docRef.documentID}");
+      debugPrint("DocRef:${globals.studentDocumentId[i]}");
+
       //  Firestore.instance.collection("attendance").document("${globals.attendance_id}").collection("attendance").document("${docRef.documentID}").updateData({"document" : "${docRef.documentID}"});
 
     }

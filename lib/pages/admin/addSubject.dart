@@ -25,7 +25,7 @@ class _courseDetailsState extends State<courseDetails> {
   String selectedclasscode;
 
   String nameValidator(String value) {
-    if (value.length < 3) {
+    if (value.length < 3 || value.isEmpty) {
       return "Please enter a valid name.";
     } else {
       return null;

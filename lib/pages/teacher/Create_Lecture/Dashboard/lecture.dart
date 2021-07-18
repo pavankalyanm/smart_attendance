@@ -70,7 +70,7 @@ class LectureState extends State<Lecture> {
                   ),
                 ));
 
-                Firestore.instance
+                await Firestore.instance
                     .collection("class")
                     .document("${globals.classCode}")
                     .collection("lectureID_qrCode")
@@ -78,12 +78,13 @@ class LectureState extends State<Lecture> {
                     .delete();
 
                 for (int i = 0; i < globals.studentDocumentId.length; i++) {
-                  Firestore.instance
+                  await Firestore.instance
                       .collection("attendance")
                       .document("${globals.attendance_id}")
                       .collection("attendance")
                       .document(globals.studentDocumentId[i])
                       .delete();
+                  print("delete${globals.studentDocumentId[i]}");
                 }
 
 //                Firestore.instance.collection('attendance').document("${globals.attendance_id}").collection("attendance").getDocuments().then((snapshot) {
