@@ -178,43 +178,47 @@ class _adminState extends State<admin> {
                 ),*/
 
                 SizedBox(
-                  height:80,
+                  height:40,
                 ),
 
                 Column(
                   children: <Widget>[
                     // the login button
-                    MaterialButton(
-                      minWidth: double.infinity,
-                      height: 60,
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => teacherSignup()));
+                    Row(
+                      children: [
+                        MaterialButton(
+                          //minWidth: double.infinity,
+                          height: 100,
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => teacherSignup()));
 
-                      },
-                      color: style.primaryColor,
+                          },
+                          color: style.primaryColor,
 
-                      // defining the shape
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              //color: Colors.white
+                          // defining the shape
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  //color: Colors.white
+                              ),
+                              borderRadius: BorderRadius.circular(20)
                           ),
-                          borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Text(
-                        "Add Teacher",
-                        style: TextStyle(
-                            color: Colors.white,
+                          child: Text(
+                            "Add Teacher",
+                            style: TextStyle(
+                                color: Colors.white,
 
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+
+
                     // creating the signup button
-                    SizedBox(height:20),
+                    SizedBox(width:10),
                     MaterialButton(
-                      minWidth: double.infinity,
-                      height: 60,
+                      //minWidth: double.infinity,
+                      height: 100,
                       onPressed: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> studentSignup()));
 
@@ -231,7 +235,58 @@ class _adminState extends State<admin> {
                             fontSize: 18
                         ),
                       ),
-                    ), SizedBox(height:20),
+                    ),
+                      ],
+                    ),
+                      SizedBox(height:20),
+
+                    Row(
+                      children: [
+                        MaterialButton(
+                         // minWidth: double.infinity,
+                          height: 100,
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> courseDetails()));
+
+                          },
+                          color: style.primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)
+                          ),
+                          child: Text(
+                            "Add Subjects",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18
+                            ),
+                          ),
+                        ),
+
+                    SizedBox(width:10),
+                    MaterialButton(
+                     //minWidth: 100,
+                      height: 100,
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> addClasscode()));
+
+                      },
+                      color: style.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Text(
+                        " Add Class  ",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18
+                        ),
+                      ),
+                    ),
+                      ],
+                    ),
+                    SizedBox(height:20),
                     MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
@@ -252,48 +307,7 @@ class _adminState extends State<admin> {
                         ),
                       ),
                     ),
-                    SizedBox(height:20),
-                    MaterialButton(
-                      minWidth: double.infinity,
-                      height: 60,
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> courseDetails()));
 
-                      },
-                      color: style.primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Text(
-                        "Add Subjects",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18
-                        ),
-                      ),
-                    ),
-                    SizedBox(height:20),
-                    MaterialButton(
-                      minWidth: double.infinity,
-                      height: 60,
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> addClasscode()));
-
-                      },
-                      color: style.primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Text(
-                        "Add ClassCodes",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18
-                        ),
-                      ),
-                    )
 
                   ],
                 )

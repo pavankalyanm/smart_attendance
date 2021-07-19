@@ -16,6 +16,7 @@ import 'package:smart_attendance/globals.dart' as globals;
 import 'package:smart_attendance/pages/welcome.dart';
 import 'package:smart_attendance/theme/style.dart' as style;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 
 class Teacher extends StatefulWidget {
   @override
@@ -316,6 +317,11 @@ class _TeacherState extends State<Teacher> {
         home: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(10),
+                ),
+              ),
               title: Text("Hi " + '${globals.name}'),
               automaticallyImplyLeading: false,
               backgroundColor: Colors.indigo,
@@ -330,58 +336,25 @@ class _TeacherState extends State<Teacher> {
                 ),
               ]),
           body: _pageOptions[_selectedTab],
-          bottomNavigationBar: new Theme(
-            data: Theme.of(context).copyWith(
-                // sets the background color of the `BottomNavigationBar`
-                canvasColor: Colors.indigo,
-                // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-                primaryColor: Colors.white,
-                textTheme: Theme.of(context)
-                    .textTheme
-                    .copyWith(caption: new TextStyle(color: Colors.yellow))),
-            child: new BottomNavigationBar(
-              currentIndex: _selectedTab,
-              onTap: (int index) {
-                setState(() {
-                  _selectedTab = index;
-                });
-              },
+          bottomNavigationBar: FloatingNavbar(
+            backgroundColor: Colors.indigo,
+
+            currentIndex: _selectedTab,
+            onTap: (int index)  {
+              setState(() {
+                _selectedTab = index;
+
+
+              });
+            },
               items: [
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.home,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Generate',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  // backgroundColor:Colors.white,
-                  icon: Icon(
-                    Icons.category,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Previous Attendance',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.person_pin_circle,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Profile',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+                FloatingNavbarItem(icon: Icons.home_outlined, title: 'Generate'),
+                FloatingNavbarItem(icon: Icons.skip_next_outlined, title: 'Reports'),
+                FloatingNavbarItem(icon: Icons.settings, title: 'Profile'),
               ],
             ),
           ),
-        ));
+        );
   }
 }
 

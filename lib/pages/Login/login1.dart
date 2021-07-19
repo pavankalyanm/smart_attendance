@@ -134,6 +134,7 @@ class _LoginState extends State<Login> {
         globals.post = snapshot.data['post'];
         globals.role = snapshot.data['role'];
         globals.dept=snapshot.data['dept'];
+
         globals.attendance_id = snapshot.data['attendance_id'];
         Navigator.pop(context);
         Navigator.push(
@@ -147,7 +148,9 @@ class _LoginState extends State<Login> {
         globals.role = snapshot.data['role'];
         globals.programme=snapshot.data['programme'];
         globals.branch=snapshot.data['branch'];
+        globals.facedata=snapshot.data['facedata'];
         globals.academicyear = snapshot.data['academicyear'];
+        debugPrint("${globals.uid}");
         debugPrint("Reached getStud func");
         getStud();
         debugPrint("Passes getStud func");
@@ -187,7 +190,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return new Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text('LogIn'),
@@ -205,7 +208,7 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: 10,
                     ),
-                    /* new Container(
+                    new Container(
                 width: 180,
                 height: 180,
                 decoration: new BoxDecoration(
@@ -213,7 +216,7 @@ class _LoginState extends State<Login> {
                     image: ExactAssetImage('assets/res/jntu.png'),
                     fit: BoxFit.fitHeight,
                   ),
-                  ),),*/
+                  ),),
                     SizedBox(
                       height: 10,
                     ),

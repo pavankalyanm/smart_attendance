@@ -308,6 +308,7 @@ class _studentSignupState extends State<studentSignup> {
                 "branch": selectedbranch,
                 "programme": selectedprogramme,
                 "academicyear": acedamicyear,
+                "facedata":"0",
                 //"email": emailInputController.text,
 
               })

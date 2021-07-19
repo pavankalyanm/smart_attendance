@@ -48,6 +48,11 @@ class PreviousAttendanceState extends State<PreviousAttendance> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10),
+          ),
+        ),
         title: Text('Hi ${globals.name}',
             style: TextStyle(
               color: Colors.white,

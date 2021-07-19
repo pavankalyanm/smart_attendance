@@ -21,6 +21,7 @@ import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:camera/camera.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 
 
 class Student extends StatefulWidget {
@@ -341,16 +342,10 @@ class _StudentState extends State<Student> {
           key: _scaffoldKey,
 
           body: _pageOptions[_selectedTab],
-          bottomNavigationBar: new Theme(
-            data: Theme.of(context).copyWith(
-                // sets the background color of the `BottomNavigationBar`
-                canvasColor: style.primaryColor,
-                // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-                primaryColor: Colors.white,
-                textTheme: Theme.of(context)
-                    .textTheme
-                    .copyWith(caption: new TextStyle(color: Colors.yellow))),
-            child: new BottomNavigationBar(
+          extendBody: true,
+          bottomNavigationBar: FloatingNavbar(
+            backgroundColor: Colors.indigo,
+
               currentIndex: _selectedTab,
               onTap: (int index)  {
                 setState(() {
@@ -360,31 +355,13 @@ class _StudentState extends State<Student> {
                 });
               },
               items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.skip_previous, color: Colors.white),
-                  title: Text(
-                    'Attendance',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.camera_alt, color: Colors.white),
-                  title: Text(
+                FloatingNavbarItem(icon: Icons.skip_previous, title: 'Attendance'),
+                FloatingNavbarItem(icon: Icons.camera_alt_outlined, title: 'Scan'),
+                FloatingNavbarItem(icon: Icons.settings, title: 'Settings'),
 
-                    'ScanQR',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings, color: Colors.white),
-                  title: Text(
-                    'Settings',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
               ],
             ),
           ),
-        ));
+        );
   }
 }

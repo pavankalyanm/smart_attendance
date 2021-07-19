@@ -249,7 +249,7 @@ class SignInState extends State<SignIn> {
                   }
                 }),
             CameraHeader(
-              "",
+              "AUTHENTICATE",
               onBackPressed: _onBackPressed,
             )
           ],
@@ -257,12 +257,13 @@ class SignInState extends State<SignIn> {
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: !_bottomSheetVisible
-          ? AuthActionButton(
+          ? Padding(
+          padding: const EdgeInsets.only(bottom: 60.0),child:AuthActionButton(
               _initializeControllerFuture,
               onPressed: onShot,
               isLogin: true,
               reload: _reload,
-            )
+            ))
           : Container(),
     );
   }
