@@ -38,13 +38,13 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email, _password;
-  CameraDescription cameraDescription;
+  /*CameraDescription cameraDescription;
   FaceNetService _faceNetService = FaceNetService();
   MLKitService _mlKitService = MLKitService();
   DataBaseService _dataBaseService = DataBaseService();
-  bool loading = false;
+  bool loading = false;*/
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  @override
+  /*@override
   void initState() {
     super.initState();
     _startUp();
@@ -76,7 +76,7 @@ class _LoginState extends State<Login> {
     setState(() {
       loading = value;
     });
-  }
+  }*/
 
 /* @override
   void initState() async {
@@ -338,48 +338,7 @@ class _LoginState extends State<Login> {
                       borderWidth: 0.0,
                       buttonColor: primaryColor,
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => SignUp(
-                              cameraDescription: cameraDescription,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.blue.withOpacity(0.1),
-                              blurRadius: 1,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 16),
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'SIGNUP',
-                              style: TextStyle(color: Color(0xFF0F0BDB)),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(Icons.login, color: Color(0xFF0F0BDB))
-                          ],
-                        ),
-                      ),
-                    ),
+
                   ],
                 )),
           ),

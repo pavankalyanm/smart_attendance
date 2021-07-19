@@ -1,7 +1,12 @@
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:smart_attendance/pages/home.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_attendance/faceapi/pages/db/database.dart';
+import 'package:smart_attendance/faceapi/pages/sign-up.dart';
+import 'package:smart_attendance/faceapi/services/facenet.service.dart';
+import 'package:smart_attendance/faceapi/services/ml_kit_service.dart';
 import 'package:smart_attendance/pages/Login/login1.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/scan.dart';
 //import 'package:flutter/material.dart';
@@ -24,6 +29,46 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  CameraDescription cameraDescription;
+  FaceNetService _faceNetService = FaceNetService();
+  MLKitService _mlKitService = MLKitService();
+  DataBaseService _dataBaseService = DataBaseService();
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startUp();
+  }
+
+  /// 1 Obtain a list of the available cameras on the device.
+  /// 2 loads the face net model
+  _startUp() async {
+    _setLoading(true);
+
+    List<CameraDescription> cameras = await availableCameras();
+
+    /// takes the front camera
+    cameraDescription = cameras.firstWhere(
+          (CameraDescription camera) =>
+      camera.lensDirection == CameraLensDirection.front,
+    );
+
+    // start the services
+    await _faceNetService.loadModel();
+    await _dataBaseService.loadDB();
+    _mlKitService.initialize();
+
+    _setLoading(false);
+  }
+
+  // shows or hides the circular progress indicator
+  _setLoading(bool value) {
+    setState(() {
+      loading = value;
+    });
+  }
+
 //  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 //  String _email, _password;
 //  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -239,6 +284,50 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: ListTile(title: Text("Student Id             :  ${globals.id}"))),
               SizedBox(height: 40.0),
             ],
+          ),
+        ),
+
+        SizedBox(height: 20,),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => SignUp(
+                  cameraDescription: cameraDescription,
+                ),
+              ),
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.1),
+                  blurRadius: 1,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(
+                vertical: 14, horizontal: 16),
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'SIGNUP',
+                  style: TextStyle(color: Color(0xFF0F0BDB)),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Icon(Icons.login, color: Color(0xFF0F0BDB))
+              ],
+            ),
           ),
         ),
         /*ElevatedButton(

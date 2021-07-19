@@ -9,7 +9,8 @@ import 'package:smart_attendance/faceapi/services/facenet.service.dart';
 import 'package:smart_attendance/faceapi/services/ml_kit_service.dart';
 import 'package:smart_attendance/pages/student/Join_Lecture/Dashboard/lecture.dart';
 //import 'package:barcode_scan2/barcode_scan2.dart';
-import 'package:barcode_scan_fix/barcode_scan.dart';
+//import 'package:barcode_scan_fix/barcode_scan.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_attendance/globals.dart' as globals;
@@ -433,7 +434,7 @@ class _ScanState extends State<ScanScreen> {
 
   Future scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
+      String barcode = await scanner.scan();
 
       setState(() => this.barcode = barcode);
 //      String barcode = "-Li2ZkLdyHEK8ODe0xJM";
@@ -496,7 +497,7 @@ class _ScanState extends State<ScanScreen> {
 //      present.updating(barcode);
 
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == scanner.CameraAccessDenied) {
         setState(() {
           _scaffoldKey.currentState.showSnackBar(new SnackBar(
             duration: new Duration(seconds: 4),
